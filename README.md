@@ -90,15 +90,15 @@ This project strictly adheres to an **Agile / Incremental SDLC Model**:
 
 ---
 
-## 🛠️ Technology Stack
+## 🛠️ Technology Stack (Rust-Powered)
 
 | Layer | Choice | Rationale |
 | :--- | :--- | :--- |
-| **Framework** | **Next.js 14+ (App Router)** or **Vite + React (TypeScript)** | Fast component-driven architecture with clean routing. |
-| **Styling** | **Tailwind CSS + Radix UI / shadcn** | Modern dark-mode aesthetic with accessible UI primitives. |
-| **Icons** | **Lucide React** | Clean, consistent developer iconography. |
-| **State & Fetching** | **TanStack Query + Zustand** | Efficient API caching, polling, and centralized UI state. |
-| **Persistence** | **LocalStorage / IndexedDB** | Zero-latency offline-first data retention. |
+| **Core Systems & Backend** | **Rust** | Zero-cost abstractions, memory safety, and native concurrency for background sync & physics simulation workloads. |
+| **App Architecture** | **Tauri v2 / Dioxus** | Native lightweight desktop executable with minimal RAM footprint (~25MB). |
+| **Styling & Components** | **Tailwind CSS + Modular Grid** | Clean dark-mode aesthetic with responsive sidebar and widgets. |
+| **Icons** | **Lucide** | Clean, developer-centric iconography. |
+| **Async Runtime & Data** | **Tokio + SQLite (`rusqlite`)** | High-performance asynchronous API polling and offline-first persistence. |
 
 ---
 
