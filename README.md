@@ -1,91 +1,112 @@
-# Personal Productivity & Life Dashboard
+# Personal Productivity & Engineering Dashboard
 
-A modular personal dashboard designed for developers, students, and professionals. Features a modern sidebar layout bringing together developer workflows, academic tracking, POS project management, and daily mind games.
+A unified, modular command center built for developers, STEM students, and engineering support specialists. It combines daily developer workflows, academic course tracking, POS support management, physics simulation R&D notes, and daily mental warmups into a sleek sidebar layout.
 
----
-
-## 🚀 Features & Widgets
-
-### 1. ♟️ Chess.com Widget
-- **Daily Puzzle:** Auto-fetches the daily puzzle with interactive solving or board preview.
-- **Ongoing Games:** Real-time tracking of active games, current move turns, clock timers, and opponent stats.
-- Direct quick links into live matches.
-
-### 2. 🟩 Wordle Mini-App
-- Embedded daily Wordle mini-game.
-- Streak counters, score distribution, and local history tracking.
-
-### 3. 🐙 GitHub Activity & PR Monitor
-- **Pull Requests:** Incoming review requests, authored PRs, CI status indicators, and review badges.
-- **Active Repositories:** Fast view of pinned repositories, star counts, open issues, and recent commits.
-
-### 4. 🔬 Personal Projects & R&D Hub (Simulations & Side Projects)
-- **Project Concept & Architecture Cards:** Track technical experiments, indie builds, and simulation ideas.
-- **Engineering & Optimization Tracker:**
-  - *Example (Neutron Star Simulation):*
-    - **Optimization Methods:**
-      - *Fixed Time Step:* Decouple physics calculations from frame rate.
-      - *Multi-threading:* Offload heavy numerical computations to worker threads/compute shaders.
-      - *Approximations:* Simplified analytical models where high-fidelity simulation isn't required.
-    - **Status & Phase:** Note-taking / Strategy formulation / In-development.
-- **Tech Stack & Milestone Tags:** Easily categorize by languages/frameworks (WebGPU, Rust, C++, Three.js, Python) and progress stage.
-
-### 5. 📚 School Assignment & Course Progress Tracker
-- Course-based grouping (e.g. CS, Math, Engineering).
-- Visual progress tracking (`% completed`) per course.
-- Priority and deadline alerts (*Due Today*, *This Week*, *Later*).
-
-### 6. 💼 Work Task Management — YM Inc. POS Support
-- Tailored task management for **YM Inc. Point of Sale (POS)** project implementation.
-- Milestone and ticket tracking (Terminal provisioning, API integration checkpoints, client onboarding).
-- Priority-ranked status board (Backlog, In Progress, Blocked, Deployed).
-- Rapid incident / scratchpad log.
+[![GitHub Repo](https://img.shields.io/badge/GitHub-DeathSurvivor02%2Fpersonal--dashboard-blue?logo=github)](https://github.com/DeathSurvivor02/personal-dashboard)
+[![SDLC](https://img.shields.io/badge/SDLC-Agile%20%2F%20Incremental-success)](sdlc_specification.md)
 
 ---
 
-## 🎨 UI & Layout Design
-- **Sidebar Navigation:** Collapsible left-hand navigation with quick jump links, summary badges, and status widgets.
-- **Modular Dashboard Grid:** Responsive multi-column layout supporting card collapsing and customizable visibility.
-- **Theme Support:** Dark / Light mode default styling.
-
----
-
-## 🛠️ Tech Stack Architecture
-- **Framework:** Next.js (React / TypeScript) / Vite + React
-- **Styling:** Tailwind CSS + shadcn/ui
-- **Icons:** Lucide React
-- **Data Fetching:** TanStack Query (React Query)
-- **External APIs:** Chess.com Public API, GitHub REST / GraphQL API
-
----
-
-## 📂 Project Structure (Planned)
+## 🧭 System Architecture & Layout
 
 ```text
-├── src/
-│   ├── components/
-│   │   ├── layout/
-│   │   │   ├── Sidebar.tsx
-│   │   │   ├── Header.tsx
-│   │   │   └── Shell.tsx
-│   │   ├── widgets/
-│   │   │   ├── chess/
-│   │   │   ├── wordle/
-│   │   │   ├── github/
-│   │   │   ├── school/
-│   │   │   └── work-pos/
-│   ├── hooks/
-│   ├── lib/
-│   └── types/
-├── README.md
+App Layout Shell
+├── Left Sidebar (Collapsible)
+│   ├── User Avatar & Status Pill ('Deep Work', 'POS Support', 'In Class')
+│   ├── Navigation Filters (All, Work, School, Projects, Play)
+│   ├── Quick Status Badges (Pending moves, PR alerts, Due tasks)
+│   └── Mini Ambient/Media Controller (Lofi / Focus Sounds)
+├── Top Header Bar
+│   ├── Date & Weather Indicator
+│   ├── Quick Scratchpad & Command Palette (`Cmd/Ctrl + K`)
+│   ├── Pomodoro / Focus Timer Widget
+│   └── Theme Toggle (Dark / Light)
+└── Main Grid Viewport (Modular Responsive Cards)
+    ├── Work & School Stream (Row 1)
+    │   ├── YM Inc. POS Kanban & Incident Log
+    │   └── School Assignment & Course Progress Tracker
+    ├── Projects & Engineering Hub (Row 2)
+    │   ├── Personal Projects (Neutron Star Simulation & Architecture Notes)
+    │   └── GitHub Activity & Open PRs
+    └── Mind & Recreation Zone (Row 3)
+        ├── Chess.com Live Puzzle & Game Monitor
+        └── Daily Wordle Mini-Game
 ```
 
 ---
 
-## 🗺️ Roadmap
-- [x] Planning & Architectural Design
-- [ ] Base Project Scaffolding with Sidebar
-- [ ] School & Work Task Management modules
-- [ ] GitHub & Chess.com API Integrations
-- [ ] Wordle Mini-widget
-- [ ] Deployment & Live Syncing
+## 🚀 Core Modules & Features
+
+### 1. 💼 Work Task Management — YM Inc. POS Support
+* **Tailored POS Lifecycle:** Support tickets, terminal configurations, hardware provisioning, API integration checkpoints, and client rollout.
+* **Severity Matrix:** P0 (Store Blocker / Outage) to P3 (General inquiry).
+* **Kanban Board:** Backlog ➔ Investigating ➔ Testing ➔ Deployed / Resolved.
+* **Incident Log / Quick Pad:** Fast scratchpad for store IDs, terminal serials, and phone notes.
+
+### 2. 📚 School Assignment & Course Progress Tracker
+* **Course Organization:** Course-based grouping (e.g. CS-401, MATH-310).
+* **Visual Progress:** Dynamic progress bars (`% completed`) reflecting submitted vs. pending assignments.
+* **Urgency Alerts:** *Due Today*, *Upcoming (2-3 days)*, *Later*.
+
+### 3. 🔬 Personal Projects & R&D Hub (Simulations & Side Projects)
+* **Project Concept & Architecture Cards:** Track technical experiments, indie builds, and simulation ideas.
+* **Engineering & Optimization Strategies:**
+  * *Featured Example — **Neutron Star Simulation**:*
+    * **Fixed Time Step:** Decouple physics calculations from frame rate.
+    * **Multi-threading:** Offload heavy numerical computations to worker threads / compute shaders.
+    * **Approximations:** Simplified analytical models where high-fidelity simulation isn't critical.
+    * **Status:** Taking notes on options; specific strategies to be decided during development.
+* **Tech Stack & Tags:** Easily categorize by languages/frameworks (WebGPU, Rust, C++, Three.js, Python).
+
+### 4. 🐙 GitHub Activity & PR Monitor
+* **Pull Requests:** Reviews pending your action, authored PRs, and CI check indicators.
+* **Active Repositories:** Fast view of pinned repositories, star counts, open issues, and recent commits.
+
+### 5. ♟️ Chess.com Widget
+* **Daily Puzzle:** Auto-fetches the daily puzzle with interactive solving or board preview.
+* **Ongoing Games:** Real-time tracking of active games, current move turns, clock timers, and opponent stats.
+
+### 6. 🟩 Wordle Mini-App
+* Built-in lightweight daily 5-letter word game with streak counters, score distribution, and local history.
+
+### 7. ⏱️ Focus & Daily Utilities
+* **Pomodoro Timer:** Preset work/break sessions with sound alerts.
+* **Quick Scratchpad (`Ctrl/Cmd + K`):** Instant modal for fleeting ideas and POS terminal notes.
+* **Weather & Status Indicator:** Current local conditions and user activity status.
+
+---
+
+## 📋 Software Development Life Cycle (SDLC)
+
+This project strictly adheres to an **Agile / Incremental SDLC Model**:
+
+| Phase | Description | Deliverables | Status |
+| :--- | :--- | :--- | :--- |
+| **Phase 1: Requirements** | Functional & non-functional requirements engineering, user stories, and acceptance criteria. | User Stories & Functional Spec | ✅ Completed |
+| **Phase 2: Design** | Component hierarchy, data schemas, UI wireframing, and tech stack selection. | [SDLC Spec Document](sdlc_specification.md) | ✅ Completed |
+| **Phase 3: Implementation** | Sprint-based feature development (Frontend, API layers, local persistence). | Codebase & Components | ⏳ Ready to Start (Sprint 0) |
+| **Phase 4: Testing & QA** | Unit testing, component tests, API integration tests, and E2E flows. | Vitest / RTL / Playwright suites | 📋 Planned |
+| **Phase 5: Deployment & CI** | Automated GitHub Actions CI/CD pipeline, build verification, and hosting. | Production deployment | 📋 Planned |
+
+---
+
+## 🛠️ Technology Stack
+
+| Layer | Choice | Rationale |
+| :--- | :--- | :--- |
+| **Framework** | **Next.js 14+ (App Router)** or **Vite + React (TypeScript)** | Fast component-driven architecture with clean routing. |
+| **Styling** | **Tailwind CSS + Radix UI / shadcn** | Modern dark-mode aesthetic with accessible UI primitives. |
+| **Icons** | **Lucide React** | Clean, consistent developer iconography. |
+| **State & Fetching** | **TanStack Query + Zustand** | Efficient API caching, polling, and centralized UI state. |
+| **Persistence** | **LocalStorage / IndexedDB** | Zero-latency offline-first data retention. |
+
+---
+
+## 🗺️ Sprint Implementation Plan
+- [x] **Phase 1 & 2: SDLC Requirements & Architectural Design**
+- [ ] **Sprint 0: Scaffolding & App Shell** (Sidebar, Top bar, Theme, Grid)
+- [ ] **Sprint 1: Productivity Modules** (YM Inc. POS Support + School Tracker)
+- [ ] **Sprint 2: R&D & Engineering Hub** (Projects & Simulation Strategy Cards)
+- [ ] **Sprint 3: External API Integrations** (Chess.com & GitHub API)
+- [ ] **Sprint 4: Focus Utilities & Games** (Pomodoro, Scratchpad, Wordle)
+- [ ] **Sprint 5: QA Testing & Automated CI/CD**
