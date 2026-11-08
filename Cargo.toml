@@ -1,0 +1,12 @@
+[package]
+name = "personal_dashboard"
+version = "0.1.0"
+edition = "2021"
+authors = ["DeathSurvivor02"]
+description = "Personal Productivity, R&D Simulation Lab, and Task Management Command Center in 100% Rust"
+
+[dependencies]
+dioxus = { version = "0.6", features = ["desktop"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+chrono = "0.4"
