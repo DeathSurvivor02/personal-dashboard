@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Command Center — Personal Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: { 500: '#6366f1', 600: '#4f46e5', 900: '#312e81' }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body {
+      background-color: #07090e;
+      color: #f3f4f6;
+      font-family: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 9999px; }
+  </style>
+</head>
+<body class="h-screen w-screen overflow-hidden flex flex-col antialiased select-none">
+
+  <!-- APP SHELL -->
+  <div class="flex flex-1 h-full w-full overflow-hidden">
+    
+    <!-- ─── SIDEBAR ──────────────────────────────────────────────────────── -->
+    <aside id="sidebar" class="w-64 bg-[#0d111a] border-r border-gray-800/80 flex flex-col justify-between p-4 transition-all duration-300">
+      <div class="space-y-6">
+        <!-- Brand / User Profile -->
+        <div class="flex items-center space-x-3 pb-4 border-b border-gray-800/80">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-indigo-500 to-purple-600 flex items-center justify-center font-bold text-white shadow-lg shadow-indigo-500/20 text-sm">
+            DS
+          </div>
+          <div class="overflow-hidden">
+            <h2 class="font-semibold text-sm text-gray-100 truncate">Command Center</h2>
+            <div class="flex items-center text-xs text-emerald-400 space-x-1.5">
+              <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+              <span class="truncate">Deep Work: Online</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Navigation -->
+        <nav class="space-y-1 text-sm font-medium">
+          <button onclick="setTab('all')" id="btn-all" class="nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl transition bg-indigo-600 text-white shadow-lg shadow-indigo-600/25">
+            <span class="text-base">📊</span>
+            <span>All Overviews</span>
+          </button>
+          <button onclick="setTab('work')" id="btn-work" class="nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl transition text-gray-400 hover:bg-gray-800/70 hover:text-gray-200">
+            <span class="text-base">💼</span>
+            <span>YM Inc. POS Support</span>
+          </button>
+          <button onclick="setTab('school')" id="btn-school" class="nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl transition text-gray-400 hover:bg-gray-800/70 hover:text-gray-200">
+            <span class="text-base">📚</span>
+            <span>School & Courses</span>
+          </button>
+          <button onclick="setTab('projects')" id="btn-projects" class="nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl transition text-gray-400 hover:bg-gray-800/70 hover:text-gray-200">
+            <span class="text-base">🔬</span>
+            <span>R&D Projects Lab</span>
+          </button>
+          <button onclick="setTab('play')" id="btn-play" class="nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl transition text-gray-400 hover:bg-gray-800/70 hover:text-gray-200">
+            <span class="text-base">♟️</span>
+            <span>Mind Games & Chess</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Footer Audio Widget -->
+      <div class="p-3 bg-gray-900/90 rounded-xl border border-gray-800/90 flex items-center justify-between">
+        <div class="flex items-center space-x-2.5">
+          <span class="text-xl">🎧</span>
+          <div>
+            <p class="text-xs font-semibold text-gray-200 leading-tight">Focus Stream</p>
+            <p class="text-[11px] text-gray-400">Binaural Physics Alpha</p>
+          </div>
+        </div>
+        <span class="text-[10px] px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800/60 font-mono font-bold">
+          LIVE
+        </span>
+      </div>
+    </aside>
+
+    <!-- ─── MAIN CONTENT VIEWPORT ────────────────────────────────────────── -->
+    <main class="flex-1 flex flex-col h-full overflow-hidden bg-[#07090e]">
+      
+      <!-- Top Action Bar -->
+      <header class="h-16 px-6 bg-[#0d111a]/80 border-b border-gray-800/70 flex items-center justify-between backdrop-blur-md">
+        <div class="flex items-center space-x-4">
+          <h1 id="view-title" class="text-lg font-bold text-gray-100">Dashboard Overview</h1>
+          <span class="px-2.5 py-0.5 rounded-full text-xs font-mono font-medium bg-gray-800/80 text-indigo-300 border border-indigo-900/60">
+            Rust Dioxus v0.6
+          </span>
+        </div>
+
+        <div class="flex items-center space-x-4">
+          <!-- Interactive Pomodoro Timer -->
+          <div class="flex items-center space-x-2 bg-gray-900/90 px-3 py-1.5 rounded-xl border border-gray-800">
+            <span class="text-sm">⏱️</span>
+            <span id="timer-display" class="font-mono font-bold text-indigo-400 text-sm">25:00</span>
+            <button onclick="toggleTimer()" id="timer-btn" class="text-xs px-2.5 py-0.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold transition">
+              Start
+            </button>
+          </div>
+
+          <!-- Weather & Status -->
+          <div class="text-xs text-gray-400 text-right hidden sm:block">
+            <p class="font-semibold text-gray-200">Clear Skies • 20°C</p>
+            <p class="text-[11px]">Primary Station</p>
+          </div>
+        </div>
+      </header>
+
+      <!-- Scrollable Modular Grid -->
+      <div class="flex-1 p-6 overflow-y-auto custom-scrollbar space-y-6">
+
+        <!-- SECTION: FEATURED R&D SIMULATION HUB -->
+        <div id="section-projects" class="widget-section">
+          <div class="p-6 rounded-2xl bg-gradient-to-r from-[#0f1422] to-[#14122e]/60 border border-indigo-900/40 shadow-xl">
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 pb-4 border-b border-gray-800/80">
+              <div>
+                <div class="flex items-center space-x-2.5">
+                  <span class="text-2xl">🔬</span>
+                  <h3 class="text-lg font-bold text-white">Neutron Star Simulation</h3>
+                  <span class="px-2.5 py-0.5 text-xs rounded-full bg-purple-900/50 text-purple-300 border border-purple-700/50 font-medium">
+                    In R&D / Notes
+                  </span>
+                </div>
+                <p class="text-xs text-gray-400 mt-1.5 max-w-2xl leading-relaxed">
+                  Astrophysics numerical modeling, relativistic equation of state, and high-performance physics pipeline.
+                </p>
+              </div>
+              <div class="flex items-center space-x-2">
+                <span class="text-xs px-2.5 py-1 rounded-lg bg-gray-900 text-gray-300 border border-gray-700 font-mono">Rust / WGPU</span>
+                <span class="text-xs px-2.5 py-1 rounded-lg bg-gray-900 text-gray-300 border border-gray-700 font-mono">Rayon Concurrency</span>
+              </div>
+            </div>
+
+            <!-- Optimization Strategies Grid -->
+            <div class="mt-4 grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div class="p-4 rounded-xl bg-gray-900/80 border border-gray-800 hover:border-indigo-600/40 transition">
+                <div class="flex items-center justify-between pb-2">
+                  <div class="flex items-center space-x-2">
+                    <span>⏳</span>
+                    <h4 class="text-sm font-bold text-gray-200">Fixed Time Step</h4>
+                  </div>
+                  <span class="text-[11px] px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 font-mono border border-indigo-800/40">Decided</span>
+                </div>
+                <p class="text-xs text-gray-400 leading-relaxed mt-1">Decouple physics calculations from frame rate to guarantee deterministic numerical stability.</p>
+              </div>
+
+              <div class="p-4 rounded-xl bg-gray-900/80 border border-gray-800 hover:border-indigo-600/40 transition">
+                <div class="flex items-center justify-between pb-2">
+                  <div class="flex items-center space-x-2">
+                    <span>⚡</span>
+                    <h4 class="text-sm font-bold text-gray-200">Multi-threading</h4>
+                  </div>
+                  <span class="text-[11px] px-2 py-0.5 rounded bg-yellow-950/70 text-yellow-300 font-mono border border-yellow-800/40">In Planning</span>
+                </div>
+                <p class="text-xs text-gray-400 leading-relaxed mt-1">Offload heavy RK4 integration and gravitational tensor field steps to Rust worker threads.</p>
+              </div>
+
+              <div class="p-4 rounded-xl bg-gray-900/80 border border-gray-800 hover:border-indigo-600/40 transition">
+                <div class="flex items-center justify-between pb-2">
+                  <div class="flex items-center space-x-2">
+                    <span>📐</span>
+                    <h4 class="text-sm font-bold text-gray-200">Approximations</h4>
+                  </div>
+                  <span class="text-[11px] px-2 py-0.5 rounded bg-blue-950/70 text-blue-300 font-mono border border-blue-800/40">Evaluating</span>
+                </div>
+                <p class="text-xs text-gray-400 leading-relaxed mt-1">Use simplified analytical models in outer crust where ultra-high relativistic detail isn't critical.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION: WORK & SCHOOL -->
+        <div id="section-work-school" class="grid grid-cols-1 lg:grid-cols-2 gap-6 widget-section">
+          
+          <!-- YM Inc. POS Support Widget -->
+          <div id="widget-work" class="p-5 rounded-2xl bg-[#0d111a] border border-gray-800/90 flex flex-col justify-between shadow-lg">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-gray-800/80">
+                <div class="flex items-center space-x-2.5">
+                  <span class="text-lg">💼</span>
+                  <h3 class="font-bold text-gray-100 text-sm">YM Inc. POS Implementation Support</h3>
+                </div>
+                <span class="text-xs px-2.5 py-0.5 rounded-full bg-blue-950 text-blue-300 border border-blue-800/50 font-medium">
+                  3 Rollouts Active
+                </span>
+              </div>
+              <div class="mt-4 space-y-2.5">
+                <div class="p-3 rounded-xl bg-gray-900/80 border border-gray-800 flex items-center justify-between">
+                  <div>
+                    <p class="text-xs font-semibold text-gray-200">Terminal Provisioning — Station #104</p>
+                    <span class="text-[11px] font-mono text-yellow-400 font-medium">P1 • Hardware Configuration</span>
+                  </div>
+                  <span class="text-xs px-2 py-0.5 rounded bg-gray-800 text-gray-300">Testing</span>
+                </div>
+                <div class="p-3 rounded-xl bg-gray-900/80 border border-gray-800 flex items-center justify-between">
+                  <div>
+                    <p class="text-xs font-semibold text-gray-200">API Payment Gateway Webhook Latency</p>
+                    <span class="text-[11px] font-mono text-red-400 font-medium">P0 • Blocker</span>
+                  </div>
+                  <span class="text-xs px-2 py-0.5 rounded bg-red-950 text-red-300 border border-red-900/50">Investigating</span>
+                </div>
+                <div class="p-3 rounded-xl bg-gray-900/80 border border-gray-800 flex items-center justify-between">
+                  <div>
+                    <p class="text-xs font-semibold text-gray-200">Store 42 Onboarding & Barcode Config</p>
+                    <span class="text-[11px] font-mono text-emerald-400 font-medium">P2 • Client Rollout</span>
+                  </div>
+                  <span class="text-xs px-2 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-900/50">Ready to Deploy</span>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+              <span>Terminal Scratchpad: <strong class="text-gray-300">Active</strong></span>
+              <button class="text-indigo-400 hover:text-indigo-300 font-semibold">+ New Incident / Note</button>
+            </div>
+          </div>
+
+          <!-- School Assignment Tracker Widget -->
+          <div id="widget-school" class="p-5 rounded-2xl bg-[#0d111a] border border-gray-800/90 flex flex-col justify-between shadow-lg">
+            <div>
+              <div class="flex items-center justify-between pb-3 border-b border-gray-800/80">
+                <div class="flex items-center space-x-2.5">
+                  <span class="text-lg">📚</span>
+                  <h3 class="font-bold text-gray-100 text-sm">Academic Course Tracker</h3>
+                </div>
+                <span class="text-xs px-2.5 py-0.5 rounded-full bg-purple-950 text-purple-300 border border-purple-800/50 font-medium">
+                  Semester Active
+                </span>
+              </div>
+              <div class="mt-4 space-y-3">
+                <div class="p-3 rounded-xl bg-gray-900/80 border border-gray-800 space-y-2">
+                  <div class="flex justify-between items-center text-xs">
+                    <span class="font-bold text-gray-200">CS-401 Distributed Systems</span>
+                    <span class="text-rose-400 font-semibold font-mono">Due Tomorrow</span>
+                  </div>
+                  <div class="flex justify-between items-center text-xs text-gray-400">
+                    <span>Raft Consensus Lab</span>
+                    <span class="font-mono">75%</span>
+                  </div>
+                  <div class="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-indigo-500 h-full rounded-full" style="width: 75%"></div>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-gray-900/80 border border-gray-800 space-y-2">
+                  <div class="flex justify-between items-center text-xs">
+                    <span class="font-bold text-gray-200">PHYS-350 Astrophysics</span>
+                    <span class="text-indigo-400 font-semibold font-mono">Due in 3 days</span>
+                  </div>
+                  <div class="flex justify-between items-center text-xs text-gray-400">
+                    <span>Degeneracy Pressure Problem Set</span>
+                    <span class="font-mono">40%</span>
+                  </div>
+                  <div class="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-indigo-500 h-full rounded-full" style="width: 40%"></div>
+                  </div>
+                </div>
+
+                <div class="p-3 rounded-xl bg-gray-900/80 border border-gray-800 space-y-2">
+                  <div class="flex justify-between items-center text-xs">
+                    <span class="font-bold text-gray-200">MATH-310 Numerical Analysis</span>
+                    <span class="text-gray-400 font-semibold font-mono">Next Monday</span>
+                  </div>
+                  <div class="flex justify-between items-center text-xs text-gray-400">
+                    <span>Runge-Kutta Error Bounds</span>
+                    <span class="font-mono">90%</span>
+                  </div>
+                  <div class="w-full bg-gray-800 h-1.5 rounded-full overflow-hidden">
+                    <div class="bg-indigo-500 h-full rounded-full" style="width: 90%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mt-4 pt-3 border-t border-gray-800 flex items-center justify-between text-xs text-gray-400">
+              <span>Overall Semester Progress: <strong class="text-gray-200">68%</strong></span>
+              <button class="text-indigo-400 hover:text-indigo-300 font-semibold">View Syllabi</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- SECTION: GITHUB, CHESS & WORDLE -->
+        <div id="section-play" class="grid grid-cols-1 md:grid-cols-3 gap-6 widget-section">
+          <!-- GitHub Monitor -->
+          <div class="p-5 rounded-2xl bg-[#0d111a] border border-gray-800/90 shadow-lg">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-800/80">
+              <div class="flex items-center space-x-2">
+                <span>🐙</span>
+                <h4 class="font-bold text-gray-200 text-sm">GitHub Monitor</h4>
+              </div>
+              <span class="text-xs text-emerald-400 font-mono">@DeathSurvivor02</span>
+            </div>
+            <div class="mt-3.5 space-y-2 text-xs">
+              <div class="p-2.5 rounded-xl bg-gray-900/80 border border-gray-800">
+                <p class="font-semibold text-gray-200">personal-dashboard</p>
+                <p class="text-gray-400 text-[11px] mt-0.5">Sprint 0: Rust Dioxus setup</p>
+              </div>
+              <div class="p-2.5 rounded-xl bg-gray-900/80 border border-gray-800">
+                <p class="font-semibold text-gray-200">0 Pending Reviews</p>
+                <p class="text-gray-400 text-[11px] mt-0.5">All PRs merged and up to date</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Chess.com Hub -->
+          <div class="p-5 rounded-2xl bg-[#0d111a] border border-gray-800/90 shadow-lg">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-800/80">
+              <div class="flex items-center space-x-2">
+                <span>♟️</span>
+                <h4 class="font-bold text-gray-200 text-sm">Chess.com Hub</h4>
+              </div>
+              <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-950 text-emerald-300 font-semibold border border-emerald-800/50">Your Turn</span>
+            </div>
+            <div class="mt-3.5 space-y-2 text-xs">
+              <div class="p-3 rounded-xl bg-gray-900/80 border border-gray-800 flex justify-between items-center">
+                <div>
+                  <p class="font-bold text-gray-200">Daily Puzzle #1108</p>
+                  <p class="text-gray-400 text-[11px]">Mate in 2 • Rating 1820</p>
+                </div>
+                <button class="px-2.5 py-1 bg-emerald-600 hover:bg-emerald-500 text-white rounded-lg text-xs font-bold transition">
+                  Solve
+                </button>
+              </div>
+              <p class="text-gray-400 text-[11px] text-center pt-1">1 active match vs grandmaster_bot</p>
+            </div>
+          </div>
+
+          <!-- Wordle Mini-Game -->
+          <div class="p-5 rounded-2xl bg-[#0d111a] border border-gray-800/90 shadow-lg">
+            <div class="flex items-center justify-between pb-3 border-b border-gray-800/80">
+              <div class="flex items-center space-x-2">
+                <span>🟩</span>
+                <h4 class="font-bold text-gray-200 text-sm">Daily Wordle</h4>
+              </div>
+              <span class="text-xs text-indigo-400 font-mono font-bold">Streak: 14 🔥</span>
+            </div>
+            <div class="mt-4 flex justify-center space-x-1.5">
+              <div class="w-9 h-9 flex items-center justify-center font-black text-sm rounded-lg bg-emerald-600 text-white shadow">R</div>
+              <div class="w-9 h-9 flex items-center justify-center font-black text-sm rounded-lg bg-emerald-600 text-white shadow">U</div>
+              <div class="w-9 h-9 flex items-center justify-center font-black text-sm rounded-lg bg-emerald-600 text-white shadow">S</div>
+              <div class="w-9 h-9 flex items-center justify-center font-black text-sm rounded-lg bg-amber-500 text-white shadow">T</div>
+              <div class="w-9 h-9 flex items-center justify-center font-black text-sm rounded-lg bg-gray-800 text-gray-400 border border-gray-700">Y</div>
+            </div>
+            <p class="text-center text-xs text-gray-400 mt-3 font-medium">Guess 2 of 6</p>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    function setTab(tab) {
+      const titles = {
+        'all': 'Dashboard Overview',
+        'work': 'YM Inc. POS Support Workspace',
+        'school': 'Academic Tracker & Deadlines',
+        'projects': 'R&D Simulations & Systems Lab',
+        'play': 'Recreation, Chess & Wordle'
+      };
+      document.getElementById('view-title').innerText = titles[tab] || 'Dashboard Overview';
+
+      document.querySelectorAll('.nav-btn').forEach(btn => {
+        btn.className = 'nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl transition text-gray-400 hover:bg-gray-800/70 hover:text-gray-200';
+      });
+      const activeBtn = document.getElementById('btn-' + tab);
+      if (activeBtn) {
+        activeBtn.className = 'nav-btn w-full flex items-center space-x-3 px-3.5 py-2.5 rounded-xl transition bg-indigo-600 text-white shadow-lg shadow-indigo-600/25';
+      }
+
+      const pSec = document.getElementById('section-projects');
+      const wsSec = document.getElementById('section-work-school');
+      const plSec = document.getElementById('section-play');
+      const wWork = document.getElementById('widget-work');
+      const wSchool = document.getElementById('widget-school');
+
+      if (tab === 'all') {
+        pSec.style.display = 'block';
+        wsSec.style.display = 'grid';
+        plSec.style.display = 'grid';
+        wWork.style.display = 'flex';
+        wSchool.style.display = 'flex';
+      } else if (tab === 'projects') {
+        pSec.style.display = 'block';
+        wsSec.style.display = 'none';
+        plSec.style.display = 'none';
+      } else if (tab === 'work') {
+        pSec.style.display = 'none';
+        wsSec.style.display = 'grid';
+        plSec.style.display = 'none';
+        wWork.style.display = 'flex';
+        wSchool.style.display = 'none';
+      } else if (tab === 'school') {
+        pSec.style.display = 'none';
+        wsSec.style.display = 'grid';
+        plSec.style.display = 'none';
+        wWork.style.display = 'none';
+        wSchool.style.display = 'flex';
+      } else if (tab === 'play') {
+        pSec.style.display = 'none';
+        wsSec.style.display = 'none';
+        plSec.style.display = 'grid';
+      }
+    }
+
+    let secondsLeft = 25 * 60;
+    let timerInterval = null;
+    function toggleTimer() {
+      const btn = document.getElementById('timer-btn');
+      if (timerInterval) {
+        clearInterval(timerInterval);
+        timerInterval = null;
+        btn.innerText = 'Start';
+      } else {
+        btn.innerText = 'Pause';
+        timerInterval = setInterval(() => {
+          if (secondsLeft > 0) {
+            secondsLeft--;
+            const m = Math.floor(secondsLeft / 60);
+            const s = secondsLeft % 60;
+            document.getElementById('timer-display').innerText = 
+              `${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+          } else {
+            clearInterval(timerInterval);
+            timerInterval = null;
+            btn.innerText = 'Done!';
+          }
+        }, 1000);
+      }
+    }
+  </script>
+</body>
+</html>
