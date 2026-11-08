@@ -19,12 +19,23 @@ A modular personal dashboard designed for developers, students, and professional
 - **Pull Requests:** Incoming review requests, authored PRs, CI status indicators, and review badges.
 - **Active Repositories:** Fast view of pinned repositories, star counts, open issues, and recent commits.
 
-### 4. 📚 School Assignment & Course Progress Tracker
+### 4. 🔬 Personal Projects & R&D Hub (Simulations & Side Projects)
+- **Project Concept & Architecture Cards:** Track technical experiments, indie builds, and simulation ideas.
+- **Engineering & Optimization Tracker:**
+  - *Example (Neutron Star Simulation):*
+    - **Optimization Methods:**
+      - *Fixed Time Step:* Decouple physics calculations from frame rate.
+      - *Multi-threading:* Offload heavy numerical computations to worker threads/compute shaders.
+      - *Approximations:* Simplified analytical models where high-fidelity simulation isn't required.
+    - **Status & Phase:** Note-taking / Strategy formulation / In-development.
+- **Tech Stack & Milestone Tags:** Easily categorize by languages/frameworks (WebGPU, Rust, C++, Three.js, Python) and progress stage.
+
+### 5. 📚 School Assignment & Course Progress Tracker
 - Course-based grouping (e.g. CS, Math, Engineering).
 - Visual progress tracking (`% completed`) per course.
 - Priority and deadline alerts (*Due Today*, *This Week*, *Later*).
 
-### 5. 💼 Work Task Management — YM Inc. POS Support
+### 6. 💼 Work Task Management — YM Inc. POS Support
 - Tailored task management for **YM Inc. Point of Sale (POS)** project implementation.
 - Milestone and ticket tracking (Terminal provisioning, API integration checkpoints, client onboarding).
 - Priority-ranked status board (Backlog, In Progress, Blocked, Deployed).
