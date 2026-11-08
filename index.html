@@ -19,11 +19,11 @@
           },
           colors: {
             notion: {
-              canvas: '#0A0D14',    // Main Notion document canvas
-              sidebar: '#0E131F',   // Collapsible Notion left sidebar
-              hover: '#131929',     // Subtle block hover
-              border: '#1E293B',    // Hairline divider
-              card: '#121826',      // Notion database card / callout surface
+              canvas: '#0A0D14',
+              sidebar: '#0E131F',
+              hover: '#131929',
+              border: '#1E293B',
+              card: '#121826',
               subtle: '#222F45',
               text: '#E2E8F0',
               muted: '#7E8B9F',
@@ -50,16 +50,16 @@
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 9999px; }
     .hairline-b { border-bottom: 1px solid #1E293B; }
     .hairline-r { border-right: 1px solid #1E293B; }
-    .notion-block:hover .notion-handle { opacity: 1; }
+    .modal-backdrop { background-color: rgba(10, 13, 20, 0.85); backdrop-filter: blur(4px); }
   </style>
 </head>
 <body class="h-screen w-screen overflow-hidden flex antialiased select-none text-[13px]">
 
-  <!-- ─── NOTION TREE SIDEBAR (Option 4 deep navy/slate) ──────────────────── -->
+  <!-- ─── NOTION TREE SIDEBAR ───────────────────────────────────────────── -->
   <aside class="w-60 h-full bg-notion-sidebar hairline-r flex flex-col justify-between p-3 select-none">
     <div class="space-y-4">
       
-      <!-- Workspace Switcher / Profile Header -->
+      <!-- Workspace Switcher -->
       <div class="flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-notion-hover cursor-pointer transition">
         <div class="flex items-center space-x-2.5">
           <div class="w-5 h-5 rounded bg-indigo-600/30 border border-indigo-500/50 flex items-center justify-center font-bold text-indigo-400 text-[11px]">
@@ -72,60 +72,37 @@
 
       <!-- Quick Actions -->
       <div class="space-y-0.5 text-xs text-notion-muted">
+        <div onclick="openAddModal()" class="flex items-center space-x-2.5 px-2 py-1.5 rounded-md hover:bg-notion-hover hover:text-gray-200 cursor-pointer">
+          <span class="text-indigo-400 font-bold">+</span>
+          <span class="text-indigo-300 font-medium">New Assignment</span>
+        </div>
         <div class="flex items-center space-x-2.5 px-2 py-1.5 rounded-md hover:bg-notion-hover hover:text-gray-200 cursor-pointer">
           <span>🔍</span>
-          <span>Search / Quick Find</span>
+          <span>Quick Find</span>
           <span class="ml-auto text-[10px] font-mono border border-notion-border px-1 rounded">⌘K</span>
-        </div>
-        <div class="flex items-center space-x-2.5 px-2 py-1.5 rounded-md hover:bg-notion-hover hover:text-gray-200 cursor-pointer">
-          <span>⚡</span>
-          <span>Recent Updates</span>
-        </div>
-        <div class="flex items-center space-x-2.5 px-2 py-1.5 rounded-md hover:bg-notion-hover hover:text-gray-200 cursor-pointer">
-          <span>⚙️</span>
-          <span>Settings</span>
         </div>
       </div>
 
       <!-- Notion Page Tree -->
       <div class="space-y-1 pt-2">
         <div class="px-2 text-[11px] font-semibold uppercase tracking-wider text-notion-muted/80 font-mono">
-          Workspace Pages
+          Course Navigation
         </div>
-        <nav class="space-y-0.5 text-xs">
-          <a href="#overview" class="flex items-center space-x-2 px-2 py-1.5 rounded-md bg-notion-card text-white font-medium border border-notion-border">
-            <span>🏠</span>
-            <span class="truncate">Master Dashboard</span>
-          </a>
-          <a href="#pos-board" class="flex items-center space-x-2 px-2 py-1.5 rounded-md text-notion-muted hover:bg-notion-hover hover:text-gray-200">
-            <span>💼</span>
-            <span class="truncate">YM Inc. POS Board</span>
-          </a>
-          <a href="#school-tracker" class="flex items-center space-x-2 px-2 py-1.5 rounded-md text-notion-muted hover:bg-notion-hover hover:text-gray-200">
-            <span>📚</span>
-            <span class="truncate">Course Syllabi & Tasks</span>
-          </a>
-          <a href="#simulation-lab" class="flex items-center space-x-2 px-2 py-1.5 rounded-md text-notion-muted hover:bg-notion-hover hover:text-gray-200">
-            <span>🔬</span>
-            <span class="truncate">Neutron Star R&D</span>
-          </a>
-          <a href="#daily-games" class="flex items-center space-x-2 px-2 py-1.5 rounded-md text-notion-muted hover:bg-notion-hover hover:text-gray-200">
-            <span>♟️</span>
-            <span class="truncate">Chess & Daily Wordle</span>
-          </a>
+        <nav id="course-sidebar-list" class="space-y-0.5 text-xs">
+          <!-- Dynamically populated courses -->
         </nav>
       </div>
 
     </div>
 
-    <!-- Sidebar Footer / Trash & Templates -->
+    <!-- Sidebar Footer -->
     <div class="space-y-1 text-xs text-notion-muted pt-3 hairline-t">
       <div class="flex items-center justify-between px-2 py-1 text-[11px]">
         <span class="flex items-center space-x-1.5">
           <span class="w-2 h-2 rounded-full bg-accent-emerald animate-pulse"></span>
-          <span class="text-gray-300">Sync: Online</span>
+          <span class="text-gray-300">LocalStore Sync</span>
         </span>
-        <span class="font-mono text-accent-cyan">Rust Dioxus</span>
+        <span id="active-count-badge" class="font-mono text-accent-cyan text-[10px]">3 Tasks</span>
       </div>
     </div>
   </aside>
@@ -136,14 +113,17 @@
     <!-- Top Breadcrumb Bar -->
     <div class="h-11 px-8 hairline-b flex items-center justify-between text-xs text-notion-muted bg-notion-canvas/80 backdrop-blur sticky top-0 z-10">
       <div class="flex items-center space-x-2">
-        <span>Personal Command</span>
+        <span>Workspace</span>
         <span class="text-notion-border">/</span>
-        <span class="text-white font-medium">Dashboard Overview</span>
+        <span class="text-white font-medium">📚 Academic Course Tracker & Deadlines</span>
       </div>
       <div class="flex items-center space-x-3">
-        <span class="text-accent-cyan font-mono text-[11px]">Nov 08, 2026 • 15:02</span>
-        <button class="px-2 py-1 rounded hover:bg-notion-hover text-gray-300">Share</button>
-        <button class="px-2 py-1 rounded hover:bg-notion-hover text-gray-300">•••</button>
+        <span id="overall-progress-pill" class="text-accent-cyan font-mono text-[11px] px-2 py-0.5 rounded bg-indigo-950/60 border border-indigo-800/40">
+          Semester: 68% Complete
+        </span>
+        <button onclick="openAddModal()" class="px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs transition">
+          + Add Assignment
+        </button>
       </div>
     </div>
 
@@ -152,274 +132,351 @@
       
       <!-- NOTION PAGE COVER & TITLE BLOCK -->
       <div class="space-y-4">
-        <!-- Big Notion Icon -->
-        <div class="text-4xl select-none">
-          🌌
-        </div>
+        <div class="text-4xl select-none">📚</div>
 
         <div>
-          <h1 class="text-3xl font-bold text-white tracking-tight">Master Life & Engineering Dashboard</h1>
+          <h1 class="text-3xl font-bold text-white tracking-tight">Academic Course Tracker</h1>
           <p class="text-notion-muted text-sm mt-1">
-            Central command for astrophysics R&D simulation, YM Inc. POS support queue, academic deadlines, and daily games.
+            Real-time syllabus tracker, assignment deadlines, completion weighting, and semester progress.
           </p>
         </div>
 
-        <!-- Notion Callout Box (Option 4 colors) -->
-        <div class="p-3.5 rounded-lg bg-notion-card border border-notion-border flex items-start space-x-3">
-          <span class="text-lg">💡</span>
-          <div class="text-xs text-gray-300 leading-relaxed">
-            <strong class="text-white">Active Focus Session:</strong> POS gateway latency investigation underway. Academic physics problem set due in 3 days.
+        <!-- Notion Summary Stats Bar -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3.5 rounded-lg bg-notion-card border border-notion-border text-xs">
+          <div>
+            <span class="text-notion-muted block text-[11px]">Active Courses</span>
+            <span id="stat-courses" class="text-white font-bold text-sm">3 Courses</span>
+          </div>
+          <div>
+            <span class="text-notion-muted block text-[11px]">Pending Work</span>
+            <span id="stat-pending" class="text-accent-amber font-bold text-sm">3 Assignments</span>
+          </div>
+          <div>
+            <span class="text-notion-muted block text-[11px]">Submitted</span>
+            <span id="stat-completed" class="text-accent-emerald font-bold text-sm">6 Completed</span>
+          </div>
+          <div>
+            <span class="text-notion-muted block text-[11px]">Next Urgent Due</span>
+            <span id="stat-urgent" class="text-accent-rose font-bold text-sm">Tomorrow (CS-401)</span>
           </div>
         </div>
       </div>
 
       <!-- ════════════════════════════════════════════════════════════════════
-           NOTION SECTION 1: FEATURED R&D SIMULATION (Notion Toggle / Database)
+           COURSE CARDS & LIVE ASSIGNMENT CHECKLISTS
            ════════════════════════════════════════════════════════════════════ -->
-      <div id="simulation-lab" class="space-y-3">
-        <div class="flex items-center justify-between pb-1 hairline-b">
-          <div class="flex items-center space-x-2">
-            <span class="text-base">🔬</span>
-            <h2 class="font-bold text-white text-base">Neutron Star Simulation — Optimization Strategies</h2>
-          </div>
-          <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800/40">Active Project</span>
-        </div>
-
-        <!-- Notion Metadata Properties Table -->
-        <div class="p-3 rounded-lg bg-notion-card border border-notion-border grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
-          <div>
-            <span class="text-notion-muted block text-[11px]">Domain</span>
-            <span class="text-white font-medium">Relativistic Astrophysics</span>
-          </div>
-          <div>
-            <span class="text-notion-muted block text-[11px]">Tech Stack</span>
-            <span class="text-accent-cyan font-mono">Rust / WGPU / Rayon</span>
-          </div>
-          <div>
-            <span class="text-notion-muted block text-[11px]">Status</span>
-            <span class="text-accent-amber font-medium">Taking Notes on Options</span>
-          </div>
-          <div>
-            <span class="text-notion-muted block text-[11px]">Next Milestone</span>
-            <span class="text-gray-300">Decide Strategies in Dev</span>
-          </div>
-        </div>
-
-        <!-- Notion Database Gallery / Board Cards for Optimization Methods -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
-          
-          <!-- Method 1 -->
-          <div class="p-4 rounded-lg bg-notion-card border border-notion-border hover:border-notion-subtle transition space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="font-semibold text-white">• Fixed Time Step</span>
-              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800/40">Decided</span>
-            </div>
-            <p class="text-notion-muted text-xs leading-relaxed">
-              Decouple physics calculations from frame rate to ensure deterministic stability.
-            </p>
-          </div>
-
-          <!-- Method 2 -->
-          <div class="p-4 rounded-lg bg-notion-card border border-notion-border hover:border-notion-subtle transition space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="font-semibold text-white">• Multi-threading</span>
-              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800/40">Planning</span>
-            </div>
-            <p class="text-notion-muted text-xs leading-relaxed">
-              Offload heavy RK4 integration and gravitational tensor field steps to worker threads.
-            </p>
-          </div>
-
-          <!-- Method 3 -->
-          <div class="p-4 rounded-lg bg-notion-card border border-notion-border hover:border-notion-subtle transition space-y-2">
-            <div class="flex items-center justify-between">
-              <span class="font-semibold text-white">• Approximations</span>
-              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800/40">Evaluating</span>
-            </div>
-            <p class="text-notion-muted text-xs leading-relaxed">
-              Use simplified analytical models where high relativistic detail isn't critical.
-            </p>
-          </div>
-
-        </div>
+      <div id="courses-container" class="space-y-5">
+        <!-- Rendered dynamically -->
       </div>
 
       <!-- ════════════════════════════════════════════════════════════════════
-           NOTION SECTION 2: TWO-COLUMN DATABASE (POS Support + School Courses)
+           NOTION SECTION 2: OTHER WORKSPACE MODULES (Preview Stubs for D, C, A)
            ════════════════════════════════════════════════════════════════════ -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
-        
-        <!-- COLUMN A: YM INC. POS SUPPORT (Notion Table View) -->
-        <div id="pos-board" class="space-y-3">
-          <div class="flex items-center justify-between pb-1 hairline-b">
-            <div class="flex items-center space-x-2">
-              <span class="text-sm">💼</span>
-              <h3 class="font-bold text-white text-sm">YM Inc. POS Implementation</h3>
-            </div>
-            <span class="text-[11px] font-mono text-notion-muted">Board View</span>
-          </div>
-
-          <div class="space-y-2">
-            <!-- Row 1 -->
-            <div class="p-3 rounded-lg bg-notion-card border border-notion-border hover:bg-notion-hover transition space-y-1.5">
-              <div class="flex items-center justify-between">
-                <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-rose-950 text-rose-300 font-semibold">P0 Blocker</span>
-                <span class="text-[10px] font-mono text-rose-400">Investigating</span>
-              </div>
-              <p class="font-semibold text-gray-200">Payment Gateway Webhook Latency</p>
-              <p class="text-[11px] text-notion-muted">Store terminal timeout during bulk settlement sync</p>
-            </div>
-
-            <!-- Row 2 -->
-            <div class="p-3 rounded-lg bg-notion-card border border-notion-border hover:bg-notion-hover transition space-y-1.5">
-              <div class="flex items-center justify-between">
-                <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-950 text-amber-300 font-semibold">P1 Hardware</span>
-                <span class="text-[10px] font-mono text-amber-400">In Testing</span>
-              </div>
-              <p class="font-semibold text-gray-200">Terminal Provisioning — Station #104</p>
-              <p class="text-[11px] text-notion-muted">IP assigned, awaiting barcode scanner handshake</p>
-            </div>
-
-            <!-- Row 3 -->
-            <div class="p-3 rounded-lg bg-notion-card border border-notion-border hover:bg-notion-hover transition space-y-1.5">
-              <div class="flex items-center justify-between">
-                <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 font-semibold">P2 Rollout</span>
-                <span class="text-[10px] font-mono text-emerald-400">Ready</span>
-              </div>
-              <p class="font-semibold text-gray-200">Store 42 Onboarding & Receipt Mapping</p>
-              <p class="text-[11px] text-notion-muted">Thermal printer configs and cashier sign-off</p>
-            </div>
-          </div>
+      <div class="pt-6 hairline-t space-y-4">
+        <div class="flex items-center justify-between text-xs text-notion-muted font-mono uppercase tracking-wider">
+          <span>Other Workspace Sections (Upcoming in Pipeline)</span>
+          <span>Order: B ➔ D ➔ C ➔ A</span>
         </div>
 
-        <!-- COLUMN B: ACADEMIC ASSIGNMENTS (Notion Progress View) -->
-        <div id="school-tracker" class="space-y-3">
-          <div class="flex items-center justify-between pb-1 hairline-b">
-            <div class="flex items-center space-x-2">
-              <span class="text-sm">📚</span>
-              <h3 class="font-bold text-white text-sm">Course Assignments & Deadlines</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+          <!-- D: Recreation -->
+          <div class="p-3.5 rounded-lg bg-notion-card border border-notion-border space-y-2 opacity-80">
+            <div class="flex justify-between items-center">
+              <span class="font-semibold text-white">♟️ Step 2 (D): Recreation</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-indigo-950 text-indigo-300">Next Up</span>
             </div>
-            <span class="text-[11px] font-mono text-notion-muted">Fall 2026</span>
+            <p class="text-notion-muted text-[11px]">Chess.com API live puzzle solver + interactive Wordle keyboard game.</p>
           </div>
 
-          <div class="space-y-2.5">
-            <!-- Course 1 -->
-            <div class="p-3 rounded-lg bg-notion-card border border-notion-border hover:bg-notion-hover transition space-y-1.5">
-              <div class="flex justify-between items-center">
-                <span class="font-semibold text-gray-200">CS-401 Distributed Systems</span>
-                <span class="text-[11px] font-mono font-semibold text-rose-400">Due Tomorrow</span>
-              </div>
-              <div class="flex justify-between text-xs text-notion-muted">
-                <span>Raft Consensus Lab</span>
-                <span class="font-mono text-indigo-400 font-semibold">75%</span>
-              </div>
-              <div class="w-full bg-notion-canvas h-1.5 rounded-full overflow-hidden border border-notion-border">
-                <div class="bg-indigo-500 h-full rounded-full" style="width: 75%"></div>
-              </div>
+          <!-- C: Simulation -->
+          <div class="p-3.5 rounded-lg bg-notion-card border border-notion-border space-y-2 opacity-80">
+            <div class="flex justify-between items-center">
+              <span class="font-semibold text-white">🔬 Step 3 (C): Simulations</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-surface-bg text-gray-400">Queued</span>
             </div>
-
-            <!-- Course 2 -->
-            <div class="p-3 rounded-lg bg-notion-card border border-notion-border hover:bg-notion-hover transition space-y-1.5">
-              <div class="flex justify-between items-center">
-                <span class="font-semibold text-gray-200">PHYS-350 Astrophysics</span>
-                <span class="text-[11px] font-mono font-semibold text-amber-400">Due in 3 days</span>
-              </div>
-              <div class="flex justify-between text-xs text-notion-muted">
-                <span>Degeneracy Pressure Problem Set</span>
-                <span class="font-mono text-indigo-400 font-semibold">40%</span>
-              </div>
-              <div class="w-full bg-notion-canvas h-1.5 rounded-full overflow-hidden border border-notion-border">
-                <div class="bg-indigo-500 h-full rounded-full" style="width: 40%"></div>
-              </div>
-            </div>
-
-            <!-- Course 3 -->
-            <div class="p-3 rounded-lg bg-notion-card border border-notion-border hover:bg-notion-hover transition space-y-1.5">
-              <div class="flex justify-between items-center">
-                <span class="font-semibold text-gray-200">MATH-310 Numerical Analysis</span>
-                <span class="text-[11px] font-mono font-semibold text-notion-muted">Next Monday</span>
-              </div>
-              <div class="flex justify-between text-xs text-notion-muted">
-                <span>Runge-Kutta 4th Order Bounds</span>
-                <span class="font-mono text-indigo-400 font-semibold">90%</span>
-              </div>
-              <div class="w-full bg-notion-canvas h-1.5 rounded-full overflow-hidden border border-notion-border">
-                <div class="bg-indigo-500 h-full rounded-full" style="width: 90%"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-
-      <!-- ════════════════════════════════════════════════════════════════════
-           NOTION SECTION 3: BOTTOM MINI DATABASE (GitHub, Chess & Wordle)
-           ════════════════════════════════════════════════════════════════════ -->
-      <div id="daily-games" class="space-y-3 pt-2">
-        <div class="flex items-center justify-between pb-1 hairline-b">
-          <div class="flex items-center space-x-2">
-            <span class="text-sm">⚡</span>
-            <h3 class="font-bold text-white text-sm">Daily Developer Feed & Games</h3>
-          </div>
-          <span class="text-[11px] font-mono text-notion-muted">Widgets</span>
-        </div>
-
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          
-          <!-- GitHub Card -->
-          <div class="p-3 rounded-lg bg-notion-card border border-notion-border space-y-2">
-            <div class="flex justify-between items-center pb-1 border-b border-notion-border">
-              <span class="font-semibold text-white text-xs">🐙 GitHub Monitor</span>
-              <span class="text-[10px] font-mono text-accent-cyan">@DeathSurvivor02</span>
-            </div>
-            <div class="space-y-1 text-xs">
-              <div class="p-1.5 rounded bg-notion-canvas border border-notion-border flex justify-between">
-                <span class="text-gray-300">personal-dashboard</span>
-                <span class="text-accent-emerald font-mono text-[10px]">main</span>
-              </div>
-              <div class="p-1.5 rounded bg-notion-canvas border border-notion-border flex justify-between">
-                <span class="text-notion-muted">Open Pull Requests</span>
-                <span class="text-white font-mono">0</span>
-              </div>
-            </div>
+            <p class="text-notion-muted text-[11px]">Neutron Star Simulation R&D specs, RK4 equations & benchmark notes.</p>
           </div>
 
-          <!-- Chess.com Card -->
-          <div class="p-3 rounded-lg bg-notion-card border border-notion-border space-y-2">
-            <div class="flex justify-between items-center pb-1 border-b border-notion-border">
-              <span class="font-semibold text-white text-xs">♟️ Chess.com Daily</span>
-              <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-300">Your Turn</span>
+          <!-- A: POS Support -->
+          <div class="p-3.5 rounded-lg bg-notion-card border border-notion-border space-y-2 opacity-80">
+            <div class="flex justify-between items-center">
+              <span class="font-semibold text-white">💼 Step 4 (A): POS Support</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-surface-bg text-gray-400">Queued</span>
             </div>
-            <div class="p-2 rounded bg-notion-canvas border border-notion-border flex justify-between items-center">
-              <div>
-                <p class="font-semibold text-white text-xs">Daily Puzzle</p>
-                <p class="text-[10px] text-notion-muted">Mate in 2</p>
-              </div>
-              <button class="px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs">Solve</button>
-            </div>
+            <p class="text-notion-muted text-[11px]">YM Inc. interactive ticket manager, priority triage & incident log.</p>
           </div>
-
-          <!-- Wordle Card -->
-          <div class="p-3 rounded-lg bg-notion-card border border-notion-border space-y-2">
-            <div class="flex justify-between items-center pb-1 border-b border-notion-border">
-              <span class="font-semibold text-white text-xs">🟩 Daily Wordle</span>
-              <span class="text-[10px] font-mono text-accent-indigo">Streak: 14 🔥</span>
-            </div>
-            <div class="flex justify-center space-x-1 pt-1">
-              <div class="w-6 h-6 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs">R</div>
-              <div class="w-6 h-6 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs">U</div>
-              <div class="w-6 h-6 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs">S</div>
-              <div class="w-6 h-6 rounded bg-amber-500 text-white font-bold flex items-center justify-center text-xs">T</div>
-              <div class="w-6 h-6 rounded bg-notion-canvas text-gray-400 border border-notion-border flex items-center justify-center text-xs font-mono">Y</div>
-            </div>
-            <p class="text-center text-[10px] text-notion-muted font-mono">Guess 2 of 6</p>
-          </div>
-
         </div>
       </div>
 
     </div>
   </main>
 
+  <!-- ─── ADD ASSIGNMENT MODAL ───────────────────────────────────────────── -->
+  <div id="add-modal" class="fixed inset-0 modal-backdrop hidden items-center justify-center p-4 z-50">
+    <div class="w-full max-w-md bg-notion-card border border-notion-border rounded-xl p-5 shadow-2xl space-y-4">
+      <div class="flex justify-between items-center pb-2 hairline-b">
+        <h3 class="font-bold text-white text-sm">Add New Assignment</h3>
+        <button onclick="closeAddModal()" class="text-notion-muted hover:text-white">✕</button>
+      </div>
+
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-notion-muted mb-1">Course</label>
+          <select id="modal-course" class="w-full px-3 py-2 rounded-lg bg-notion-canvas border border-notion-border text-white focus:outline-none focus:border-indigo-500">
+            <option value="CS-401">CS-401 Distributed Systems</option>
+            <option value="PHYS-350">PHYS-350 Astrophysics</option>
+            <option value="MATH-310">MATH-310 Numerical Analysis</option>
+            <option value="NEW">+ Add New Course...</option>
+          </select>
+        </div>
+
+        <div id="new-course-field" class="hidden">
+          <label class="block text-notion-muted mb-1">New Course Name</label>
+          <input type="text" id="modal-new-course" placeholder="e.g. ECE-450 Quantum Computing" 
+                 class="w-full px-3 py-2 rounded-lg bg-notion-canvas border border-notion-border text-white focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <div>
+          <label class="block text-notion-muted mb-1">Assignment Title</label>
+          <input type="text" id="modal-title" placeholder="e.g. Raft Consensus Implementation" 
+                 class="w-full px-3 py-2 rounded-lg bg-notion-canvas border border-notion-border text-white focus:outline-none focus:border-indigo-500">
+        </div>
+
+        <div class="grid grid-cols-2 gap-2">
+          <div>
+            <label class="block text-notion-muted mb-1">Due Date</label>
+            <input type="text" id="modal-due" placeholder="e.g. Due Tomorrow, Nov 12" 
+                   class="w-full px-3 py-2 rounded-lg bg-notion-canvas border border-notion-border text-white focus:outline-none focus:border-indigo-500">
+          </div>
+          <div>
+            <label class="block text-notion-muted mb-1">Urgency</label>
+            <select id="modal-urgency" class="w-full px-3 py-2 rounded-lg bg-notion-canvas border border-notion-border text-white focus:outline-none focus:border-indigo-500">
+              <option value="urgent">Urgent (Due Today/Tomorrow)</option>
+              <option value="upcoming">Upcoming (This Week)</option>
+              <option value="later">Later</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex justify-end space-x-2 pt-2">
+        <button onclick="closeAddModal()" class="px-3 py-1.5 rounded-lg text-notion-muted hover:text-white">Cancel</button>
+        <button onclick="saveAssignment()" class="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold">Save Assignment</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── CLIENT-SIDE STATE ENGINE (LocalStorage syncable) ──────────────── -->
+  <script>
+    // Initial State
+    const defaultData = [
+      {
+        id: "c1",
+        code: "CS-401",
+        name: "Distributed Systems",
+        color: "indigo",
+        assignments: [
+          { id: "a1", title: "Raft Consensus Lab Part A (Leader Election)", due: "Due Tomorrow", urgency: "urgent", done: true },
+          { id: "a2", title: "Raft Consensus Lab Part B (Log Replication)", due: "Due Tomorrow", urgency: "urgent", done: false },
+          { id: "a3", title: "RPC Benchmark & Network Partition Test", due: "Nov 15", urgency: "upcoming", done: false }
+        ]
+      },
+      {
+        id: "c2",
+        code: "PHYS-350",
+        name: "Astrophysics & Relativity",
+        color: "amber",
+        assignments: [
+          { id: "a4", title: "Degeneracy Pressure & White Dwarf Limits", due: "Due in 3 days", urgency: "urgent", done: true },
+          { id: "a5", title: "Neutron Star Tolman-Oppenheimer-Volkoff Equation Problem Set", due: "Due in 3 days", urgency: "urgent", done: false }
+        ]
+      },
+      {
+        id: "c3",
+        code: "MATH-310",
+        name: "Numerical Analysis",
+        color: "emerald",
+        assignments: [
+          { id: "a6", title: "Runge-Kutta 4th Order Truncation Error Bounds", due: "Next Monday", urgency: "upcoming", done: false },
+          { id: "a7", title: "Adaptive Step-Size Integrator Python Proof", due: "Nov 18", urgency: "later", done: true }
+        ]
+      }
+    ];
+
+    let courses = JSON.parse(localStorage.getItem('dashboard_courses') || 'null') || defaultData;
+
+    function saveState() {
+      localStorage.setItem('dashboard_courses', JSON.stringify(courses));
+      render();
+    }
+
+    function toggleDone(courseId, assignmentId) {
+      const course = courses.find(c => c.id === courseId);
+      if (course) {
+        const item = course.assignments.find(a => a.id === assignmentId);
+        if (item) {
+          item.done = !item.done;
+          saveState();
+        }
+      }
+    }
+
+    function deleteAssignment(courseId, assignmentId) {
+      const course = courses.find(c => c.id === courseId);
+      if (course) {
+        course.assignments = course.assignments.filter(a => a.id !== assignmentId);
+        saveState();
+      }
+    }
+
+    function render() {
+      const container = document.getElementById('courses-container');
+      const sidebarNav = document.getElementById('course-sidebar-list');
+      container.innerHTML = '';
+      sidebarNav.innerHTML = '';
+
+      let totalTasks = 0;
+      let completedTasks = 0;
+      let pendingCount = 0;
+
+      courses.forEach(c => {
+        const cTotal = c.assignments.length;
+        const cDone = c.assignments.filter(a => a.done).length;
+        const cPct = cTotal === 0 ? 100 : Math.round((cDone / cTotal) * 100);
+
+        totalTasks += cTotal;
+        completedTasks += cDone;
+        pendingCount += (cTotal - cDone);
+
+        // Sidebar link
+        const sbItem = document.createElement('a');
+        sbItem.href = `#${c.id}`;
+        sbItem.className = 'flex items-center justify-between px-2 py-1.5 rounded-md text-notion-muted hover:bg-notion-hover hover:text-gray-200 transition';
+        sbItem.innerHTML = `
+          <span class="truncate">• ${c.code}</span>
+          <span class="font-mono text-[10px] text-indigo-400 font-semibold">${cPct}%</span>
+        `;
+        sidebarNav.appendChild(sbItem);
+
+        // Course Card
+        const card = document.createElement('div');
+        card.id = c.id;
+        card.className = 'p-4 rounded-xl bg-notion-card border border-notion-border space-y-3';
+
+        let assignmentRows = '';
+        c.assignments.forEach(a => {
+          const badgeClass = a.urgency === 'urgent' 
+            ? 'text-rose-400' 
+            : (a.urgency === 'upcoming' ? 'text-amber-400' : 'text-notion-muted');
+
+          assignmentRows += `
+            <div class="p-2.5 rounded-lg bg-notion-canvas border border-notion-border flex items-center justify-between gap-3 hover:border-notion-subtle transition">
+              <div class="flex items-center space-x-3 overflow-hidden">
+                <input type="checkbox" ${a.done ? 'checked' : ''} 
+                       onchange="toggleDone('${c.id}', '${a.id}')"
+                       class="w-4 h-4 rounded bg-notion-canvas border-notion-border text-indigo-600 focus:ring-0 cursor-pointer">
+                <span class="text-xs ${a.done ? 'line-through text-gray-500' : 'text-gray-200 font-medium'} truncate">
+                  ${a.title}
+                </span>
+              </div>
+              <div class="flex items-center space-x-3 shrink-0">
+                <span class="text-[11px] font-mono ${badgeClass}">${a.due}</span>
+                <button onclick="deleteAssignment('${c.id}', '${a.id}')" class="text-gray-600 hover:text-rose-400 text-xs">✕</button>
+              </div>
+            </div>
+          `;
+        });
+
+        card.innerHTML = `
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 hairline-b">
+            <div class="flex items-center space-x-2">
+              <span class="font-bold text-white text-sm">${c.code} — ${c.name}</span>
+              <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800/40">${cDone}/${cTotal} Completed</span>
+            </div>
+            <div class="flex items-center space-x-2">
+              <span class="font-mono text-xs text-indigo-400 font-bold">${cPct}%</span>
+              <div class="w-24 bg-notion-canvas h-2 rounded-full overflow-hidden border border-notion-border">
+                <div class="bg-indigo-500 h-full rounded-full transition-all duration-500" style="width: ${cPct}%"></div>
+              </div>
+            </div>
+          </div>
+          <div class="space-y-1.5">
+            ${assignmentRows || '<p class="text-gray-500 text-xs italic py-1">No assignments pending! 🎉</p>'}
+          </div>
+        `;
+        container.appendChild(card);
+      });
+
+      // Update global summary
+      const overallPct = totalTasks === 0 ? 100 : Math.round((completedTasks / totalTasks) * 100);
+      document.getElementById('overall-progress-pill').innerText = `Semester: ${overallPct}% Complete`;
+      document.getElementById('stat-courses').innerText = `${courses.length} Courses`;
+      document.getElementById('stat-pending').innerText = `${pendingCount} Assignments`;
+      document.getElementById('stat-completed').innerText = `${completedTasks} Completed`;
+      document.getElementById('active-count-badge').innerText = `${pendingCount} Tasks Pending`;
+    }
+
+    // Modal controls
+    function openAddModal() {
+      document.getElementById('add-modal').classList.remove('hidden');
+      document.getElementById('add-modal').classList.add('flex');
+    }
+    function closeAddModal() {
+      document.getElementById('add-modal').classList.add('hidden');
+      document.getElementById('add-modal').classList.remove('flex');
+    }
+
+    document.getElementById('modal-course').addEventListener('change', function(e) {
+      const field = document.getElementById('new-course-field');
+      if (e.target.value === 'NEW') {
+        field.classList.remove('hidden');
+      } else {
+        field.classList.add('hidden');
+      }
+    });
+
+    function saveAssignment() {
+      const courseSelect = document.getElementById('modal-course').value;
+      const title = document.getElementById('modal-title').value.trim();
+      const due = document.getElementById('modal-due').value.trim() || 'Next Week';
+      const urgency = document.getElementById('modal-urgency').value;
+
+      if (!title) return alert('Please enter an assignment title');
+
+      if (courseSelect === 'NEW') {
+        const newCourseName = document.getElementById('modal-new-course').value.trim();
+        if (!newCourseName) return alert('Please enter a course code/name');
+        const newCode = newCourseName.split(' ')[0] || "COURSE";
+        courses.push({
+          id: 'c_' + Date.now(),
+          code: newCode,
+          name: newCourseName,
+          color: "indigo",
+          assignments: [
+            { id: 'a_' + Date.now(), title, due, urgency, done: false }
+          ]
+        });
+      } else {
+        const target = courses.find(c => c.code === courseSelect);
+        if (target) {
+          target.assignments.push({
+            id: 'a_' + Date.now(),
+            title,
+            due,
+            urgency,
+            done: false
+          });
+        }
+      }
+
+      closeAddModal();
+      document.getElementById('modal-title').value = '';
+      document.getElementById('modal-due').value = '';
+      saveState();
+    }
+
+    // Initial render
+    render();
+  </script>
 </body>
 </html>
