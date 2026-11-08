@@ -3,36 +3,37 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Command Center — Personal Dashboard</title>
+  <title>Personal Command Center — Notion OS</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
+            sans: ['Inter', 'ui-sans-serif', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
             mono: ['"JetBrains Mono"', 'monospace'],
           },
           colors: {
-            // Option 4 deep rich SaaS palette
-            surface: {
-              bg: '#0A0D14',       // deep ink base
-              sidebar: '#0E131F',  // subtle contrast sidebar
-              card: '#121826',     // sleek dark navy-slate card
-              cardHover: '#172033',
-              border: '#1E293B',   // hairline divider
-              subtle: '#283548'
+            notion: {
+              canvas: '#0A0D14',    // Main Notion document canvas
+              sidebar: '#0E131F',   // Collapsible Notion left sidebar
+              hover: '#131929',     // Subtle block hover
+              border: '#1E293B',    // Hairline divider
+              card: '#121826',      // Notion database card / callout surface
+              subtle: '#222F45',
+              text: '#E2E8F0',
+              muted: '#7E8B9F',
             },
             accent: {
-              cyan: '#38BDF8',     // bright clean sky cyan
-              indigo: '#6366F1',   // modern SaaS indigo
-              emerald: '#10B981',  // success green
-              amber: '#F59E0B',    // warning yellow
-              rose: '#F43F5E'      // deadline red
+              cyan: '#38BDF8',
+              indigo: '#6366F1',
+              emerald: '#10B981',
+              amber: '#F59E0B',
+              rose: '#F43F5E'
             }
           }
         }
@@ -46,370 +47,379 @@
       font-family: 'Inter', sans-serif;
     }
     .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
-    .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 9999px; }
     .hairline-b { border-bottom: 1px solid #1E293B; }
     .hairline-r { border-right: 1px solid #1E293B; }
+    .notion-block:hover .notion-handle { opacity: 1; }
   </style>
 </head>
-<body class="h-screen w-screen overflow-hidden flex flex-col antialiased select-none text-[13px]">
+<body class="h-screen w-screen overflow-hidden flex antialiased select-none text-[13px]">
 
-  <!-- TOP HEADER (Minimalist Linear Header with SaaS Accents) -->
-  <header class="h-13 px-5 py-2.5 bg-surface-sidebar hairline-b flex items-center justify-between">
-    <div class="flex items-center space-x-3">
-      <!-- Minimalist Logo -->
-      <div class="w-7 h-7 rounded-lg bg-indigo-600/20 border border-indigo-500/40 flex items-center justify-center font-bold text-indigo-400 text-xs">
-        ⌘
+  <!-- ─── NOTION TREE SIDEBAR (Option 4 deep navy/slate) ──────────────────── -->
+  <aside class="w-60 h-full bg-notion-sidebar hairline-r flex flex-col justify-between p-3 select-none">
+    <div class="space-y-4">
+      
+      <!-- Workspace Switcher / Profile Header -->
+      <div class="flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-notion-hover cursor-pointer transition">
+        <div class="flex items-center space-x-2.5">
+          <div class="w-5 h-5 rounded bg-indigo-600/30 border border-indigo-500/50 flex items-center justify-center font-bold text-indigo-400 text-[11px]">
+            N
+          </div>
+          <span class="font-semibold text-white text-xs truncate">DeathSurvivor02's Space</span>
+        </div>
+        <span class="text-xs text-notion-muted">▾</span>
       </div>
-      <div class="flex items-center space-x-2">
-        <span class="font-semibold text-white tracking-tight">Personal Command</span>
-        <span class="text-surface-subtle font-mono text-xs">/</span>
-        <span class="text-xs text-gray-400 font-mono">dashboard.os</span>
+
+      <!-- Quick Actions -->
+      <div class="space-y-0.5 text-xs text-notion-muted">
+        <div class="flex items-center space-x-2.5 px-2 py-1.5 rounded-md hover:bg-notion-hover hover:text-gray-200 cursor-pointer">
+          <span>🔍</span>
+          <span>Search / Quick Find</span>
+          <span class="ml-auto text-[10px] font-mono border border-notion-border px-1 rounded">⌘K</span>
+        </div>
+        <div class="flex items-center space-x-2.5 px-2 py-1.5 rounded-md hover:bg-notion-hover hover:text-gray-200 cursor-pointer">
+          <span>⚡</span>
+          <span>Recent Updates</span>
+        </div>
+        <div class="flex items-center space-x-2.5 px-2 py-1.5 rounded-md hover:bg-notion-hover hover:text-gray-200 cursor-pointer">
+          <span>⚙️</span>
+          <span>Settings</span>
+        </div>
       </div>
+
+      <!-- Notion Page Tree -->
+      <div class="space-y-1 pt-2">
+        <div class="px-2 text-[11px] font-semibold uppercase tracking-wider text-notion-muted/80 font-mono">
+          Workspace Pages
+        </div>
+        <nav class="space-y-0.5 text-xs">
+          <a href="#overview" class="flex items-center space-x-2 px-2 py-1.5 rounded-md bg-notion-card text-white font-medium border border-notion-border">
+            <span>🏠</span>
+            <span class="truncate">Master Dashboard</span>
+          </a>
+          <a href="#pos-board" class="flex items-center space-x-2 px-2 py-1.5 rounded-md text-notion-muted hover:bg-notion-hover hover:text-gray-200">
+            <span>💼</span>
+            <span class="truncate">YM Inc. POS Board</span>
+          </a>
+          <a href="#school-tracker" class="flex items-center space-x-2 px-2 py-1.5 rounded-md text-notion-muted hover:bg-notion-hover hover:text-gray-200">
+            <span>📚</span>
+            <span class="truncate">Course Syllabi & Tasks</span>
+          </a>
+          <a href="#simulation-lab" class="flex items-center space-x-2 px-2 py-1.5 rounded-md text-notion-muted hover:bg-notion-hover hover:text-gray-200">
+            <span>🔬</span>
+            <span class="truncate">Neutron Star R&D</span>
+          </a>
+          <a href="#daily-games" class="flex items-center space-x-2 px-2 py-1.5 rounded-md text-notion-muted hover:bg-notion-hover hover:text-gray-200">
+            <span>♟️</span>
+            <span class="truncate">Chess & Daily Wordle</span>
+          </a>
+        </nav>
+      </div>
+
     </div>
 
-    <!-- Right Header Utilities -->
-    <div class="flex items-center space-x-4">
-      <!-- Status Chip -->
-      <div class="flex items-center space-x-2 px-2.5 py-1 rounded-md bg-surface-card border border-surface-border text-xs">
-        <span class="w-1.5 h-1.5 rounded-full bg-accent-emerald animate-pulse"></span>
-        <span class="text-gray-300 font-medium">Deep Work</span>
-      </div>
-      <!-- Time & Date -->
-      <div id="live-clock" class="text-xs font-mono text-gray-400">
-        14:57:13 • Nov 08
+    <!-- Sidebar Footer / Trash & Templates -->
+    <div class="space-y-1 text-xs text-notion-muted pt-3 hairline-t">
+      <div class="flex items-center justify-between px-2 py-1 text-[11px]">
+        <span class="flex items-center space-x-1.5">
+          <span class="w-2 h-2 rounded-full bg-accent-emerald animate-pulse"></span>
+          <span class="text-gray-300">Sync: Online</span>
+        </span>
+        <span class="font-mono text-accent-cyan">Rust Dioxus</span>
       </div>
     </div>
-  </header>
+  </aside>
 
-  <!-- SPLIT DUAL-PANE BODY -->
-  <div class="flex-1 flex overflow-hidden">
+  <!-- ─── NOTION MAIN DOCUMENT CANVAS ──────────────────────────────────────── -->
+  <main class="flex-1 h-full overflow-y-auto custom-scrollbar bg-notion-canvas">
     
-    <!-- ══════════════════════════════════════════════════════════════════════
-         LEFT PANE: PRODUCTIVITY, SCHEDULE, POS & SCHOOL (40% width)
-         ══════════════════════════════════════════════════════════════════════ -->
-    <div class="w-[42%] min-w-[340px] max-w-[500px] h-full flex flex-col hairline-r bg-surface-sidebar overflow-y-auto custom-scrollbar p-5 space-y-6">
-      
-      <!-- Pane Title -->
-      <div class="flex items-center justify-between pb-2 hairline-b">
-        <div class="flex items-center space-x-2">
-          <span class="w-2 h-2 rounded bg-indigo-500"></span>
-          <h2 class="font-semibold text-xs tracking-wider uppercase text-gray-400 font-mono">Operations & Academics</h2>
-        </div>
-        <span class="text-[11px] font-mono text-indigo-400">Pane 01</span>
+    <!-- Top Breadcrumb Bar -->
+    <div class="h-11 px-8 hairline-b flex items-center justify-between text-xs text-notion-muted bg-notion-canvas/80 backdrop-blur sticky top-0 z-10">
+      <div class="flex items-center space-x-2">
+        <span>Personal Command</span>
+        <span class="text-notion-border">/</span>
+        <span class="text-white font-medium">Dashboard Overview</span>
       </div>
-
-      <!-- WIDGET 1: YM INC. POS SUPPORT BOARD (Linear Issue Style) -->
-      <div class="space-y-3">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-2">
-            <span class="text-sm">💼</span>
-            <h3 class="font-semibold text-gray-200">YM Inc. POS Implementation</h3>
-          </div>
-          <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-indigo-950/70 text-indigo-300 border border-indigo-800/40">3 Active</span>
-        </div>
-
-        <div class="space-y-2">
-          <!-- Ticket Item 1 -->
-          <div class="p-3 rounded-lg bg-surface-card border border-surface-border hover:border-surface-subtle transition">
-            <div class="flex items-start justify-between gap-2">
-              <div class="space-y-1">
-                <div class="flex items-center space-x-2">
-                  <span class="text-[11px] font-mono px-1.5 py-0.2 rounded bg-rose-950 text-rose-300 font-medium">P0 Blocker</span>
-                  <span class="font-mono text-[11px] text-gray-400">POS-204</span>
-                </div>
-                <p class="text-gray-200 font-medium leading-snug">Payment Gateway Webhook Latency Spike</p>
-                <p class="text-[11px] text-gray-400">Store terminal timeout on auth callback during batch push</p>
-              </div>
-              <span class="text-[11px] font-mono text-accent-rose">Investigating</span>
-            </div>
-          </div>
-
-          <!-- Ticket Item 2 -->
-          <div class="p-3 rounded-lg bg-surface-card border border-surface-border hover:border-surface-subtle transition">
-            <div class="flex items-start justify-between gap-2">
-              <div class="space-y-1">
-                <div class="flex items-center space-x-2">
-                  <span class="text-[11px] font-mono px-1.5 py-0.2 rounded bg-amber-950 text-amber-300 font-medium">P1 Hardware</span>
-                  <span class="font-mono text-[11px] text-gray-400">POS-189</span>
-                </div>
-                <p class="text-gray-200 font-medium leading-snug">Terminal Provisioning — Station #104</p>
-                <p class="text-[11px] text-gray-400">IP assigned, pending barcode scanner test handshake</p>
-              </div>
-              <span class="text-[11px] font-mono text-accent-amber">In Testing</span>
-            </div>
-          </div>
-
-          <!-- Ticket Item 3 -->
-          <div class="p-3 rounded-lg bg-surface-card border border-surface-border hover:border-surface-subtle transition">
-            <div class="flex items-start justify-between gap-2">
-              <div class="space-y-1">
-                <div class="flex items-center space-x-2">
-                  <span class="text-[11px] font-mono px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-300 font-medium">P2 Rollout</span>
-                  <span class="font-mono text-[11px] text-gray-400">POS-177</span>
-                </div>
-                <p class="text-gray-200 font-medium leading-snug">Store 42 Client Onboarding & Receipt Profile</p>
-                <p class="text-[11px] text-gray-400">Cashier training checklist & thermal printer mapping</p>
-              </div>
-              <span class="text-[11px] font-mono text-accent-emerald">Ready</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- POS Quick Scratchpad -->
-        <div class="pt-1">
-          <input type="text" placeholder="+ Quick scratchpad note (e.g. terminal ID or store #)..." 
-                 class="w-full px-3 py-2 text-xs bg-surface-bg border border-surface-border rounded-lg text-gray-300 placeholder-gray-500 focus:outline-none focus:border-indigo-500">
-        </div>
+      <div class="flex items-center space-x-3">
+        <span class="text-accent-cyan font-mono text-[11px]">Nov 08, 2026 • 15:02</span>
+        <button class="px-2 py-1 rounded hover:bg-notion-hover text-gray-300">Share</button>
+        <button class="px-2 py-1 rounded hover:bg-notion-hover text-gray-300">•••</button>
       </div>
-
-      <!-- WIDGET 2: ACADEMIC ASSIGNMENT TRACKER (Notion-style Database Cards) -->
-      <div class="space-y-3 pt-2">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-2">
-            <span class="text-sm">📚</span>
-            <h3 class="font-semibold text-gray-200">School & Course Progress</h3>
-          </div>
-          <span class="text-[11px] font-mono text-gray-400">Fall 2026</span>
-        </div>
-
-        <div class="space-y-2.5">
-          <!-- Course Row 1 -->
-          <div class="p-3 rounded-lg bg-surface-card border border-surface-border space-y-2">
-            <div class="flex justify-between items-center">
-              <span class="font-semibold text-gray-200">CS-401 Distributed Systems</span>
-              <span class="text-[11px] font-mono font-medium text-rose-400">Due Tomorrow</span>
-            </div>
-            <div class="flex justify-between text-xs text-gray-400">
-              <span>Assignment: Raft Consensus Lab</span>
-              <span class="font-mono text-indigo-400">75%</span>
-            </div>
-            <div class="w-full bg-surface-bg h-1.5 rounded-full overflow-hidden border border-surface-border/50">
-              <div class="bg-indigo-500 h-full rounded-full transition-all duration-500" style="width: 75%"></div>
-            </div>
-          </div>
-
-          <!-- Course Row 2 -->
-          <div class="p-3 rounded-lg bg-surface-card border border-surface-border space-y-2">
-            <div class="flex justify-between items-center">
-              <span class="font-semibold text-gray-200">PHYS-350 Astrophysics</span>
-              <span class="text-[11px] font-mono font-medium text-amber-400">Due in 3 days</span>
-            </div>
-            <div class="flex justify-between text-xs text-gray-400">
-              <span>Problem Set: Degeneracy Pressure</span>
-              <span class="font-mono text-indigo-400">40%</span>
-            </div>
-            <div class="w-full bg-surface-bg h-1.5 rounded-full overflow-hidden border border-surface-border/50">
-              <div class="bg-indigo-500 h-full rounded-full transition-all duration-500" style="width: 40%"></div>
-            </div>
-          </div>
-
-          <!-- Course Row 3 -->
-          <div class="p-3 rounded-lg bg-surface-card border border-surface-border space-y-2">
-            <div class="flex justify-between items-center">
-              <span class="font-semibold text-gray-200">MATH-310 Numerical Analysis</span>
-              <span class="text-[11px] font-mono font-medium text-gray-400">Next Monday</span>
-            </div>
-            <div class="flex justify-between text-xs text-gray-400">
-              <span>Runge-Kutta 4th Order Error Bounds</span>
-              <span class="font-mono text-indigo-400">90%</span>
-            </div>
-            <div class="w-full bg-surface-bg h-1.5 rounded-full overflow-hidden border border-surface-border/50">
-              <div class="bg-indigo-500 h-full rounded-full transition-all duration-500" style="width: 90%"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-
     </div>
 
-    <!-- ══════════════════════════════════════════════════════════════════════
-         RIGHT PANE: ENGINEERING, SIMULATION, GITHUB & GAMES (58% width)
-         ══════════════════════════════════════════════════════════════════════ -->
-    <div class="flex-1 h-full bg-surface-bg flex flex-col overflow-y-auto custom-scrollbar p-6 space-y-6">
+    <!-- Centered Notion Page Container (max-w-4xl) -->
+    <div class="max-w-4xl mx-auto px-10 py-8 space-y-8">
       
-      <!-- Pane Title -->
-      <div class="flex items-center justify-between pb-2 hairline-b">
-        <div class="flex items-center space-x-2">
-          <span class="w-2 h-2 rounded bg-accent-cyan"></span>
-          <h2 class="font-semibold text-xs tracking-wider uppercase text-gray-400 font-mono">Engineering Lab & Recreation</h2>
+      <!-- NOTION PAGE COVER & TITLE BLOCK -->
+      <div class="space-y-4">
+        <!-- Big Notion Icon -->
+        <div class="text-4xl select-none">
+          🌌
         </div>
-        <span class="text-[11px] font-mono text-accent-cyan">Pane 02</span>
+
+        <div>
+          <h1 class="text-3xl font-bold text-white tracking-tight">Master Life & Engineering Dashboard</h1>
+          <p class="text-notion-muted text-sm mt-1">
+            Central command for astrophysics R&D simulation, YM Inc. POS support queue, academic deadlines, and daily games.
+          </p>
+        </div>
+
+        <!-- Notion Callout Box (Option 4 colors) -->
+        <div class="p-3.5 rounded-lg bg-notion-card border border-notion-border flex items-start space-x-3">
+          <span class="text-lg">💡</span>
+          <div class="text-xs text-gray-300 leading-relaxed">
+            <strong class="text-white">Active Focus Session:</strong> POS gateway latency investigation underway. Academic physics problem set due in 3 days.
+          </div>
+        </div>
       </div>
 
-      <!-- FEATURED PROJECT: NEUTRON STAR SIMULATION (Notion Spec + SaaS Colors) -->
-      <div class="p-5 rounded-xl bg-surface-card border border-surface-border space-y-4">
-        
-        <!-- Project Header -->
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 hairline-b">
-          <div class="space-y-1">
-            <div class="flex items-center space-x-2.5">
-              <span class="text-base">🔬</span>
-              <h3 class="text-base font-bold text-white tracking-tight">Neutron Star Simulation</h3>
-              <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800/50">Active R&D</span>
+      <!-- ════════════════════════════════════════════════════════════════════
+           NOTION SECTION 1: FEATURED R&D SIMULATION (Notion Toggle / Database)
+           ════════════════════════════════════════════════════════════════════ -->
+      <div id="simulation-lab" class="space-y-3">
+        <div class="flex items-center justify-between pb-1 hairline-b">
+          <div class="flex items-center space-x-2">
+            <span class="text-base">🔬</span>
+            <h2 class="font-bold text-white text-base">Neutron Star Simulation — Optimization Strategies</h2>
+          </div>
+          <span class="text-[11px] font-mono px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800/40">Active Project</span>
+        </div>
+
+        <!-- Notion Metadata Properties Table -->
+        <div class="p-3 rounded-lg bg-notion-card border border-notion-border grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">
+          <div>
+            <span class="text-notion-muted block text-[11px]">Domain</span>
+            <span class="text-white font-medium">Relativistic Astrophysics</span>
+          </div>
+          <div>
+            <span class="text-notion-muted block text-[11px]">Tech Stack</span>
+            <span class="text-accent-cyan font-mono">Rust / WGPU / Rayon</span>
+          </div>
+          <div>
+            <span class="text-notion-muted block text-[11px]">Status</span>
+            <span class="text-accent-amber font-medium">Taking Notes on Options</span>
+          </div>
+          <div>
+            <span class="text-notion-muted block text-[11px]">Next Milestone</span>
+            <span class="text-gray-300">Decide Strategies in Dev</span>
+          </div>
+        </div>
+
+        <!-- Notion Database Gallery / Board Cards for Optimization Methods -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 pt-1">
+          
+          <!-- Method 1 -->
+          <div class="p-4 rounded-lg bg-notion-card border border-notion-border hover:border-notion-subtle transition space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-white">• Fixed Time Step</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800/40">Decided</span>
             </div>
-            <p class="text-gray-400 text-xs">
-              Astrophysics numerical modeling, relativistic Tolman-Oppenheimer-Volkoff (TOV) equation of state.
+            <p class="text-notion-muted text-xs leading-relaxed">
+              Decouple physics calculations from frame rate to ensure deterministic stability.
             </p>
           </div>
 
-          <!-- Stack Badges -->
-          <div class="flex items-center space-x-2">
-            <span class="text-[11px] font-mono px-2 py-1 rounded bg-surface-bg border border-surface-border text-gray-300">Rust</span>
-            <span class="text-[11px] font-mono px-2 py-1 rounded bg-surface-bg border border-surface-border text-gray-300">WGPU</span>
-            <span class="text-[11px] font-mono px-2 py-1 rounded bg-surface-bg border border-surface-border text-accent-cyan">Rayon</span>
+          <!-- Method 2 -->
+          <div class="p-4 rounded-lg bg-notion-card border border-notion-border hover:border-notion-subtle transition space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-white">• Multi-threading</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800/40">Planning</span>
+            </div>
+            <p class="text-notion-muted text-xs leading-relaxed">
+              Offload heavy RK4 integration and gravitational tensor field steps to worker threads.
+            </p>
+          </div>
+
+          <!-- Method 3 -->
+          <div class="p-4 rounded-lg bg-notion-card border border-notion-border hover:border-notion-subtle transition space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-white">• Approximations</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800/40">Evaluating</span>
+            </div>
+            <p class="text-notion-muted text-xs leading-relaxed">
+              Use simplified analytical models where high relativistic detail isn't critical.
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ════════════════════════════════════════════════════════════════════
+           NOTION SECTION 2: TWO-COLUMN DATABASE (POS Support + School Courses)
+           ════════════════════════════════════════════════════════════════════ -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-2">
+        
+        <!-- COLUMN A: YM INC. POS SUPPORT (Notion Table View) -->
+        <div id="pos-board" class="space-y-3">
+          <div class="flex items-center justify-between pb-1 hairline-b">
+            <div class="flex items-center space-x-2">
+              <span class="text-sm">💼</span>
+              <h3 class="font-bold text-white text-sm">YM Inc. POS Implementation</h3>
+            </div>
+            <span class="text-[11px] font-mono text-notion-muted">Board View</span>
+          </div>
+
+          <div class="space-y-2">
+            <!-- Row 1 -->
+            <div class="p-3 rounded-lg bg-notion-card border border-notion-border hover:bg-notion-hover transition space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-rose-950 text-rose-300 font-semibold">P0 Blocker</span>
+                <span class="text-[10px] font-mono text-rose-400">Investigating</span>
+              </div>
+              <p class="font-semibold text-gray-200">Payment Gateway Webhook Latency</p>
+              <p class="text-[11px] text-notion-muted">Store terminal timeout during bulk settlement sync</p>
+            </div>
+
+            <!-- Row 2 -->
+            <div class="p-3 rounded-lg bg-notion-card border border-notion-border hover:bg-notion-hover transition space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-950 text-amber-300 font-semibold">P1 Hardware</span>
+                <span class="text-[10px] font-mono text-amber-400">In Testing</span>
+              </div>
+              <p class="font-semibold text-gray-200">Terminal Provisioning — Station #104</p>
+              <p class="text-[11px] text-notion-muted">IP assigned, awaiting barcode scanner handshake</p>
+            </div>
+
+            <!-- Row 3 -->
+            <div class="p-3 rounded-lg bg-notion-card border border-notion-border hover:bg-notion-hover transition space-y-1.5">
+              <div class="flex items-center justify-between">
+                <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 font-semibold">P2 Rollout</span>
+                <span class="text-[10px] font-mono text-emerald-400">Ready</span>
+              </div>
+              <p class="font-semibold text-gray-200">Store 42 Onboarding & Receipt Mapping</p>
+              <p class="text-[11px] text-notion-muted">Thermal printer configs and cashier sign-off</p>
+            </div>
           </div>
         </div>
 
-        <!-- Optimization Methods Specification (Your Exact Notes) -->
-        <div>
-          <div class="flex items-center justify-between pb-2">
-            <h4 class="text-xs font-semibold text-gray-300 uppercase tracking-wider font-mono">Optimization Strategies</h4>
-            <span class="text-[11px] text-gray-400">Status: Taking notes on options</span>
+        <!-- COLUMN B: ACADEMIC ASSIGNMENTS (Notion Progress View) -->
+        <div id="school-tracker" class="space-y-3">
+          <div class="flex items-center justify-between pb-1 hairline-b">
+            <div class="flex items-center space-x-2">
+              <span class="text-sm">📚</span>
+              <h3 class="font-bold text-white text-sm">Course Assignments & Deadlines</h3>
+            </div>
+            <span class="text-[11px] font-mono text-notion-muted">Fall 2026</span>
           </div>
 
-          <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
-            
-            <!-- Strategy 1 -->
-            <div class="p-3.5 rounded-lg bg-surface-bg border border-surface-border hover:border-surface-subtle transition space-y-2">
+          <div class="space-y-2.5">
+            <!-- Course 1 -->
+            <div class="p-3 rounded-lg bg-notion-card border border-notion-border hover:bg-notion-hover transition space-y-1.5">
               <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-1.5 font-medium text-white">
-                  <span>⏳</span>
-                  <span>Fixed Time Step</span>
-                </div>
-                <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-emerald-950 text-emerald-300 border border-emerald-800/40">Decided</span>
+                <span class="font-semibold text-gray-200">CS-401 Distributed Systems</span>
+                <span class="text-[11px] font-mono font-semibold text-rose-400">Due Tomorrow</span>
               </div>
-              <p class="text-gray-400 text-xs leading-relaxed">
-                Decouple physics calculations from frame rate to ensure deterministic stability.
-              </p>
+              <div class="flex justify-between text-xs text-notion-muted">
+                <span>Raft Consensus Lab</span>
+                <span class="font-mono text-indigo-400 font-semibold">75%</span>
+              </div>
+              <div class="w-full bg-notion-canvas h-1.5 rounded-full overflow-hidden border border-notion-border">
+                <div class="bg-indigo-500 h-full rounded-full" style="width: 75%"></div>
+              </div>
             </div>
 
-            <!-- Strategy 2 -->
-            <div class="p-3.5 rounded-lg bg-surface-bg border border-surface-border hover:border-surface-subtle transition space-y-2">
+            <!-- Course 2 -->
+            <div class="p-3 rounded-lg bg-notion-card border border-notion-border hover:bg-notion-hover transition space-y-1.5">
               <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-1.5 font-medium text-white">
-                  <span>⚡</span>
-                  <span>Multi-threading</span>
-                </div>
-                <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-amber-950 text-amber-300 border border-amber-800/40">Planning</span>
+                <span class="font-semibold text-gray-200">PHYS-350 Astrophysics</span>
+                <span class="text-[11px] font-mono font-semibold text-amber-400">Due in 3 days</span>
               </div>
-              <p class="text-gray-400 text-xs leading-relaxed">
-                Offload heavy RK4 integration and gravitational tensor field steps to worker threads.
-              </p>
+              <div class="flex justify-between text-xs text-notion-muted">
+                <span>Degeneracy Pressure Problem Set</span>
+                <span class="font-mono text-indigo-400 font-semibold">40%</span>
+              </div>
+              <div class="w-full bg-notion-canvas h-1.5 rounded-full overflow-hidden border border-notion-border">
+                <div class="bg-indigo-500 h-full rounded-full" style="width: 40%"></div>
+              </div>
             </div>
 
-            <!-- Strategy 3 -->
-            <div class="p-3.5 rounded-lg bg-surface-bg border border-surface-border hover:border-surface-subtle transition space-y-2">
+            <!-- Course 3 -->
+            <div class="p-3 rounded-lg bg-notion-card border border-notion-border hover:bg-notion-hover transition space-y-1.5">
               <div class="flex justify-between items-center">
-                <div class="flex items-center space-x-1.5 font-medium text-white">
-                  <span>📐</span>
-                  <span>Approximations</span>
-                </div>
-                <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800/40">Evaluating</span>
+                <span class="font-semibold text-gray-200">MATH-310 Numerical Analysis</span>
+                <span class="text-[11px] font-mono font-semibold text-notion-muted">Next Monday</span>
               </div>
-              <p class="text-gray-400 text-xs leading-relaxed">
-                Use simplified analytical models where high detail isn't critical (e.g. outer crust).
-              </p>
+              <div class="flex justify-between text-xs text-notion-muted">
+                <span>Runge-Kutta 4th Order Bounds</span>
+                <span class="font-mono text-indigo-400 font-semibold">90%</span>
+              </div>
+              <div class="w-full bg-notion-canvas h-1.5 rounded-full overflow-hidden border border-notion-border">
+                <div class="bg-indigo-500 h-full rounded-full" style="width: 90%"></div>
+              </div>
             </div>
-
           </div>
         </div>
 
       </div>
 
-      <!-- LOWER ROW: GITHUB, CHESS.COM & WORDLE -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-        
-        <!-- WIDGET: GITHUB PRs & ACTIVE REPOS -->
-        <div class="p-4 rounded-xl bg-surface-card border border-surface-border space-y-3">
-          <div class="flex justify-between items-center pb-2 hairline-b">
-            <div class="flex items-center space-x-2">
-              <span class="text-sm">🐙</span>
-              <h4 class="font-semibold text-white text-xs">GitHub Monitor</h4>
-            </div>
-            <span class="text-[11px] font-mono text-accent-cyan">@DeathSurvivor02</span>
+      <!-- ════════════════════════════════════════════════════════════════════
+           NOTION SECTION 3: BOTTOM MINI DATABASE (GitHub, Chess & Wordle)
+           ════════════════════════════════════════════════════════════════════ -->
+      <div id="daily-games" class="space-y-3 pt-2">
+        <div class="flex items-center justify-between pb-1 hairline-b">
+          <div class="flex items-center space-x-2">
+            <span class="text-sm">⚡</span>
+            <h3 class="font-bold text-white text-sm">Daily Developer Feed & Games</h3>
           </div>
-
-          <div class="space-y-2 text-xs">
-            <div class="p-2 rounded bg-surface-bg border border-surface-border flex justify-between items-center">
-              <span class="font-medium text-gray-200">personal-dashboard</span>
-              <span class="font-mono text-[10px] text-emerald-400">clean</span>
-            </div>
-            <div class="p-2 rounded bg-surface-bg border border-surface-border flex justify-between items-center">
-              <span class="text-gray-400">Open Pull Requests</span>
-              <span class="font-mono text-gray-200">0</span>
-            </div>
-            <div class="p-2 rounded bg-surface-bg border border-surface-border flex justify-between items-center">
-              <span class="text-gray-400">Active Repositories</span>
-              <span class="font-mono text-gray-200">3</span>
-            </div>
-          </div>
+          <span class="text-[11px] font-mono text-notion-muted">Widgets</span>
         </div>
 
-        <!-- WIDGET: CHESS.COM DAILY PUZZLE & GAMES -->
-        <div class="p-4 rounded-xl bg-surface-card border border-surface-border space-y-3">
-          <div class="flex justify-between items-center pb-2 hairline-b">
-            <div class="flex items-center space-x-2">
-              <span class="text-sm">♟️</span>
-              <h4 class="font-semibold text-white text-xs">Chess.com</h4>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          
+          <!-- GitHub Card -->
+          <div class="p-3 rounded-lg bg-notion-card border border-notion-border space-y-2">
+            <div class="flex justify-between items-center pb-1 border-b border-notion-border">
+              <span class="font-semibold text-white text-xs">🐙 GitHub Monitor</span>
+              <span class="text-[10px] font-mono text-accent-cyan">@DeathSurvivor02</span>
             </div>
-            <span class="text-[11px] font-mono px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-300">Your Turn</span>
+            <div class="space-y-1 text-xs">
+              <div class="p-1.5 rounded bg-notion-canvas border border-notion-border flex justify-between">
+                <span class="text-gray-300">personal-dashboard</span>
+                <span class="text-accent-emerald font-mono text-[10px]">main</span>
+              </div>
+              <div class="p-1.5 rounded bg-notion-canvas border border-notion-border flex justify-between">
+                <span class="text-notion-muted">Open Pull Requests</span>
+                <span class="text-white font-mono">0</span>
+              </div>
+            </div>
           </div>
 
-          <div class="space-y-2">
-            <div class="p-2.5 rounded bg-surface-bg border border-surface-border flex justify-between items-center">
+          <!-- Chess.com Card -->
+          <div class="p-3 rounded-lg bg-notion-card border border-notion-border space-y-2">
+            <div class="flex justify-between items-center pb-1 border-b border-notion-border">
+              <span class="font-semibold text-white text-xs">♟️ Chess.com Daily</span>
+              <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-300">Your Turn</span>
+            </div>
+            <div class="p-2 rounded bg-notion-canvas border border-notion-border flex justify-between items-center">
               <div>
                 <p class="font-semibold text-white text-xs">Daily Puzzle</p>
-                <p class="text-[11px] text-gray-400">White to move • Mate in 2</p>
+                <p class="text-[10px] text-notion-muted">Mate in 2</p>
               </div>
-              <button class="px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs transition">
-                Solve
-              </button>
-            </div>
-            <div class="text-[11px] text-gray-400 text-center pt-1 font-mono">
-              1 ongoing game vs. rival_player
+              <button class="px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white font-semibold text-xs">Solve</button>
             </div>
           </div>
-        </div>
 
-        <!-- WIDGET: WORDLE MINI-GAME -->
-        <div class="p-4 rounded-xl bg-surface-card border border-surface-border space-y-3">
-          <div class="flex justify-between items-center pb-2 hairline-b">
-            <div class="flex items-center space-x-2">
-              <span class="text-sm">🟩</span>
-              <h4 class="font-semibold text-white text-xs">Daily Wordle</h4>
+          <!-- Wordle Card -->
+          <div class="p-3 rounded-lg bg-notion-card border border-notion-border space-y-2">
+            <div class="flex justify-between items-center pb-1 border-b border-notion-border">
+              <span class="font-semibold text-white text-xs">🟩 Daily Wordle</span>
+              <span class="text-[10px] font-mono text-accent-indigo">Streak: 14 🔥</span>
             </div>
-            <span class="text-[11px] font-mono text-accent-cyan">Streak: 14 🔥</span>
-          </div>
-
-          <div class="space-y-2">
             <div class="flex justify-center space-x-1 pt-1">
-              <div class="w-7 h-7 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs">R</div>
-              <div class="w-7 h-7 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs">U</div>
-              <div class="w-7 h-7 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs">S</div>
-              <div class="w-7 h-7 rounded bg-amber-500 text-white font-bold flex items-center justify-center text-xs">T</div>
-              <div class="w-7 h-7 rounded bg-surface-bg text-gray-400 border border-surface-border flex items-center justify-center text-xs font-mono">Y</div>
+              <div class="w-6 h-6 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs">R</div>
+              <div class="w-6 h-6 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs">U</div>
+              <div class="w-6 h-6 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs">S</div>
+              <div class="w-6 h-6 rounded bg-amber-500 text-white font-bold flex items-center justify-center text-xs">T</div>
+              <div class="w-6 h-6 rounded bg-notion-canvas text-gray-400 border border-notion-border flex items-center justify-center text-xs font-mono">Y</div>
             </div>
-            <p class="text-center text-[11px] text-gray-400 font-mono pt-1">Guess 2 of 6</p>
+            <p class="text-center text-[10px] text-notion-muted font-mono">Guess 2 of 6</p>
           </div>
-        </div>
 
+        </div>
       </div>
 
     </div>
+  </main>
 
-  </div>
-
-  <script>
-    // Live Clock Update
-    function updateClock() {
-      const now = new Date();
-      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false });
-      const dateStr = now.toLocaleDateString([], { month: 'short', day: '2-digit' });
-      document.getElementById('live-clock').innerText = `${timeStr} • ${dateStr}`;
-    }
-    setInterval(updateClock, 1000);
-    updateClock();
-  </script>
 </body>
 </html>
