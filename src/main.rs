@@ -16,7 +16,7 @@ enum NavTab {
 #[component]
 fn App() -> Element {
     let mut current_tab = use_signal(|| NavTab::All);
-    let mut pomodoro_seconds = use_signal(|| 25 * 60);
+    let pomodoro_seconds = use_signal(|| 25 * 60);
     let mut is_timer_running = use_signal(|| false);
 
     // Format timer
