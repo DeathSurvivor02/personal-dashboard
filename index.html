@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Student Academic Records — Centennial College</title>
+  <title>Official Academic Record & Gradebook — Centennial College</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -16,21 +16,6 @@
           fontFamily: {
             sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
             mono: ['"Roboto Mono"', 'ui-monospace', 'monospace'],
-          },
-          colors: {
-            corporate: {
-              50: '#F8FAFC',
-              100: '#F1F5F9',
-              200: '#E2E8F0',
-              300: '#CBD5E1',
-              400: '#94A3B8',
-              500: '#64748B',
-              600: '#475569',
-              700: '#334155',
-              800: '#1E293B',
-              900: '#0F172A',
-              950: '#090D16',
-            }
           }
         }
       }
@@ -45,134 +30,172 @@
     .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 4px; }
     .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #334155; }
-    .border-subtle { border-color: #1E293B; }
     .row-hover:hover { background-color: #111827; }
+    .grade-a { color: #34D399; background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.3); }
+    .grade-b { color: #60A5FA; background: rgba(59, 130, 246, 0.12); border-color: rgba(59, 130, 246, 0.3); }
+    .grade-c { color: #FBBF24; background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.3); }
   </style>
 </head>
 <body class="h-screen w-screen overflow-hidden flex flex-col antialiased text-[13px] bg-[#0B0F17]">
 
-  <!-- TOP ENTERPRISE APP NAV -->
+  <!-- TOP ENTERPRISE HEADER -->
   <header class="h-14 px-6 bg-[#0E1420] border-b border-[#1E293B] flex items-center justify-between shrink-0">
     <div class="flex items-center space-x-4">
       <div class="flex items-center space-x-2.5">
         <div class="w-7 h-7 rounded bg-blue-600/20 border border-blue-500/40 flex items-center justify-center font-bold text-blue-400 text-xs">
           CC
         </div>
-        <div>
-          <span class="font-semibold text-white tracking-tight text-sm">Academic Performance & Evaluation Management</span>
-        </div>
+        <span class="font-semibold text-white tracking-tight text-sm">Official Academic Transcript & Gradebook Records</span>
       </div>
       <span class="text-[#334155] font-mono text-xs">|</span>
-      <span class="text-xs text-[#94A3B8] font-mono">Fall 2026 Term</span>
+      <span class="text-xs text-[#94A3B8] font-mono">Centennial College • Fall 2026 Term</span>
     </div>
 
-    <!-- Right Metadata -->
+    <!-- Right Header Badges -->
     <div class="flex items-center space-x-6 text-xs">
       <div class="flex items-center space-x-2">
         <span class="text-[#94A3B8]">Student:</span>
         <span class="font-medium text-white">Ean Bynoe</span>
-        <span class="font-mono text-[#94A3B8] text-[11px]">(301390261)</span>
+        <span class="font-mono text-[#94A3B8] text-[11px]">(ID: 301390261)</span>
       </div>
       <div class="flex items-center space-x-1.5 pl-3 border-l border-[#1E293B]">
         <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-        <span class="text-[#94A3B8] text-[11px] font-mono">Luminate Connected</span>
+        <span class="text-[#94A3B8] text-[11px] font-mono">Gradebook Verified</span>
       </div>
     </div>
   </header>
 
-  <!-- WORKSPACE BODY WITH SIDEBAR AND MAIN DATA TABLE -->
+  <!-- BODY WORKSPACE: SIDEBAR + MAIN TRANSCRIPT TABLE -->
   <div class="flex-1 flex overflow-hidden">
     
-    <!-- LEFT STRUCTURED NAVIGATION -->
+    <!-- LEFT SIDEBAR: GPA & COURSE SUMMARY CARDS -->
     <aside class="w-64 bg-[#0E1420] border-r border-[#1E293B] flex flex-col justify-between p-4 shrink-0 select-none">
-      <div class="space-y-5">
+      <div class="space-y-4">
         
-        <!-- Summary Metric Card -->
-        <div class="p-3.5 rounded bg-[#111827] border border-[#1E293B] space-y-2">
+        <!-- Term Overview Box -->
+        <div class="p-3.5 rounded bg-[#111827] border border-[#1E293B] space-y-2.5">
           <div class="flex justify-between items-center text-xs">
-            <span class="text-[#94A3B8] font-medium">Cumulative Progress</span>
-            <span id="metric-cumulative-pct" class="font-mono text-blue-400 font-bold">29.2%</span>
+            <span class="text-[#94A3B8] font-medium">Term Standing</span>
+            <span class="font-mono text-emerald-400 font-bold px-1.5 py-0.5 rounded border border-emerald-800/40 bg-emerald-950/40">GOOD STANDING</span>
           </div>
-          <div class="w-full bg-[#0B0F17] h-1.5 rounded-sm overflow-hidden border border-[#1E293B]">
-            <div id="metric-cumulative-bar" class="bg-blue-600 h-full rounded-sm transition-all duration-300" style="width: 29.2%"></div>
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-[#94A3B8]">Graded Deliverables</span>
+            <span class="font-mono text-white font-bold">34 Items</span>
           </div>
-          <div class="flex justify-between text-[11px] text-[#94A3B8] font-mono pt-0.5">
-            <span>Completed: <strong id="metric-done-weight" class="text-white">175 pts</strong></span>
-            <span>Total: 600 pts</span>
+          <div class="flex justify-between items-center text-xs">
+            <span class="text-[#94A3B8]">Remaining Deliverables</span>
+            <span class="font-mono text-amber-400 font-bold">23 Items</span>
           </div>
         </div>
 
-        <!-- Course Selector Navigation -->
+        <!-- Course Breakdown Nav -->
         <div class="space-y-1.5">
           <div class="flex justify-between items-center px-1 text-[11px] font-semibold text-[#94A3B8] uppercase tracking-wider font-mono">
-            <span>Enrolled Courses (6)</span>
-            <span class="text-[10px]">Weight</span>
+            <span>Course Summary</span>
+            <span class="text-[10px]">Standing</span>
           </div>
-          <nav id="course-selector-list" class="space-y-0.5 text-xs">
-            <!-- Dynamically populated -->
+          <nav class="space-y-1 text-xs">
+            <a href="#sec_comp231" class="flex items-center justify-between p-2 rounded hover:bg-[#111827] transition border border-transparent hover:border-[#1E293B]">
+              <div>
+                <span class="font-mono font-bold text-white block">COMP231</span>
+                <span class="text-[10px] text-[#94A3B8] truncate block w-32">Software Project 1</span>
+              </div>
+              <span class="font-mono font-bold text-xs px-2 py-0.5 rounded grade-a border">A (88.0%)</span>
+            </a>
+
+            <a href="#sec_comp303" class="flex items-center justify-between p-2 rounded hover:bg-[#111827] transition border border-transparent hover:border-[#1E293B]">
+              <div>
+                <span class="font-mono font-bold text-white block">COMP303</span>
+                <span class="text-[10px] text-[#94A3B8] truncate block w-32">Enterprise App Dev</span>
+              </div>
+              <span class="font-mono font-bold text-xs px-2 py-0.5 rounded grade-a border">A+ (96.5%)</span>
+            </a>
+
+            <a href="#sec_comp309" class="flex items-center justify-between p-2 rounded hover:bg-[#111827] transition border border-transparent hover:border-[#1E293B]">
+              <div>
+                <span class="font-mono font-bold text-white block">COMP309</span>
+                <span class="text-[10px] text-[#94A3B8] truncate block w-32">Software QA / Analytics</span>
+              </div>
+              <span class="font-mono font-bold text-xs px-2 py-0.5 rounded grade-a border">A (96.6%)</span>
+            </a>
+
+            <a href="#sec_comp255" class="flex items-center justify-between p-2 rounded hover:bg-[#111827] transition border border-transparent hover:border-[#1E293B]">
+              <div>
+                <span class="font-mono font-bold text-white block">COMP255</span>
+                <span class="text-[10px] text-[#94A3B8] truncate block w-32">Business & Entr.</span>
+              </div>
+              <span class="font-mono font-bold text-xs px-2 py-0.5 rounded grade-b border">B+ (76.4%)</span>
+            </a>
+
+            <a href="#sec_comp307" class="flex items-center justify-between p-2 rounded hover:bg-[#111827] transition border border-transparent hover:border-[#1E293B]">
+              <div>
+                <span class="font-mono font-bold text-white block">COMP307</span>
+                <span class="text-[10px] text-[#94A3B8] truncate block w-32">Software Security</span>
+              </div>
+              <span class="font-mono font-bold text-xs px-2 py-0.5 rounded grade-b border">B (74.3%)</span>
+            </a>
+
+            <a href="#sec_comp306" class="flex items-center justify-between p-2 rounded hover:bg-[#111827] transition border border-transparent hover:border-[#1E293B]">
+              <div>
+                <span class="font-mono font-bold text-white block">COMP306</span>
+                <span class="text-[10px] text-[#94A3B8] truncate block w-32">API & Cloud Comp</span>
+              </div>
+              <span class="font-mono font-bold text-xs px-2 py-0.5 rounded grade-c border">C+ (72.5%)</span>
+            </a>
           </nav>
         </div>
 
       </div>
 
-      <!-- Footer Compliance / Info -->
+      <!-- Footer Info -->
       <div class="text-[11px] text-[#64748B] space-y-1 border-t border-[#1E293B] pt-3 font-mono">
-        <div>Program: Software Engineering Tech</div>
-        <div>School of Engineering Tech & Applied Science</div>
+        <div>Software Engineering Technology</div>
+        <div>School of Engineering & Technology</div>
       </div>
     </aside>
 
-    <!-- RIGHT MAIN DATA VIEWPORT -->
+    <!-- RIGHT MAIN TRANSCRIPT TABLE VIEWPORT -->
     <main class="flex-1 h-full overflow-y-auto custom-scrollbar bg-[#0B0F17] flex flex-col">
       
       <!-- SUB-HEADER TOOLBAR -->
       <div class="px-8 py-3.5 border-b border-[#1E293B] bg-[#0E1420]/80 flex flex-wrap items-center justify-between gap-3 shrink-0">
         <div class="flex items-center space-x-3">
-          <h2 id="current-course-title" class="text-sm font-semibold text-white tracking-tight">
-            All Enrolled Courses & Evaluation Items
+          <h2 class="text-sm font-semibold text-white tracking-tight">
+            Fall 2026 Official Gradebook & Evaluation Details
           </h2>
-          <span id="current-course-badge" class="font-mono text-[11px] px-2 py-0.5 rounded bg-[#1E293B] text-[#94A3B8] border border-[#334155]">
-            57 Total Deliverables
+          <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-[#1E293B] text-[#94A3B8] border border-[#334155]">
+            Verified from Luminate Gradebook
           </span>
         </div>
 
-        <!-- Filter Controls -->
-        <div class="flex items-center space-x-2">
-          <div class="flex items-center rounded border border-[#1E293B] bg-[#111827] text-xs">
-            <button onclick="setTabFilter('all')" id="btn-tab-all" class="px-3 py-1 font-medium bg-[#1E293B] text-white rounded-l transition">All Items</button>
-            <button onclick="setTabFilter('pending')" id="btn-tab-pending" class="px-3 py-1 font-medium text-[#94A3B8] hover:text-white transition">Pending (34)</button>
-            <button onclick="setTabFilter('completed')" id="btn-tab-completed" class="px-3 py-1 font-medium text-[#94A3B8] hover:text-white rounded-r transition">Completed (23)</button>
-          </div>
-
-          <div class="h-4 w-px bg-[#1E293B]"></div>
-
-          <button onclick="selectAllCurrent(true)" class="px-2.5 py-1 rounded bg-[#111827] hover:bg-[#1E293B] border border-[#1E293B] text-xs text-[#94A3B8] hover:text-white transition">
-            Mark View Completed
-          </button>
+        <div class="flex items-center space-x-2 text-xs">
+          <button onclick="filterGrades('all')" id="btn-flt-all" class="px-3 py-1 font-medium bg-[#1E293B] text-white rounded border border-[#334155]">All Evaluated</button>
+          <button onclick="filterGrades('graded')" id="btn-flt-graded" class="px-3 py-1 font-medium text-[#94A3B8] hover:text-white rounded border border-[#1E293B]">Graded (34)</button>
+          <button onclick="filterGrades('pending')" id="btn-flt-pending" class="px-3 py-1 font-medium text-[#94A3B8] hover:text-white rounded border border-[#1E293B]">Pending / Ungraded (23)</button>
         </div>
       </div>
 
-      <!-- DATA CONTENT CONTAINER -->
+      <!-- MAIN CONTAINER -->
       <div class="flex-1 px-8 py-6 space-y-6 max-w-5xl w-full">
 
-        <!-- CRITICAL EXECUTIVE NOTIFICATION -->
+        <!-- ACTION REQUIRED BANNER (TOMORROW'S DEADLINE) -->
         <div class="p-3.5 rounded border border-rose-900/60 bg-rose-950/20 flex items-start justify-between text-xs">
           <div class="space-y-1">
             <div class="flex items-center space-x-2">
-              <span class="w-2 h-2 rounded-full bg-rose-500"></span>
-              <span class="font-semibold text-rose-300 tracking-tight uppercase font-mono text-[11px]">Immediate Action Required</span>
+              <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
+              <span class="font-semibold text-rose-300 tracking-tight uppercase font-mono text-[11px]">Upcoming Deadlines • Sunday, Nov 15 @ 23:59 EST</span>
             </div>
-            <p class="text-[#CBD5E1] leading-relaxed">
-              <strong class="text-white">COMP307 Software Security:</strong> Lab Assignment 6 (4%) and Research Project Submission (20%) are due <span class="text-rose-400 font-semibold font-mono">Sunday, November 15 at 11:59 PM EST</span>.
+            <p class="text-[#CBD5E1]">
+              <strong class="text-white">COMP307 Software Security:</strong> Lab Assignment 6 (4.0%) and Research Project (20.0%) are due tomorrow night.
             </p>
           </div>
-          <span class="font-mono text-[11px] text-rose-400 font-medium px-2 py-0.5 rounded border border-rose-800/40 bg-rose-950/40">
-            Due Tomorrow
+          <span class="font-mono text-[11px] text-rose-300 font-semibold px-2 py-0.5 rounded border border-rose-800/40 bg-rose-950/60">
+            Due in 24 Hours
           </span>
         </div>
 
-        <!-- STRUCTURED DATA TABLES PER COURSE -->
-        <div id="data-tables-container" class="space-y-6">
+        <!-- COURSE TABLES -->
+        <div id="gradebook-tables-container" class="space-y-6">
           <!-- Rendered dynamically -->
         </div>
 
@@ -182,90 +205,114 @@
   </div>
 
   <script>
-    const courseDirectory = [
-      {
-        id: "comp307",
-        code: "COMP307",
-        name: "Software Security",
-        section: "SEC. 002",
-        instructor: "Bindu Goel",
-        crn: "COMP307002.91943.2026F",
-        deliverables: [
-          { id: "d1", name: "Lab 1: Linux Command-Line and Scripting", weight: 4, date: "Week 2", done: true },
-          { id: "d2", name: "Lab 2: Cross-Site Scripting (XSS) Vulnerabilities", weight: 4, date: "Week 3", done: true },
-          { id: "d3", name: "Lab 3: SQL Injection Mitigation", weight: 4, date: "Week 4", done: true },
-          { id: "d4", name: "Lab 4: Insecure Direct Object References (IDOR)", weight: 4, date: "Week 5", done: true },
-          { id: "d5", name: "Lab 5: Command Injection Testing", weight: 4, date: "Week 6", done: false },
-          { id: "d6", name: "Lab 6: Local & Remote File Inclusion (LFI/RFI)", weight: 4, date: "Nov 15, 2026 • 23:59", done: false, urgent: true },
-          { id: "d7", name: "Security Project: Charter & Proposal", weight: 5, date: "Week 8", done: true },
-          { id: "d8", name: "Security Project: Research Submission", weight: 20, date: "Nov 15, 2026 • 23:59", done: false, urgent: true },
-          { id: "d9", name: "Lab 7: Web Authentication Vulnerabilities", weight: 4, date: "Week 8", done: false },
-          { id: "d10", name: "Midterm Test 1 (Practical Assessment)", weight: 15, date: "Week 8", done: true },
-          { id: "d11", name: "Lab 8: Broken Object-Level Authorization (BOLA)", weight: 4, date: "Week 9", done: false },
-          { id: "d12", name: "Lab 9: SSRF & CSRF Vulnerabilities", weight: 4, date: "Week 11", done: false },
-          { id: "d13", name: "Lab 10: Security Auditing and Reporting", weight: 4, date: "Week 13", done: false },
-          { id: "d14", name: "Final Test 2 (Practical Assessment)", weight: 15, date: "Week 14", done: false },
-          { id: "d15", name: "Security Project: Formal Presentation", weight: 5, date: "Week 14", done: false }
-        ]
-      },
+    const fullGradeData = [
       {
         id: "comp303",
         code: "COMP303",
         name: "Enterprise Application Development",
-        section: "SEC. 001",
-        instructor: "Dr. Vinay Vaithilingam",
-        crn: "COMP303002.91940.2026F",
-        deliverables: [
-          { id: "d16", name: "Lab Exercise 1: Framework Fundamentals", weight: 5, date: "Week 4", done: true },
-          { id: "d17", name: "Lab Exercise 2: MVC Architecture", weight: 5, date: "Week 6", done: true },
-          { id: "d18", name: "Midterm Test 1 (Open-Book Practical)", weight: 20, date: "Week 8", done: true },
-          { id: "d19", name: "Lab Exercise 3: Persistent Data Mapping", weight: 5, date: "Week 9", done: true },
-          { id: "d20", name: "Term Project: Part 1 - System Architecture & Design", weight: 10, date: "Week 8", done: true },
-          { id: "d21", name: "Assignment 3: Spring Boot REST Microservice", weight: 10, date: "Nov 17, 2026 • 23:59", done: false, urgent: true },
-          { id: "d22", name: "Lab Exercise 4: Enterprise Services Integration", weight: 5, date: "Week 11", done: false },
-          { id: "d23", name: "Term Project: Part 2 - Core Implementation", weight: 20, date: "Week 12", done: false },
-          { id: "d24", name: "Final Test 2 (Open-Book Practical)", weight: 20, date: "Week 13", done: false },
-          { id: "d25", name: "Term Project: Part 3 - Technical Presentation", weight: 5, date: "Week 14", done: false },
-          { id: "d26", name: "Cloud Infrastructure Usage Compliance", weight: 5, date: "Week 14", done: false }
-        ]
-      },
-      {
-        id: "comp309",
-        code: "COMP309",
-        name: "Data Warehousing & Predictive Analytics",
         section: "SEC. 002",
-        instructor: "Vijayalakshmi Tiruchengode Angamuthu",
-        crn: "COMP309002.91946.2026F",
-        deliverables: [
-          { id: "d27", name: "Lab Assignment 1: Data ETL Pipelines", weight: 5, date: "Week 3", done: true },
-          { id: "d28", name: "Analytics Term Project: Proposal", weight: 5, date: "Week 5", done: true },
-          { id: "d29", name: "Lab Assignment 2: Dimensional Modeling", weight: 5, date: "Week 6", done: true },
-          { id: "d30", name: "Midterm Examination (Practical Coding)", weight: 20, date: "Week 8", done: true },
-          { id: "d31", name: "Analytics Term Project: Progress Milestone", weight: 10, date: "Week 9", done: true },
-          { id: "d32", name: "Analytics Term Project: Model Evaluation (10%)", weight: 10, date: "Nov 18, 2026 • 08:30", done: false, urgent: true },
-          { id: "d33", name: "Lab Assignment 3: Predictive Classifiers", weight: 5, date: "Week 10", done: false },
-          { id: "d34", name: "Lab Assignment 4: Neural Network Tuning", weight: 5, date: "Week 13", done: false },
-          { id: "d35", name: "Analytics Term Project: Final Report & Code Base", weight: 15, date: "Week 13", done: false },
-          { id: "d36", name: "Final Examination / Defense Presentation", weight: 30, date: "Week 14", done: false }
+        instructor: "Dr. Vinay Vaithilingam",
+        standing: "A+ (96.5%)",
+        standingClass: "grade-a",
+        items: [
+          { name: "Test 1 (Practical Exam)", weight: "20.0%", score: "97.5", total: "100", pct: "97.50%", status: "GRADED" },
+          { name: "Assignment 1", weight: "10.0%", score: "100.0", total: "100", pct: "100.00%", status: "GRADED" },
+          { name: "Assignment 2", weight: "10.0%", score: "100.0", total: "100", pct: "100.00%", status: "GRADED" },
+          { name: "Lab 1", weight: "5.0%", score: "20.0", total: "20", pct: "100.00%", status: "GRADED" },
+          { name: "Lab 2", weight: "5.0%", score: "20.0", total: "20", pct: "100.00%", status: "GRADED" },
+          { name: "Lab 3", weight: "5.0%", score: "20.0", total: "20", pct: "100.00%", status: "GRADED" },
+          { name: "Lab 4", weight: "5.0%", score: "20.0", total: "20", pct: "100.00%", status: "GRADED" },
+          { name: "Test 2 (Practical Exam)", weight: "20.0%", score: "82.0", total: "100", pct: "82.00%", status: "GRADED" },
+          { name: "Attendance & Participation", weight: "5.0%", score: "90.0%", total: "—", pct: "90.00%", status: "GRADED" },
+          { name: "Assignment 3: Spring Boot REST App", weight: "10.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Nov 17 • 23:59" },
+          { name: "Term Project: Final Deliverables & Code", weight: "20.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Week 13" },
+          { name: "Final Test 3 (Practical Exam)", weight: "20.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Week 14" }
         ]
       },
       {
         id: "comp231",
         code: "COMP231",
         name: "Software Development Project 1",
-        section: "SEC. 002",
+        section: "SEC. 003",
         instructor: "Jin Li",
-        crn: "COMP231002.91942.2026F",
-        deliverables: [
-          { id: "d37", name: "Project Charter & Statement of Work", weight: 10, date: "Week 3", done: true },
-          { id: "d38", name: "Software Requirements Specification (SRS)", weight: 15, date: "Week 5", done: true },
-          { id: "d39", name: "System Design Document (SDD) Architecture", weight: 15, date: "Week 8", done: true },
-          { id: "d40", name: "Progress Monitoring Milestone: Iteration 1", weight: 15, date: "Nov 22, 2026 • 23:59", done: false },
-          { id: "d41", name: "Sprint Planning & Backlog: Iteration 2", weight: 5, date: "Nov 29, 2026 • 23:59", done: false },
-          { id: "d42", name: "Progress Monitoring Milestone: Iteration 2", weight: 15, date: "Dec 06, 2026 • 23:59", done: false },
-          { id: "d43", name: "Production Candidate Release 1.0", weight: 15, date: "Dec 13, 2026 • 23:59", done: false },
-          { id: "d44", name: "Final Project Presentation & Stakeholder Demo", weight: 10, date: "Week 14", done: false },
-          { id: "d45", name: "TAC Technical Report & Comprehensive Peer Review", weight: 5, date: "Dec 18, 2026 • 23:59", done: false }
+        standing: "A (88.0%)",
+        standingClass: "grade-a",
+        items: [
+          { name: "Evaluation 1: Project Proposal", weight: "10.0%", score: "90.0", total: "100", pct: "90.00%", status: "GRADED" },
+          { name: "Evaluation 2: Vision, Scope & High Level Req.", weight: "15.0%", score: "80.0", total: "100", pct: "80.00%", status: "GRADED" },
+          { name: "Evaluation 3: Detailed Requirements & Project Plan", weight: "15.0%", score: "100.0", total: "100", pct: "100.00%", status: "GRADED" },
+          { name: "Evaluation 4: Mid-Term Progress", weight: "15.0%", score: "80.0", total: "100", pct: "80.00%", status: "GRADED" },
+          { name: "Evaluation 5: Architecture, System & DB Design", weight: "15.0%", score: "100.0", total: "100", pct: "100.00%", status: "GRADED" },
+          { name: "Evaluation 6: Working Prototype / Code (Iteration 1)", weight: "15.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Nov 22 • 23:59" },
+          { name: "Evaluation 7: Final Project Deliverables & Release 1.0", weight: "15.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Dec 13 • 23:59" },
+          { name: "Evaluation 8: Presentation & Stakeholder Demo", weight: "10.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Week 14" },
+          { name: "TAC Technical Report & Peer Evaluation", weight: "5.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Dec 18 • 23:59" }
+        ]
+      },
+      {
+        id: "comp309",
+        code: "COMP309",
+        name: "Software Testing & Quality Assurance / Analytics",
+        section: "SEC. 003",
+        instructor: "Vijayalakshmi Tiruchengode Angamuthu",
+        standing: "A (96.6%)",
+        standingClass: "grade-a",
+        items: [
+          { name: "Lab 1", weight: "5.0%", score: "10.0", total: "10", pct: "100.00%", status: "GRADED" },
+          { name: "Lab 2", weight: "5.0%", score: "10.0", total: "10", pct: "100.00%", status: "GRADED" },
+          { name: "Lab 3", weight: "5.0%", score: "10.0", total: "10", pct: "100.00%", status: "GRADED" },
+          { name: "Lab 4", weight: "5.0%", score: "9.0", total: "10", pct: "90.00%", status: "GRADED" },
+          { name: "Lab 5", weight: "5.0%", score: "10.0", total: "10", pct: "100.00%", status: "GRADED" },
+          { name: "Assignment 1", weight: "5.0%", score: "10.0", total: "10", pct: "100.00%", status: "GRADED" },
+          { name: "Assignment 2", weight: "5.0%", score: "10.0", total: "10", pct: "100.00%", status: "GRADED" },
+          { name: "Midterm Examination", weight: "20.0%", score: "44.5", total: "50", pct: "89.00%", status: "GRADED" },
+          { name: "COMP 309 Analytics Project (10%)", weight: "10.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Nov 18 • 08:30" },
+          { name: "Assignment 3", weight: "5.0%", score: "—", total: "10", pct: "—", status: "PENDING", due: "Week 10" },
+          { name: "Assignment 4", weight: "5.0%", score: "—", total: "10", pct: "—", status: "PENDING", due: "Week 13" },
+          { name: "Final Examination", weight: "30.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Week 14" }
+        ]
+      },
+      {
+        id: "comp307",
+        code: "COMP307",
+        name: "Software Security",
+        section: "SEC. 002",
+        instructor: "Bindu Goel",
+        standing: "B (74.3%)",
+        standingClass: "grade-b",
+        items: [
+          { name: "Lab Assignment 1", weight: "4.0%", score: "10.0", total: "10", pct: "100.00%", status: "GRADED" },
+          { name: "Lab Assignment 2", weight: "4.0%", score: "8.0", total: "10", pct: "80.00%", status: "GRADED" },
+          { name: "Lab Assignment 3", weight: "4.0%", score: "8.75", total: "10", pct: "87.50%", status: "GRADED" },
+          { name: "Lab Assignment 4", weight: "4.0%", score: "9.0", total: "10", pct: "90.00%", status: "GRADED" },
+          { name: "Test #1 (Practical Exam)", weight: "15.0%", score: "34.0", total: "50", pct: "68.00%", status: "GRADED" },
+          { name: "Discussions #1", weight: "2.5%", score: "5.0", total: "10", pct: "50.00%", status: "GRADED" },
+          { name: "Discussions #2", weight: "2.5%", score: "8.0", total: "10", pct: "80.00%", status: "GRADED" },
+          { name: "Discussions #3", weight: "2.5%", score: "8.0", total: "10", pct: "80.00%", status: "GRADED" },
+          { name: "Blockchain Workshop", weight: "5.0%", score: "0.0", total: "10", pct: "0.00%", status: "GRADED" },
+          { name: "Attendance & Professionalism", weight: "5.0%", score: "53.12%", total: "—", pct: "53.12%", status: "GRADED" },
+          { name: "Lab Assignment 6 (LFI/RFI)", weight: "4.0%", score: "—", total: "10", pct: "—", status: "PENDING", due: "Nov 15 • 23:59", urgent: true },
+          { name: "Research Project Submission", weight: "20.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Nov 15 • 23:59", urgent: true },
+          { name: "Lab Assignment 7", weight: "4.0%", score: "—", total: "10", pct: "—", status: "PENDING", due: "Week 8" },
+          { name: "Final Test #2 (Practical Exam)", weight: "15.0%", score: "—", total: "50", pct: "—", status: "PENDING", due: "Week 14" }
+        ]
+      },
+      {
+        id: "comp255",
+        code: "COMP255",
+        name: "Business & Entrepreneurship - SET",
+        section: "SEC. 003",
+        instructor: "Jean-Luc David",
+        standing: "B+ (76.4%)",
+        standingClass: "grade-b",
+        items: [
+          { name: "Quiz #1", weight: "5.0%", score: "8.0", total: "11", pct: "72.73%", status: "GRADED" },
+          { name: "Mid-Term Exam", weight: "15.0%", score: "80.0", total: "100", pct: "80.00%", status: "GRADED" },
+          { name: "Case Study #1: Business Model Canvas", weight: "10.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Week 7" },
+          { name: "Case Study #2: Market Segmentation", weight: "10.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Week 11" },
+          { name: "Business Plan Deliverable", weight: "15.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Week 13" },
+          { name: "Final Presentation / Pitch", weight: "10.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Week 14" },
+          { name: "Final Examination", weight: "20.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Dec 18 • 23:59" }
         ]
       },
       {
@@ -274,145 +321,94 @@
         name: "API Engineering & Cloud Computing",
         section: "SEC. 002",
         instructor: "Department Faculty",
-        crn: "COMP306002.91939.2026F",
-        deliverables: [
-          { id: "d46", name: "Lab 1: Cloud Storage Architecture (AWS S3)", weight: 10, date: "Week 3", done: true },
-          { id: "d47", name: "Lab 2: NoSQL Distributed Schema (DynamoDB)", weight: 10, date: "Week 5", done: true },
-          { id: "d48", name: "Lab 3: Full-Stack Cloud Application", weight: 15, date: "Week 7", done: true },
-          { id: "d49", name: "Midterm Assessment (Open-Book Practical)", weight: 20, date: "Week 9", done: true },
-          { id: "d50", name: "Cloud Engineering Group Project: Proposal", weight: 5, date: "Week 8", done: true },
-          { id: "d51", name: "Cloud Engineering Project: Implementation Deliverable", weight: 15, date: "Nov 27, 2026 • 23:59", done: false },
-          { id: "d52", name: "Cloud Engineering Project: Technical Report", weight: 5, date: "Dec 04, 2026 • 23:59", done: false },
-          { id: "d53", name: "Lab 4: Event-Driven Orchestration (AWS Step Functions)", weight: 15, date: "Week 14", done: false },
-          { id: "d54", name: "Cloud Resource Quota Responsibility Review", weight: 5, date: "Week 14", done: false }
-        ]
-      },
-      {
-        id: "comp255",
-        code: "COMP255",
-        name: "Business & Entrepreneurship for SET",
-        section: "SEC. 003",
-        instructor: "Jean-Luc David",
-        crn: "COMP255003.91896.2026F",
-        deliverables: [
-          { id: "d55", name: "Professional Forum Discussion 1", weight: 5, date: "Week 4", done: true },
-          { id: "d56", name: "Group Milestone 1: Business Model Canvas", weight: 10, date: "Week 4", done: true },
-          { id: "d57", name: "Group Milestone 2: Market Segmentation Analysis", weight: 10, date: "Week 7", done: true },
-          { id: "d58", name: "Midterm Examination", weight: 15, date: "Week 7", done: true },
-          { id: "d59", name: "Professional Forum Discussion 2", weight: 5, date: "Week 9", done: false },
-          { id: "d60", name: "Group Milestone 3: Operational & Legal Strategy", weight: 10, date: "Week 11", done: false },
-          { id: "d61", name: "Professional Forum Discussion 3", weight: 5, date: "Week 12", done: false },
-          { id: "d62", name: "Group Milestone 4: Financial Plan & Valuation", weight: 10, date: "Week 13", done: false },
-          { id: "d63", name: "Group Milestone 5: Investor Pitch Presentation", weight: 10, date: "Week 14", done: false },
-          { id: "d64", name: "Comprehensive Final Assessment", weight: 20, date: "Dec 18, 2026 • 23:59", done: false }
+        standing: "C+ (72.5%)",
+        standingClass: "grade-c",
+        items: [
+          { name: "Lab 1: AWS S3 Implementation", weight: "10.0%", score: "17.5", total: "20", pct: "87.50%", status: "GRADED" },
+          { name: "Lab 2: AWS DynamoDB Schema", weight: "10.0%", score: "19.0", total: "25", pct: "76.00%", status: "GRADED" },
+          { name: "Attendance & Lab Presence", weight: "5.0%", score: "63.63%", total: "—", pct: "63.63%", status: "GRADED" },
+          { name: "Midterm Exam", weight: "20.0%", score: "27.0", total: "50", pct: "54.00%", status: "GRADED" },
+          { name: "Lab 3: Full-Stack Cloud App", weight: "15.0%", score: "—", total: "100", pct: "—", status: "SUBMITTED", due: "Under Review" },
+          { name: "Cloud Engineering Project: Implementation", weight: "15.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Nov 27 • 23:59" },
+          { name: "Cloud Engineering Project: Report & Presentation", weight: "5.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Dec 04 • 23:59" },
+          { name: "Lab 4: AWS Step Functions Orchestration", weight: "15.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Week 14" }
         ]
       }
     ];
 
-    let currentTabFilter = 'all';
-    let records = JSON.parse(localStorage.getItem('centennial_records_v4') || 'null') || courseDirectory;
+    let currentFilter = 'all';
 
-    function persist() {
-      localStorage.setItem('centennial_records_v4', JSON.stringify(records));
-      renderView();
-    }
-
-    function toggleDeliverable(cIdx, dIdx) {
-      records[cIdx].deliverables[dIdx].done = !records[cIdx].deliverables[dIdx].done;
-      persist();
-    }
-
-    function setTabFilter(tab) {
-      currentTabFilter = tab;
-      ['all', 'pending', 'completed'].forEach(t => {
-        const btn = document.getElementById('btn-tab-' + t);
-        if (t === tab) {
-          btn.className = 'px-3 py-1 font-medium bg-[#1E293B] text-white transition';
+    function filterGrades(type) {
+      currentFilter = type;
+      ['all', 'graded', 'pending'].forEach(t => {
+        const btn = document.getElementById('btn-flt-' + t);
+        if (t === type) {
+          btn.className = 'px-3 py-1 font-medium bg-[#1E293B] text-white rounded border border-[#334155]';
         } else {
-          btn.className = 'px-3 py-1 font-medium text-[#94A3B8] hover:text-white transition';
+          btn.className = 'px-3 py-1 font-medium text-[#94A3B8] hover:text-white rounded border border-[#1E293B]';
         }
       });
-      renderView();
+      renderTables();
     }
 
-    function renderView() {
-      const container = document.getElementById('data-tables-container');
-      const sideNav = document.getElementById('course-selector-list');
+    function renderTables() {
+      const container = document.getElementById('gradebook-tables-container');
       container.innerHTML = '';
-      sideNav.innerHTML = '';
 
-      let cumulativeTotalWeight = 0;
-      let cumulativeDoneWeight = 0;
-      let pendingTotal = 0;
-      let completedTotal = 0;
-
-      records.forEach((course, cIdx) => {
-        let courseTotalWeight = 0;
-        let courseDoneWeight = 0;
-
-        course.deliverables.forEach(d => {
-          courseTotalWeight += d.weight;
-          if (d.done) {
-            courseDoneWeight += d.weight;
-            completedTotal++;
-          } else {
-            pendingTotal++;
-          }
-        });
-
-        cumulativeTotalWeight += courseTotalWeight;
-        cumulativeDoneWeight += courseDoneWeight;
-
-        const coursePct = Math.round((courseDoneWeight / courseTotalWeight) * 100);
-
-        // Sidebar Row
-        const navRow = document.createElement('a');
-        navRow.href = `#tbl_${course.id}`;
-        navRow.className = 'flex items-center justify-between px-2.5 py-1.5 rounded text-[#94A3B8] hover:bg-[#111827] hover:text-white transition font-mono text-[11px]';
-        navRow.innerHTML = `
-          <span class="truncate">${course.code}</span>
-          <span class="text-white font-medium">${courseDoneWeight}%</span>
-        `;
-        sideNav.appendChild(navRow);
-
-        // Filter deliverables
-        const visibleItems = course.deliverables.filter(d => {
-          if (currentTabFilter === 'pending') return !d.done;
-          if (currentTabFilter === 'completed') return d.done;
+      fullGradeData.forEach(course => {
+        const visibleItems = course.items.filter(item => {
+          if (currentFilter === 'graded') return item.status === 'GRADED';
+          if (currentFilter === 'pending') return item.status !== 'GRADED';
           return true;
         });
 
-        if (visibleItems.length === 0 && currentTabFilter !== 'all') return;
+        if (visibleItems.length === 0) return;
 
-        // Structured Table Component
         const tableCard = document.createElement('div');
-        tableCard.id = `tbl_${course.id}`;
+        tableCard.id = `sec_${course.id}`;
         tableCard.className = 'rounded border border-[#1E293B] bg-[#0E1420] overflow-hidden';
 
         let rowsHtml = '';
-        visibleItems.forEach((d) => {
-          const originalIdx = course.deliverables.findIndex(x => x.id === d.id);
-          const statusBadge = d.done
-            ? '<span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-950/60 text-emerald-300 border border-emerald-800/40">COMPLETED</span>'
-            : (d.urgent
-              ? '<span class="px-2 py-0.5 rounded text-[10px] font-mono bg-rose-950/80 text-rose-300 border border-rose-800/60 font-semibold animate-pulse">ACTION REQUIRED</span>'
-              : '<span class="px-2 py-0.5 rounded text-[10px] font-mono bg-[#1E293B] text-[#94A3B8]">PENDING</span>');
+        visibleItems.forEach(item => {
+          let scoreDisplay = item.score;
+          if (item.total !== '—' && item.score !== '—') {
+            scoreDisplay = `<span class="font-bold text-white">${item.score}</span> / <span class="text-[#94A3B8]">${item.total}</span>`;
+          }
+
+          let pctBadge = `<span class="font-mono text-[11px] text-[#94A3B8]">${item.pct}</span>`;
+          if (item.status === 'GRADED') {
+            const num = parseFloat(item.pct);
+            const colorClass = num >= 85 ? 'text-emerald-400 font-semibold' : (num >= 70 ? 'text-blue-400 font-semibold' : 'text-amber-400 font-semibold');
+            pctBadge = `<span class="font-mono text-[11px] ${colorClass}">${item.pct}</span>`;
+          }
+
+          let statusBadge = '';
+          if (item.status === 'GRADED') {
+            statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-950/60 text-emerald-300 border border-emerald-800/40">GRADED</span>';
+          } else if (item.status === 'SUBMITTED') {
+            statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono bg-blue-950/60 text-blue-300 border border-blue-800/40">SUBMITTED</span>';
+          } else if (item.urgent) {
+            statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono bg-rose-950/80 text-rose-300 border border-rose-800/60 font-semibold animate-pulse">ACTION REQ.</span>';
+          } else {
+            statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono bg-[#1E293B] text-[#94A3B8]">PENDING</span>';
+          }
 
           rowsHtml += `
             <tr class="border-t border-[#1E293B] row-hover transition-colors">
-              <td class="py-2.5 px-4 w-10 text-center">
-                <input type="checkbox" ${d.done ? 'checked' : ''} 
-                       onchange="toggleDeliverable(${cIdx}, ${originalIdx})"
-                       class="w-3.5 h-3.5 rounded bg-[#0B0F17] border-[#334155] text-blue-600 focus:ring-0 cursor-pointer">
-              </td>
-              <td class="py-2.5 px-4 font-medium ${d.done ? 'line-through text-[#64748B]' : 'text-white'}">
-                ${d.name}
+              <td class="py-2.5 px-4 font-medium ${item.status === 'GRADED' ? 'text-white' : 'text-[#CBD5E1]'}">
+                ${item.name}
               </td>
               <td class="py-2.5 px-4 font-mono text-[11px] text-[#94A3B8] whitespace-nowrap">
-                ${d.date}
+                ${item.due || 'Recorded'}
               </td>
-              <td class="py-2.5 px-4 font-mono text-[11px] font-semibold text-right ${d.done ? 'text-emerald-400' : 'text-blue-400'}">
-                ${d.weight}.0%
+              <td class="py-2.5 px-4 font-mono text-[11px] text-right text-[#94A3B8]">
+                ${item.weight}
+              </td>
+              <td class="py-2.5 px-4 font-mono text-[11px] text-right whitespace-nowrap">
+                ${scoreDisplay}
+              </td>
+              <td class="py-2.5 px-4 font-mono text-[11px] text-right whitespace-nowrap">
+                ${pctBadge}
               </td>
               <td class="py-2.5 px-4 text-right whitespace-nowrap">
                 ${statusBadge}
@@ -426,23 +422,22 @@
             <div class="flex items-center space-x-3">
               <span class="font-mono text-xs font-bold text-white tracking-wide">${course.code}</span>
               <span class="text-xs text-[#CBD5E1]">${course.name}</span>
-              <span class="text-[11px] text-[#64748B] font-mono">(${course.instructor})</span>
+              <span class="text-[11px] text-[#64748B] font-mono">(${course.section} • ${course.instructor})</span>
             </div>
-            <div class="flex items-center space-x-3 font-mono text-xs">
-              <span class="text-[#94A3B8]">Accumulated: <strong class="text-white">${courseDoneWeight}%</strong> / 100%</span>
-              <div class="w-16 bg-[#0B0F17] h-1 rounded-sm overflow-hidden border border-[#1E293B]">
-                <div class="bg-blue-600 h-full rounded-sm" style="width: ${coursePct}%"></div>
-              </div>
+            <div class="flex items-center space-x-2 font-mono text-xs">
+              <span class="text-[#94A3B8]">Course Standing:</span>
+              <span class="font-bold px-2 py-0.5 rounded border ${course.standingClass}">${course.standing}</span>
             </div>
           </div>
           <table class="w-full text-left text-xs">
             <thead>
               <tr class="text-[10px] font-mono uppercase tracking-wider text-[#64748B] bg-[#0E1420]">
-                <th class="py-2 px-4 w-10 text-center">Status</th>
-                <th class="py-2 px-4">Deliverable / Evaluation Item</th>
-                <th class="py-2 px-4">Timeline / Due Date</th>
+                <th class="py-2 px-4">Evaluation / Assessment</th>
+                <th class="py-2 px-4">Timeline / Date</th>
                 <th class="py-2 px-4 text-right">Weight</th>
-                <th class="py-2 px-4 text-right">State</th>
+                <th class="py-2 px-4 text-right">Earned Points</th>
+                <th class="py-2 px-4 text-right">Percentage</th>
+                <th class="py-2 px-4 text-right">Status</th>
               </tr>
             </thead>
             <tbody>
@@ -452,17 +447,9 @@
         `;
         container.appendChild(tableCard);
       });
-
-      // Update Header & Cumulative Metric Stats
-      const grandPct = Math.round((cumulativeDoneWeight / cumulativeTotalWeight) * 100);
-      document.getElementById('metric-cumulative-pct').innerText = `${grandPct}%`;
-      document.getElementById('metric-cumulative-bar').style.width = `${grandPct}%`;
-      document.getElementById('metric-done-weight').innerText = `${cumulativeDoneWeight} pts`;
-      document.getElementById('btn-tab-pending').innerText = `Pending (${pendingTotal})`;
-      document.getElementById('btn-tab-completed').innerText = `Completed (${completedTotal})`;
     }
 
-    renderView();
+    renderTables();
   </script>
 </body>
 </html>
