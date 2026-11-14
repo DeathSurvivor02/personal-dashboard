@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Customer Orders — Online Marketplace</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header>
+    <h1>Customer Orders</h1>
+    <nav>
+        <a th:href="@{/}">Dashboard</a>
+        <a th:href="@{/sellers}">Sellers</a>
+        <a th:href="@{/products}">Products</a>
+        <a th:href="@{/orders}">Customer Orders</a>
+    </nav>
+</header>
+<div class="container">
+    <form class="inline-form" th:action="@{/orders/add}" th:object="${newOrder}" method="post">
+        <input type="number" th:field="*{orderId}" placeholder="Order ID (e.g. 301)" required>
+        <input type="text" th:field="*{customerName}" placeholder="Customer Name" required>
+        <input type="email" th:field="*{customerEmail}" placeholder="Customer Email" required>
+        <input type="number" th:field="*{productId}" placeholder="Product ID" required>
+        <input type="number" min="1" th:field="*{quantity}" placeholder="Quantity" required>
+        <button type="submit">Place Order</button>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Order ID</th>
+            <th>Customer</th>
+            <th>Product ID</th>
+            <th>Qty</th>
+            <th>Total</th>
+            <th>Status</th>
+            <th>Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="o : ${orders}">
+            <td th:text="${o.orderId}"></td>
+            <td th:text="${o.customerName}"></td>
+            <td th:text="${o.productId}"></td>
+            <td th:text="${o.quantity}"></td>
+            <td th:text="${o.totalAmount != null ? '$' + o.totalAmount : '—'}"></td>
+            <td th:text="${o.orderStatus}"></td>
+            <td>
+                <form th:if="${o.orderStatus != 'Cancelled'}" th:action="@{'/orders/' + ${o.orderId} + '/cancel'}" method="post">
+                    <button type="submit" class="danger">Cancel & Restore Stock</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

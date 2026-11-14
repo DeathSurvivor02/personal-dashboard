@@ -1,0 +1,66 @@
+{
+  "info": {
+    "name": "EanBynoe_COMP303_Assignment3",
+    "description": "Postman Collection for COMP303 Assignment 3 Online Marketplace REST API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Create Seller",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"sellerId\": 101,\n  \"sellerName\": \"TechHub Toronto\",\n  \"email\": \"contact@techhub.ca\",\n  \"businessType\": \"Small Business\",\n  \"city\": \"Toronto\",\n  \"rating\": 4.8\n}"
+        },
+        "url": { "raw": "http://localhost:8080/api/sellers", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "sellers"] }
+      }
+    },
+    {
+      "name": "2. Get All Sellers",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "http://localhost:8080/api/sellers", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "sellers"] }
+      }
+    },
+    {
+      "name": "3. Create Product",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"productId\": 201,\n  \"productName\": \"Mechanical Keyboard\",\n  \"category\": \"Electronics\",\n  \"price\": 129.99,\n  \"stockQuantity\": 15,\n  \"availability\": true,\n  \"sellerId\": 101\n}"
+        },
+        "url": { "raw": "http://localhost:8080/api/products", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "products"] }
+      }
+    },
+    {
+      "name": "4. Get Products by Category",
+      "request": {
+        "method": "GET",
+        "url": { "raw": "http://localhost:8080/api/products/category/Electronics", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "products", "category", "Electronics"] }
+      }
+    },
+    {
+      "name": "5. Place Customer Order (Decrements Stock)",
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"orderId\": 301,\n  \"customerName\": \"Ean Bynoe\",\n  \"customerEmail\": \"ean@centennial.ca\",\n  \"productId\": 201,\n  \"quantity\": 2\n}"
+        },
+        "url": { "raw": "http://localhost:8080/api/orders", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "orders"] }
+      }
+    },
+    {
+      "name": "6. Cancel Order & Restore Stock (Innovation)",
+      "request": {
+        "method": "PUT",
+        "url": { "raw": "http://localhost:8080/api/orders/301/cancel", "protocol": "http", "host": ["localhost"], "port": "8080", "path": ["api", "orders", "301", "cancel"] }
+      }
+    }
+  ]
+}

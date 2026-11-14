@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>COMP309 Group 8 - Toronto Bicycle Theft Recovery Predictor</title>
+  <style>
+    body { font-family: 'Segoe UI', Arial, sans-serif; background: #0f172a; color: #f8fafc; margin: 0; padding: 32px 16px; }
+    .container { max-width: 860px; margin: 0 auto; }
+    .card { background: #1e293b; border: 1px solid #334155; border-radius: 10px; padding: 24px; margin-bottom: 20px; }
+    h1 { margin-top: 0; font-size: 1.6rem; color: #38bdf8; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; }
+    label { display: block; font-size: 0.85rem; color: #cbd5e1; margin-bottom: 4px; }
+    input, select { width: 100%; box-sizing: border-box; padding: 8px 10px; border-radius: 6px; border: 1px solid #475569; background: #0f172a; color: #f8fafc; }
+    button { margin-top: 16px; background: #0284c7; color: #fff; border: none; border-radius: 6px; padding: 10px 18px; font-weight: 600; cursor: pointer; }
+    button:hover { background: #0369a1; }
+    .result { margin-top: 16px; padding: 14px; border-radius: 6px; background: #0f172a; border: 1px solid #38bdf8; display: none; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+    th, td { border-bottom: 1px solid #334155; padding: 8px; text-align: left; }
+    th { color: #94a3b8; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <h1>Toronto Bicycle Theft Recovery Predictor</h1>
+      <p style="color:#94a3b8; margin-top:0;">COMP309 Group 8 | Ean Bynoe (301390261) | Best Model: <strong>{{ metrics.get('best_model', 'N/A') }}</strong></p>
+      <form id="predictForm">
+        <div class="grid">
+          <div>
+            <label for="OCC_MONTH">Month</label>
+            <select id="OCC_MONTH" name="OCC_MONTH">
+              <option>January</option><option>February</option><option>March</option><option>April</option>
+              <option>May</option><option>June</option><option selected>July</option><option>August</option>
+              <option>September</option><option>October</option><option>November</option><option>December</option>
+            </select>
+          </div>
+          <div>
+            <label for="OCC_DOW">Day of Week</label>
+            <select id="OCC_DOW" name="OCC_DOW">
+              <option>Monday</option><option>Tuesday</option><option selected>Wednesday</option><option>Thursday</option>
+              <option>Friday</option><option>Saturday</option><option>Sunday</option>
+            </select>
+          </div>
+          <div>
+            <label for="OCC_HOUR">Hour (0-23)</label>
+            <input id="OCC_HOUR" name="OCC_HOUR" type="number" min="0" max="23" value="14" required />
+          </div>
+          <div>
+            <label for="DIVISION">Police Division</label>
+            <select id="DIVISION" name="DIVISION">
+              <option>D14</option><option selected>D51</option><option>D52</option><option>D11</option>
+              <option>D13</option><option>D32</option><option>D41</option><option>D53</option><option>D55</option>
+            </select>
+          </div>
+          <div>
+            <label for="PREMISES_TYPE">Premises Type</label>
+            <select id="PREMISES_TYPE" name="PREMISES_TYPE">
+              <option selected>Outside</option><option>Apartment</option><option>House</option>
+              <option>Commercial</option><option>Transit</option><option>Educational</option><option>Other</option>
+            </select>
+          </div>
+          <div>
+            <label for="BIKE_TYPE">Bike Type</label>
+            <select id="BIKE_TYPE" name="BIKE_TYPE">
+              <option selected>MT</option><option>RG</option><option>RC</option><option>EL</option>
+              <option>SC</option><option>BM</option><option>FO</option><option>OT</option>
+            </select>
+          </div>
+          <div>
+            <label for="BIKE_COST">Bike Cost (CAD)</label>
+            <input id="BIKE_COST" name="BIKE_COST" type="number" min="0" step="10" value="850" required />
+          </div>
+          <div>
+            <label for="BIKE_COLOUR">Bike Colour</label>
+            <select id="BIKE_COLOUR" name="BIKE_COLOUR">
+              <option selected>BLK</option><option>BLU</option><option>RED</option><option>SIL</option>
+              <option>WHI</option><option>GRY</option><option>GRN</option><option>YEL</option><option>OT</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit">Predict Recovery Likelihood</button>
+      </form>
+      <div id="result" class="result"></div>
+    </div>
+
+    {% if metrics.get('models') %}
+    <div class="card">
+      <h2 style="margin-top:0; font-size:1.15rem; color:#e2e8f0;">Model Comparison</h2>
+      <table>
+        <thead>
+          <tr><th>Model</th><th>Accuracy</th><th>Precision</th><th>Recall</th><th>F1</th><th>ROC-AUC</th></tr>
+        </thead>
+        <tbody>
+          {% for name, m in metrics.get('models', {}).items() %}
+          <tr>
+            <td>{{ name }}</td><td>{{ m.accuracy }}</td><td>{{ m.precision }}</td><td>{{ m.recall }}</td><td>{{ m.f1 }}</td><td>{{ m.roc_auc }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% endif %}
+  </div>
+  <script>
+    document.getElementById('predictForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const data = Object.fromEntries(new FormData(e.target).entries());
+      const res = await fetch('/predict', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const out = await res.json();
+      const box = document.getElementById('result');
+      box.style.display = 'block';
+      box.innerHTML = res.ok
+        ? `<strong>Prediction:</strong> ${out.prediction} | <strong>Recovery Probability:</strong> ${(out.recovery_probability * 100).toFixed(2)}%`
+        : `<strong>Error:</strong> ${out.error}`;
+    });
+  </script>
+</body>
+</html>

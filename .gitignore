@@ -3,3 +3,6 @@ Cargo.lock
 **/*.rs.bk
 .DS_Store
 Thumbs.db
+submissions/**/target/
+submissions/**/__pycache__/
+submissions/**/.venv/

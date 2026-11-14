@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sellers — Online Marketplace</title>
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+</head>
+<body>
+<header>
+    <h1>Sellers Management</h1>
+    <nav>
+        <a th:href="@{/}">Dashboard</a>
+        <a th:href="@{/sellers}">Sellers</a>
+        <a th:href="@{/products}">Products</a>
+        <a th:href="@{/orders}">Customer Orders</a>
+    </nav>
+</header>
+<div class="container">
+    <form class="inline-form" th:action="@{/sellers/add}" th:object="${newSeller}" method="post">
+        <input type="number" th:field="*{sellerId}" placeholder="Seller ID (e.g. 101)" required>
+        <input type="text" th:field="*{sellerName}" placeholder="Seller Name" required>
+        <input type="email" th:field="*{email}" placeholder="Email" required>
+        <select th:field="*{businessType}">
+            <option value="Individual">Individual</option>
+            <option value="Small Business">Small Business</option>
+            <option value="Registered Company">Registered Company</option>
+        </select>
+        <input type="text" th:field="*{city}" placeholder="City" required>
+        <input type="number" step="0.1" min="0" max="5" th:field="*{rating}" placeholder="Rating (0-5)" required>
+        <button type="submit">Add Seller</button>
+    </form>
+
+    <table>
+        <thead>
+        <tr>
+            <th>Seller ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Business Type</th>
+            <th>City</th>
+            <th>Rating</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="s : ${sellers}">
+            <td th:text="${s.sellerId}"></td>
+            <td th:text="${s.sellerName}"></td>
+            <td th:text="${s.email}"></td>
+            <td th:text="${s.businessType}"></td>
+            <td th:text="${s.city}"></td>
+            <td th:text="${s.rating}"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
