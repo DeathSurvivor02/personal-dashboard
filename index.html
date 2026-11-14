@@ -3,19 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Official Academic Record & Gradebook — Centennial College</title>
+  <title>Official Academic Record &amp; Gradebook — Centennial College</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Roboto+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
-      darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'Roboto', 'sans-serif'],
-            mono: ['"Roboto Mono"', 'ui-monospace', 'monospace'],
+            sans: ['Inter', '-apple-system', 'BlinkMacSystemFont', 'Segoe UI', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'monospace'],
+          },
+          colors: {
+            notion: {
+              bg: '#FBFBFA',
+              sidebar: '#F7F6F3',
+              card: '#FFFFFF',
+              hover: '#EFEFED',
+              border: '#E6E5E1',
+              ink: '#37352F',
+              muted: '#787774',
+              subtle: '#9B9A97',
+            }
           }
         }
       }
@@ -23,186 +34,213 @@
   </script>
   <style>
     body {
-      background-color: #0B0F17;
-      color: #E2E8F0;
-      font-family: 'Inter', sans-serif;
+      background-color: #FBFBFA;
+      color: #37352F;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     }
-    .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 4px; }
-    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #334155; }
-    .row-hover:hover { background-color: #111827; }
-    .grade-a { color: #34D399; background: rgba(16, 185, 129, 0.12); border-color: rgba(16, 185, 129, 0.3); }
-    .grade-b { color: #60A5FA; background: rgba(59, 130, 246, 0.12); border-color: rgba(59, 130, 246, 0.3); }
-    .grade-c { color: #FBBF24; background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.3); }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #D9D8D4; border-radius: 999px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #BFBEB9; }
+
+    /* Calm Notion-inspired pill tokens */
+    .pill-a { color: #1E5631; background: #EAF3EC; border: 1px solid #CFE3D4; }
+    .pill-b { color: #24476E; background: #EAF0F7; border: 1px solid #CFDCEB; }
+    .pill-c { color: #7A4B16; background: #F9F0E2; border: 1px solid #EBD8BA; }
+    .pill-neutral { color: #57554F; background: #F1F0EC; border: 1px solid #E2E0DA; }
+    .pill-urgent { color: #8A2B2B; background: #FAEDED; border: 1px solid #ECCACA; }
+
+    .notion-row:hover { background-color: #F7F6F3; }
+    .caret-icon { transition: transform 0.15s ease; }
+    .collapsed .caret-icon { transform: rotate(-90deg); }
   </style>
 </head>
-<body class="h-screen w-screen overflow-hidden flex flex-col antialiased text-[13px] bg-[#0B0F17]">
+<body class="min-h-screen lg:h-screen w-screen lg:overflow-hidden flex flex-col lg:flex-row antialiased text-[13px] bg-notion-bg text-notion-ink">
 
-  <!-- TOP ENTERPRISE HEADER -->
-  <header class="h-14 px-6 bg-[#0E1420] border-b border-[#1E293B] flex items-center justify-between shrink-0">
-    <div class="flex items-center space-x-4">
-      <div class="flex items-center space-x-2.5">
-        <div class="w-7 h-7 rounded bg-blue-600/20 border border-blue-500/40 flex items-center justify-center font-bold text-blue-400 text-xs">
-          CC
-        </div>
-        <span class="font-semibold text-white tracking-tight text-sm">Official Academic Transcript & Gradebook Records</span>
-      </div>
-      <span class="text-[#334155] font-mono text-xs">|</span>
-      <span class="text-xs text-[#94A3B8] font-mono">Centennial College • Fall 2026 Term</span>
-    </div>
+  <!-- LEFT NOTION WORKSPACE SIDEBAR -->
+  <aside class="w-full lg:w-64 bg-notion-sidebar border-b lg:border-b-0 lg:border-r border-notion-border flex flex-col justify-between p-4 shrink-0 select-none">
+    <div class="space-y-5">
 
-    <!-- Right Header Badges -->
-    <div class="flex items-center space-x-6 text-xs">
-      <div class="flex items-center space-x-2">
-        <span class="text-[#94A3B8]">Student:</span>
-        <span class="font-medium text-white">Ean Bynoe</span>
-        <span class="font-mono text-[#94A3B8] text-[11px]">(ID: 301390261)</span>
-      </div>
-      <div class="flex items-center space-x-1.5 pl-3 border-l border-[#1E293B]">
-        <span class="w-2 h-2 rounded-full bg-emerald-500"></span>
-        <span class="text-[#94A3B8] text-[11px] font-mono">Gradebook Verified</span>
-      </div>
-    </div>
-  </header>
-
-  <!-- BODY WORKSPACE: SIDEBAR + MAIN TRANSCRIPT TABLE -->
-  <div class="flex-1 flex overflow-hidden">
-    
-    <!-- LEFT SIDEBAR: GPA & COURSE SUMMARY CARDS -->
-    <aside class="w-64 bg-[#0E1420] border-r border-[#1E293B] flex flex-col justify-between p-4 shrink-0 select-none">
-      <div class="space-y-4">
-        
-        <!-- Term Overview Box -->
-        <div class="p-3.5 rounded bg-[#111827] border border-[#1E293B] space-y-2.5">
-          <div class="flex justify-between items-center text-xs">
-            <span class="text-[#94A3B8] font-medium">Term Standing</span>
-            <span class="font-mono text-emerald-400 font-bold px-1.5 py-0.5 rounded border border-emerald-800/40 bg-emerald-950/40">GOOD STANDING</span>
+      <!-- Workspace Identity -->
+      <div class="flex items-center justify-between px-1.5 py-1 rounded hover:bg-notion-hover transition">
+        <div class="flex items-center space-x-2.5 min-w-0">
+          <div class="w-6 h-6 rounded bg-notion-ink text-white flex items-center justify-center font-semibold text-[11px] shrink-0">
+            EB
           </div>
-          <div class="flex justify-between items-center text-xs">
-            <span class="text-[#94A3B8]">Graded Deliverables</span>
-            <span class="font-mono text-white font-bold">34 Items</span>
-          </div>
-          <div class="flex justify-between items-center text-xs">
-            <span class="text-[#94A3B8]">Remaining Deliverables</span>
-            <span class="font-mono text-amber-400 font-bold">23 Items</span>
+          <div class="truncate">
+            <div class="font-semibold text-notion-ink text-[13px] leading-tight truncate">Ean Bynoe</div>
+            <div class="text-[11px] text-notion-muted font-mono">ID 301390261</div>
           </div>
         </div>
-
-        <!-- Course Breakdown Nav -->
-        <div class="space-y-1.5">
-          <div class="flex justify-between items-center px-1 text-[11px] font-semibold text-[#94A3B8] uppercase tracking-wider font-mono">
-            <span>Course Summary</span>
-            <span class="text-[10px]">Standing</span>
-          </div>
-          <nav class="space-y-1 text-xs">
-            <a href="#sec_comp231" class="flex items-center justify-between p-2 rounded hover:bg-[#111827] transition border border-transparent hover:border-[#1E293B]">
-              <div>
-                <span class="font-mono font-bold text-white block">COMP231</span>
-                <span class="text-[10px] text-[#94A3B8] truncate block w-32">Software Project 1</span>
-              </div>
-              <span class="font-mono font-bold text-xs px-2 py-0.5 rounded grade-a border">A (88.0%)</span>
-            </a>
-
-            <a href="#sec_comp303" class="flex items-center justify-between p-2 rounded hover:bg-[#111827] transition border border-transparent hover:border-[#1E293B]">
-              <div>
-                <span class="font-mono font-bold text-white block">COMP303</span>
-                <span class="text-[10px] text-[#94A3B8] truncate block w-32">Enterprise App Dev</span>
-              </div>
-              <span class="font-mono font-bold text-xs px-2 py-0.5 rounded grade-a border">A+ (96.5%)</span>
-            </a>
-
-            <a href="#sec_comp309" class="flex items-center justify-between p-2 rounded hover:bg-[#111827] transition border border-transparent hover:border-[#1E293B]">
-              <div>
-                <span class="font-mono font-bold text-white block">COMP309</span>
-                <span class="text-[10px] text-[#94A3B8] truncate block w-32">Software QA / Analytics</span>
-              </div>
-              <span class="font-mono font-bold text-xs px-2 py-0.5 rounded grade-a border">A (96.6%)</span>
-            </a>
-
-            <a href="#sec_comp255" class="flex items-center justify-between p-2 rounded hover:bg-[#111827] transition border border-transparent hover:border-[#1E293B]">
-              <div>
-                <span class="font-mono font-bold text-white block">COMP255</span>
-                <span class="text-[10px] text-[#94A3B8] truncate block w-32">Business & Entr.</span>
-              </div>
-              <span class="font-mono font-bold text-xs px-2 py-0.5 rounded grade-b border">B+ (76.4%)</span>
-            </a>
-
-            <a href="#sec_comp307" class="flex items-center justify-between p-2 rounded hover:bg-[#111827] transition border border-transparent hover:border-[#1E293B]">
-              <div>
-                <span class="font-mono font-bold text-white block">COMP307</span>
-                <span class="text-[10px] text-[#94A3B8] truncate block w-32">Software Security</span>
-              </div>
-              <span class="font-mono font-bold text-xs px-2 py-0.5 rounded grade-b border">B (74.3%)</span>
-            </a>
-
-            <a href="#sec_comp306" class="flex items-center justify-between p-2 rounded hover:bg-[#111827] transition border border-transparent hover:border-[#1E293B]">
-              <div>
-                <span class="font-mono font-bold text-white block">COMP306</span>
-                <span class="text-[10px] text-[#94A3B8] truncate block w-32">API & Cloud Comp</span>
-              </div>
-              <span class="font-mono font-bold text-xs px-2 py-0.5 rounded grade-c border">C+ (72.5%)</span>
-            </a>
-          </nav>
-        </div>
-
+        <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-white border border-notion-border text-notion-muted">F26</span>
       </div>
 
-      <!-- Footer Info -->
-      <div class="text-[11px] text-[#64748B] space-y-1 border-t border-[#1E293B] pt-3 font-mono">
-        <div>Software Engineering Technology</div>
-        <div>School of Engineering & Technology</div>
-      </div>
-    </aside>
-
-    <!-- RIGHT MAIN TRANSCRIPT TABLE VIEWPORT -->
-    <main class="flex-1 h-full overflow-y-auto custom-scrollbar bg-[#0B0F17] flex flex-col">
-      
-      <!-- SUB-HEADER TOOLBAR -->
-      <div class="px-8 py-3.5 border-b border-[#1E293B] bg-[#0E1420]/80 flex flex-wrap items-center justify-between gap-3 shrink-0">
-        <div class="flex items-center space-x-3">
-          <h2 class="text-sm font-semibold text-white tracking-tight">
-            Fall 2026 Official Gradebook & Evaluation Details
-          </h2>
-          <span class="font-mono text-[11px] px-2 py-0.5 rounded bg-[#1E293B] text-[#94A3B8] border border-[#334155]">
-            Verified from Luminate Gradebook
-          </span>
+      <!-- Term Summary Block -->
+      <div class="p-3 rounded-md bg-white border border-notion-border space-y-2">
+        <div class="flex justify-between items-center text-xs">
+          <span class="text-notion-muted">Standing</span>
+          <span class="font-mono text-[10px] font-semibold px-2 py-0.5 rounded pill-a">GOOD STANDING</span>
         </div>
-
-        <div class="flex items-center space-x-2 text-xs">
-          <button onclick="filterGrades('all')" id="btn-flt-all" class="px-3 py-1 font-medium bg-[#1E293B] text-white rounded border border-[#334155]">All Evaluated</button>
-          <button onclick="filterGrades('graded')" id="btn-flt-graded" class="px-3 py-1 font-medium text-[#94A3B8] hover:text-white rounded border border-[#1E293B]">Graded (34)</button>
-          <button onclick="filterGrades('pending')" id="btn-flt-pending" class="px-3 py-1 font-medium text-[#94A3B8] hover:text-white rounded border border-[#1E293B]">Pending / Ungraded (23)</button>
+        <div class="flex justify-between items-center text-xs">
+          <span class="text-notion-muted">Graded</span>
+          <span class="font-mono font-medium text-notion-ink">34 items</span>
+        </div>
+        <div class="flex justify-between items-center text-xs">
+          <span class="text-notion-muted">Remaining</span>
+          <span class="font-mono font-medium text-notion-ink">23 items</span>
         </div>
       </div>
 
-      <!-- MAIN CONTAINER -->
-      <div class="flex-1 px-8 py-6 space-y-6 max-w-5xl w-full">
-
-        <!-- ACTION REQUIRED BANNER (TOMORROW'S DEADLINE) -->
-        <div class="p-3.5 rounded border border-rose-900/60 bg-rose-950/20 flex items-start justify-between text-xs">
-          <div class="space-y-1">
-            <div class="flex items-center space-x-2">
-              <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span>
-              <span class="font-semibold text-rose-300 tracking-tight uppercase font-mono text-[11px]">Upcoming Deadlines • Sunday, Nov 15 @ 23:59 EST</span>
+      <!-- Course Jump Links -->
+      <div class="space-y-1.5">
+        <div class="flex justify-between items-center px-1.5 text-[11px] font-medium text-notion-subtle uppercase tracking-wider">
+          <span>Courses</span>
+          <span class="font-mono text-[10px]">Standing</span>
+        </div>
+        <nav class="grid grid-cols-2 lg:grid-cols-1 gap-1 text-xs">
+          <a href="#sec_comp303" class="flex items-center justify-between px-2 py-1.5 rounded hover:bg-notion-hover transition">
+            <div class="min-w-0 pr-2">
+              <span class="font-mono font-semibold text-notion-ink block text-[12px]">COMP303</span>
+              <span class="text-[11px] text-notion-muted truncate block">Enterprise App Dev</span>
             </div>
-            <p class="text-[#CBD5E1]">
-              <strong class="text-white">COMP307 Software Security:</strong> Lab Assignment 6 (4.0%) and Research Project (20.0%) are due tomorrow night.
-            </p>
-          </div>
-          <span class="font-mono text-[11px] text-rose-300 font-semibold px-2 py-0.5 rounded border border-rose-800/40 bg-rose-950/60">
-            Due in 24 Hours
-          </span>
-        </div>
+            <span class="font-mono text-[11px] font-medium px-1.5 py-0.5 rounded pill-a shrink-0">A+ 96.5%</span>
+          </a>
 
-        <!-- COURSE TABLES -->
-        <div id="gradebook-tables-container" class="space-y-6">
-          <!-- Rendered dynamically -->
-        </div>
+          <a href="#sec_comp309" class="flex items-center justify-between px-2 py-1.5 rounded hover:bg-notion-hover transition">
+            <div class="min-w-0 pr-2">
+              <span class="font-mono font-semibold text-notion-ink block text-[12px]">COMP309</span>
+              <span class="text-[11px] text-notion-muted truncate block">QA &amp; Analytics</span>
+            </div>
+            <span class="font-mono text-[11px] font-medium px-1.5 py-0.5 rounded pill-a shrink-0">A 96.6%</span>
+          </a>
 
+          <a href="#sec_comp231" class="flex items-center justify-between px-2 py-1.5 rounded hover:bg-notion-hover transition">
+            <div class="min-w-0 pr-2">
+              <span class="font-mono font-semibold text-notion-ink block text-[12px]">COMP231</span>
+              <span class="text-[11px] text-notion-muted truncate block">Software Project 1</span>
+            </div>
+            <span class="font-mono text-[11px] font-medium px-1.5 py-0.5 rounded pill-a shrink-0">A 88.0%</span>
+          </a>
+
+          <a href="#sec_comp255" class="flex items-center justify-between px-2 py-1.5 rounded hover:bg-notion-hover transition">
+            <div class="min-w-0 pr-2">
+              <span class="font-mono font-semibold text-notion-ink block text-[12px]">COMP255</span>
+              <span class="text-[11px] text-notion-muted truncate block">Business &amp; Entr.</span>
+            </div>
+            <span class="font-mono text-[11px] font-medium px-1.5 py-0.5 rounded pill-b shrink-0">B+ 76.4%</span>
+          </a>
+
+          <a href="#sec_comp307" class="flex items-center justify-between px-2 py-1.5 rounded hover:bg-notion-hover transition">
+            <div class="min-w-0 pr-2">
+              <span class="font-mono font-semibold text-notion-ink block text-[12px]">COMP307</span>
+              <span class="text-[11px] text-notion-muted truncate block">Software Security</span>
+            </div>
+            <span class="font-mono text-[11px] font-medium px-1.5 py-0.5 rounded pill-b shrink-0">B 74.3%</span>
+          </a>
+
+          <a href="#sec_comp306" class="flex items-center justify-between px-2 py-1.5 rounded hover:bg-notion-hover transition">
+            <div class="min-w-0 pr-2">
+              <span class="font-mono font-semibold text-notion-ink block text-[12px]">COMP306</span>
+              <span class="text-[11px] text-notion-muted truncate block">API &amp; Cloud Comp</span>
+            </div>
+            <span class="font-mono text-[11px] font-medium px-1.5 py-0.5 rounded pill-c shrink-0">C+ 72.5%</span>
+          </a>
+        </nav>
       </div>
-    </main>
+    </div>
 
-  </div>
+    <div class="hidden lg:block text-[11px] text-notion-subtle space-y-0.5 border-t border-notion-border pt-3">
+      <div class="font-medium text-notion-muted">Software Engineering Technology</div>
+      <div>Centennial College</div>
+    </div>
+  </aside>
+
+  <!-- MAIN NOTION DOCUMENT CANVAS -->
+  <main class="flex-1 h-full overflow-y-auto custom-scrollbar bg-notion-bg flex flex-col">
+
+    <!-- STICKY BREADCRUMB & FILTER BAR -->
+    <header class="sticky top-0 z-20 px-6 lg:px-10 py-2.5 border-b border-notion-border bg-notion-bg/95 backdrop-blur-sm flex flex-wrap items-center justify-between gap-3">
+      <div class="flex items-center space-x-2 text-xs text-notion-muted">
+        <span>Centennial College</span>
+        <span class="text-notion-subtle">/</span>
+        <span>Fall 2026</span>
+        <span class="text-notion-subtle">/</span>
+        <span class="font-medium text-notion-ink">Academic Record &amp; Gradebook</span>
+      </div>
+
+      <div class="flex flex-wrap items-center gap-2 text-xs">
+        <input
+          id="search-input"
+          type="text"
+          placeholder="Filter assessments..."
+          oninput="renderTables()"
+          class="px-2.5 py-1 rounded border border-notion-border bg-white text-notion-ink placeholder:text-notion-subtle focus:outline-none focus:border-notion-muted w-44 text-xs"
+        />
+        <div class="flex items-center bg-notion-sidebar p-0.5 rounded border border-notion-border">
+          <button onclick="filterGrades('all')" id="btn-flt-all" class="px-2.5 py-1 font-medium bg-white text-notion-ink rounded shadow-sm">All (57)</button>
+          <button onclick="filterGrades('graded')" id="btn-flt-graded" class="px-2.5 py-1 font-medium text-notion-muted hover:text-notion-ink rounded">Graded (34)</button>
+          <button onclick="filterGrades('pending')" id="btn-flt-pending" class="px-2.5 py-1 font-medium text-notion-muted hover:text-notion-ink rounded">Pending (23)</button>
+        </div>
+        <button onclick="toggleAllSections()" id="btn-toggle-all" class="px-2.5 py-1 font-medium text-notion-muted hover:text-notion-ink hover:bg-notion-hover rounded border border-notion-border bg-white">
+          Collapse All
+        </button>
+      </div>
+    </header>
+
+    <!-- DOCUMENT CONTENT -->
+    <div class="px-6 lg:px-12 py-8 max-w-5xl w-full mx-auto space-y-7">
+
+      <!-- NOTION PAGE TITLE & PROPERTIES -->
+      <section class="space-y-4 border-b border-notion-border pb-6">
+        <div class="space-y-1.5">
+          <div class="text-[11px] font-mono uppercase tracking-wider text-notion-subtle">Official Transcript &amp; Coursework Tracker</div>
+          <h1 class="text-2xl lg:text-3xl font-bold tracking-tight text-notion-ink">
+            Fall 2026 Academic Record &amp; Gradebook
+          </h1>
+        </div>
+
+        <!-- Notion-style Properties Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-y-2 gap-x-6 pt-1 text-xs">
+          <div class="flex items-center space-x-2">
+            <span class="text-notion-subtle w-20 shrink-0">Student</span>
+            <span class="font-medium text-notion-ink">Ean Bynoe</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="text-notion-subtle w-20 shrink-0">Student ID</span>
+            <span class="font-mono text-notion-ink">301390261</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="text-notion-subtle w-20 shrink-0">Source</span>
+            <span class="px-1.5 py-0.5 rounded pill-neutral font-mono text-[11px]">Luminate Verified</span>
+          </div>
+          <div class="flex items-center space-x-2">
+            <span class="text-notion-subtle w-20 shrink-0">Courses</span>
+            <span class="font-mono text-notion-ink">6 Enrolled</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- NOTION CALLOUT BLOCK (DEADLINE NOTICE) -->
+      <section class="p-4 rounded-md bg-notion-sidebar border border-notion-border flex flex-wrap items-start justify-between gap-3 text-xs">
+        <div class="space-y-1">
+          <div class="font-semibold text-notion-ink uppercase tracking-wide font-mono text-[11px]">
+            Upcoming Deadlines — Sunday, Nov 15 @ 23:59 EST
+          </div>
+          <p class="text-notion-muted leading-relaxed">
+            <strong class="text-notion-ink font-semibold">COMP307 Software Security:</strong> Lab Assignment 6 (4.0%) and Research Project (20.0%) are due tomorrow night.
+          </p>
+        </div>
+        <span class="font-mono text-[11px] font-semibold px-2.5 py-1 rounded pill-urgent shrink-0">
+          Due in 24 Hours
+        </span>
+      </section>
+
+      <!-- COLLAPSIBLE COURSE SECTIONS -->
+      <div id="gradebook-tables-container" class="space-y-4">
+        <!-- Rendered dynamically -->
+      </div>
+
+    </div>
+  </main>
 
   <script>
     const fullGradeData = [
@@ -213,7 +251,7 @@
         section: "SEC. 002",
         instructor: "Dr. Vinay Vaithilingam",
         standing: "A+ (96.5%)",
-        standingClass: "grade-a",
+        standingClass: "pill-a",
         items: [
           { name: "Test 1 (Practical Exam)", weight: "20.0%", score: "97.5", total: "100", pct: "97.50%", status: "GRADED" },
           { name: "Assignment 1", weight: "10.0%", score: "100.0", total: "100", pct: "100.00%", status: "GRADED" },
@@ -236,7 +274,7 @@
         section: "SEC. 003",
         instructor: "Jin Li",
         standing: "A (88.0%)",
-        standingClass: "grade-a",
+        standingClass: "pill-a",
         items: [
           { name: "Evaluation 1: Project Proposal", weight: "10.0%", score: "90.0", total: "100", pct: "90.00%", status: "GRADED" },
           { name: "Evaluation 2: Vision, Scope & High Level Req.", weight: "15.0%", score: "80.0", total: "100", pct: "80.00%", status: "GRADED" },
@@ -256,7 +294,7 @@
         section: "SEC. 003",
         instructor: "Vijayalakshmi Tiruchengode Angamuthu",
         standing: "A (96.6%)",
-        standingClass: "grade-a",
+        standingClass: "pill-a",
         items: [
           { name: "Lab 1", weight: "5.0%", score: "10.0", total: "10", pct: "100.00%", status: "GRADED" },
           { name: "Lab 2", weight: "5.0%", score: "10.0", total: "10", pct: "100.00%", status: "GRADED" },
@@ -279,7 +317,7 @@
         section: "SEC. 002",
         instructor: "Bindu Goel",
         standing: "B (74.3%)",
-        standingClass: "grade-b",
+        standingClass: "pill-b",
         items: [
           { name: "Lab Assignment 1", weight: "4.0%", score: "10.0", total: "10", pct: "100.00%", status: "GRADED" },
           { name: "Lab Assignment 2", weight: "4.0%", score: "8.0", total: "10", pct: "80.00%", status: "GRADED" },
@@ -304,7 +342,7 @@
         section: "SEC. 003",
         instructor: "Jean-Luc David",
         standing: "B+ (76.4%)",
-        standingClass: "grade-b",
+        standingClass: "pill-b",
         items: [
           { name: "Quiz #1", weight: "5.0%", score: "8.0", total: "11", pct: "72.73%", status: "GRADED" },
           { name: "Mid-Term Exam", weight: "15.0%", score: "80.0", total: "100", pct: "80.00%", status: "GRADED" },
@@ -322,7 +360,7 @@
         section: "SEC. 002",
         instructor: "Department Faculty",
         standing: "C+ (72.5%)",
-        standingClass: "grade-c",
+        standingClass: "pill-c",
         items: [
           { name: "Lab 1: AWS S3 Implementation", weight: "10.0%", score: "17.5", total: "20", pct: "87.50%", status: "GRADED" },
           { name: "Lab 2: AWS DynamoDB Schema", weight: "10.0%", score: "19.0", total: "25", pct: "76.00%", status: "GRADED" },
@@ -337,71 +375,96 @@
     ];
 
     let currentFilter = 'all';
+    const collapsedState = {};
 
     function filterGrades(type) {
       currentFilter = type;
       ['all', 'graded', 'pending'].forEach(t => {
         const btn = document.getElementById('btn-flt-' + t);
         if (t === type) {
-          btn.className = 'px-3 py-1 font-medium bg-[#1E293B] text-white rounded border border-[#334155]';
+          btn.className = 'px-2.5 py-1 font-medium bg-white text-notion-ink rounded shadow-sm';
         } else {
-          btn.className = 'px-3 py-1 font-medium text-[#94A3B8] hover:text-white rounded border border-[#1E293B]';
+          btn.className = 'px-2.5 py-1 font-medium text-notion-muted hover:text-notion-ink rounded';
         }
       });
       renderTables();
     }
 
+    function toggleSection(courseId) {
+      collapsedState[courseId] = !collapsedState[courseId];
+      renderTables();
+    }
+
+    function toggleAllSections() {
+      const anyOpen = fullGradeData.some(c => !collapsedState[c.id]);
+      fullGradeData.forEach(c => {
+        collapsedState[c.id] = anyOpen;
+      });
+      document.getElementById('btn-toggle-all').textContent = anyOpen ? 'Expand All' : 'Collapse All';
+      renderTables();
+    }
+
     function renderTables() {
       const container = document.getElementById('gradebook-tables-container');
+      const query = (document.getElementById('search-input')?.value || '').trim().toLowerCase();
       container.innerHTML = '';
 
       fullGradeData.forEach(course => {
         const visibleItems = course.items.filter(item => {
-          if (currentFilter === 'graded') return item.status === 'GRADED';
-          if (currentFilter === 'pending') return item.status !== 'GRADED';
-          return true;
+          const matchesFilter =
+            currentFilter === 'graded' ? item.status === 'GRADED' :
+            currentFilter === 'pending' ? item.status !== 'GRADED' : true;
+          const matchesQuery =
+            !query ||
+            item.name.toLowerCase().includes(query) ||
+            course.code.toLowerCase().includes(query) ||
+            course.name.toLowerCase().includes(query);
+          return matchesFilter && matchesQuery;
         });
 
         if (visibleItems.length === 0) return;
 
-        const tableCard = document.createElement('div');
-        tableCard.id = `sec_${course.id}`;
-        tableCard.className = 'rounded border border-[#1E293B] bg-[#0E1420] overflow-hidden';
+        const isCollapsed = !!collapsedState[course.id];
+        const card = document.createElement('section');
+        card.id = `sec_${course.id}`;
+        card.className = `rounded-md border border-notion-border bg-white overflow-hidden ${isCollapsed ? 'collapsed' : ''}`;
 
         let rowsHtml = '';
         visibleItems.forEach(item => {
-          let scoreDisplay = item.score;
+          let scoreDisplay = '<span class="text-notion-subtle">—</span>';
           if (item.total !== '—' && item.score !== '—') {
-            scoreDisplay = `<span class="font-bold text-white">${item.score}</span> / <span class="text-[#94A3B8]">${item.total}</span>`;
+            scoreDisplay = `<span class="font-semibold text-notion-ink">${item.score}</span> <span class="text-notion-subtle">/ ${item.total}</span>`;
+          } else if (item.score !== '—') {
+            scoreDisplay = `<span class="font-semibold text-notion-ink">${item.score}</span>`;
           }
 
-          let pctBadge = `<span class="font-mono text-[11px] text-[#94A3B8]">${item.pct}</span>`;
+          let pctBadge = `<span class="font-mono text-[11px] text-notion-subtle">${item.pct}</span>`;
           if (item.status === 'GRADED') {
             const num = parseFloat(item.pct);
-            const colorClass = num >= 85 ? 'text-emerald-400 font-semibold' : (num >= 70 ? 'text-blue-400 font-semibold' : 'text-amber-400 font-semibold');
+            const colorClass = num >= 85 ? 'text-[#1E5631] font-semibold' : (num >= 70 ? 'text-[#24476E] font-semibold' : 'text-[#7A4B16] font-semibold');
             pctBadge = `<span class="font-mono text-[11px] ${colorClass}">${item.pct}</span>`;
           }
 
           let statusBadge = '';
           if (item.status === 'GRADED') {
-            statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono bg-emerald-950/60 text-emerald-300 border border-emerald-800/40">GRADED</span>';
+            statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-medium pill-a">GRADED</span>';
           } else if (item.status === 'SUBMITTED') {
-            statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono bg-blue-950/60 text-blue-300 border border-blue-800/40">SUBMITTED</span>';
+            statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-medium pill-b">SUBMITTED</span>';
           } else if (item.urgent) {
-            statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono bg-rose-950/80 text-rose-300 border border-rose-800/60 font-semibold animate-pulse">ACTION REQ.</span>';
+            statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-semibold pill-urgent">ACTION REQ.</span>';
           } else {
-            statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono bg-[#1E293B] text-[#94A3B8]">PENDING</span>';
+            statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-mono font-medium pill-neutral">PENDING</span>';
           }
 
           rowsHtml += `
-            <tr class="border-t border-[#1E293B] row-hover transition-colors">
-              <td class="py-2.5 px-4 font-medium ${item.status === 'GRADED' ? 'text-white' : 'text-[#CBD5E1]'}">
+            <tr class="border-t border-notion-border notion-row transition-colors">
+              <td class="py-2.5 px-4 font-medium ${item.status === 'GRADED' ? 'text-notion-ink' : 'text-notion-muted'}">
                 ${item.name}
               </td>
-              <td class="py-2.5 px-4 font-mono text-[11px] text-[#94A3B8] whitespace-nowrap">
+              <td class="py-2.5 px-4 font-mono text-[11px] text-notion-muted whitespace-nowrap">
                 ${item.due || 'Recorded'}
               </td>
-              <td class="py-2.5 px-4 font-mono text-[11px] text-right text-[#94A3B8]">
+              <td class="py-2.5 px-4 font-mono text-[11px] text-right text-notion-muted">
                 ${item.weight}
               </td>
               <td class="py-2.5 px-4 font-mono text-[11px] text-right whitespace-nowrap">
@@ -417,35 +480,44 @@
           `;
         });
 
-        tableCard.innerHTML = `
-          <div class="px-4 py-3 bg-[#111827] border-b border-[#1E293B] flex flex-wrap items-center justify-between gap-2">
-            <div class="flex items-center space-x-3">
-              <span class="font-mono text-xs font-bold text-white tracking-wide">${course.code}</span>
-              <span class="text-xs text-[#CBD5E1]">${course.name}</span>
-              <span class="text-[11px] text-[#64748B] font-mono">(${course.section} • ${course.instructor})</span>
+        card.innerHTML = `
+          <button
+            type="button"
+            onclick="toggleSection('${course.id}')"
+            class="w-full px-4 py-3 bg-notion-sidebar/70 hover:bg-notion-hover transition-colors flex flex-wrap items-center justify-between gap-2 text-left"
+          >
+            <div class="flex items-center space-x-2.5">
+              <svg class="w-3.5 h-3.5 text-notion-muted caret-icon shrink-0" viewBox="0 0 16 16" fill="currentColor">
+                <path d="M4.427 6.427l3.396 3.396a.25.25 0 00.354 0l3.396-3.396A.25.25 0 0011.396 6H4.604a.25.25 0 00-.177.427z"/>
+              </svg>
+              <span class="font-mono text-xs font-semibold text-notion-ink">${course.code}</span>
+              <span class="text-xs font-medium text-notion-ink">${course.name}</span>
+              <span class="text-[11px] text-notion-muted font-mono hidden sm:inline">(${course.section} • ${course.instructor})</span>
             </div>
             <div class="flex items-center space-x-2 font-mono text-xs">
-              <span class="text-[#94A3B8]">Course Standing:</span>
-              <span class="font-bold px-2 py-0.5 rounded border ${course.standingClass}">${course.standing}</span>
+              <span class="text-[11px] text-notion-subtle">${visibleItems.length} items</span>
+              <span class="font-medium px-2 py-0.5 rounded ${course.standingClass}">${course.standing}</span>
             </div>
+          </button>
+          <div class="${isCollapsed ? 'hidden' : 'overflow-x-auto'}">
+            <table class="w-full text-left text-xs border-t border-notion-border">
+              <thead>
+                <tr class="text-[10px] font-mono uppercase tracking-wider text-notion-subtle bg-notion-bg">
+                  <th class="py-2 px-4 font-medium">Evaluation / Assessment</th>
+                  <th class="py-2 px-4 font-medium">Timeline / Date</th>
+                  <th class="py-2 px-4 text-right font-medium">Weight</th>
+                  <th class="py-2 px-4 text-right font-medium">Earned Points</th>
+                  <th class="py-2 px-4 text-right font-medium">Percentage</th>
+                  <th class="py-2 px-4 text-right font-medium">Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                ${rowsHtml}
+              </tbody>
+            </table>
           </div>
-          <table class="w-full text-left text-xs">
-            <thead>
-              <tr class="text-[10px] font-mono uppercase tracking-wider text-[#64748B] bg-[#0E1420]">
-                <th class="py-2 px-4">Evaluation / Assessment</th>
-                <th class="py-2 px-4">Timeline / Date</th>
-                <th class="py-2 px-4 text-right">Weight</th>
-                <th class="py-2 px-4 text-right">Earned Points</th>
-                <th class="py-2 px-4 text-right">Percentage</th>
-                <th class="py-2 px-4 text-right">Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${rowsHtml}
-            </tbody>
-          </table>
         `;
-        container.appendChild(tableCard);
+        container.appendChild(card);
       });
     }
 
