@@ -3,30 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Centennial College Fall 2026 — Course Outlines & Deliverables</title>
+  <title>Personal Command Center — Notion OS</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
           fontFamily: {
-            sans: ['Inter', 'ui-sans-serif', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            sans: ['"Plus Jakarta Sans"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
             mono: ['"JetBrains Mono"', 'monospace'],
           },
           colors: {
-            notion: {
-              canvas: '#0A0D14',
-              sidebar: '#0E131F',
-              hover: '#131929',
-              border: '#1E293B',
-              card: '#121826',
-              subtle: '#222F45',
-              text: '#E2E8F0',
-              muted: '#7E8B9F',
+            app: {
+              base: '#080B11',
+              sidebar: '#0C101A',
+              card: '#111724',
+              hover: '#161F30',
+              border: '#1B2436',
+              borderLight: '#26334B',
+              text: '#E1E7F2',
+              muted: '#718096',
             },
             accent: {
               cyan: '#38BDF8',
@@ -42,116 +42,173 @@
   </script>
   <style>
     body {
-      background-color: #0A0D14;
-      color: #E2E8F0;
-      font-family: 'Inter', sans-serif;
+      background-color: #080B11;
+      color: #E1E7F2;
+      font-family: 'Plus Jakarta Sans', sans-serif;
     }
-    .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 9999px; }
-    .hairline-b { border-bottom: 1px solid #1E293B; }
-    .hairline-r { border-right: 1px solid #1E293B; }
+    .custom-scrollbar::-webkit-scrollbar { width: 4px; height: 4px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #1B2436; border-radius: 9999px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #26334B; }
+    .hairline-b { border-bottom: 1px solid #1B2436; }
+    .hairline-r { border-right: 1px solid #1B2436; }
+    .tab-active {
+      background-color: #161F30;
+      color: #F8FAFC;
+      border-color: #26334B;
+    }
+    .badge-urgent {
+      background: rgba(244, 63, 94, 0.12);
+      color: #FDA4AF;
+      border: 1px solid rgba(244, 63, 94, 0.25);
+    }
+    .badge-upcoming {
+      background: rgba(245, 158, 11, 0.12);
+      color: #FDE68A;
+      border: 1px solid rgba(245, 158, 11, 0.25);
+    }
+    .badge-later {
+      background: rgba(99, 102, 241, 0.12);
+      color: #C7D2FE;
+      border: 1px solid rgba(99, 102, 241, 0.25);
+    }
+    .badge-done {
+      background: rgba(16, 185, 129, 0.12);
+      color: #A7F3D0;
+      border: 1px solid rgba(16, 185, 129, 0.25);
+    }
   </style>
 </head>
 <body class="h-screen w-screen overflow-hidden flex antialiased select-none text-[13px]">
 
-  <!-- ─── NOTION TREE SIDEBAR ───────────────────────────────────────────── -->
-  <aside class="w-64 h-full bg-notion-sidebar hairline-r flex flex-col justify-between p-3 select-none">
+  <!-- ─── REFINED SIDEBAR ──────────────────────────────────────────────── -->
+  <aside class="w-64 h-full bg-app-sidebar hairline-r flex flex-col justify-between p-3 select-none shrink-0">
     <div class="space-y-4">
       
-      <!-- Workspace Switcher -->
-      <div class="flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-notion-hover cursor-pointer transition">
-        <div class="flex items-center space-x-2.5">
-          <div class="w-5 h-5 rounded bg-indigo-600/30 border border-indigo-500/50 flex items-center justify-center font-bold text-indigo-400 text-[11px]">
-            C
+      <!-- User / Profile Pill -->
+      <div class="flex items-center justify-between px-2.5 py-2 rounded-lg bg-app-card border border-app-border">
+        <div class="flex items-center space-x-2.5 overflow-hidden">
+          <div class="w-6 h-6 rounded-md bg-gradient-to-tr from-indigo-500 to-sky-500 flex items-center justify-center font-bold text-white text-xs shrink-0 shadow-sm">
+            DS
           </div>
           <div class="overflow-hidden">
-            <span class="font-semibold text-white text-xs truncate block">Centennial College</span>
-            <span class="text-[10px] text-notion-muted font-mono block">Student: 301390261</span>
+            <span class="font-semibold text-white text-xs truncate block leading-tight">DeathSurvivor02</span>
+            <span class="text-[10px] text-app-muted font-mono block">Centennial • Fall 2026</span>
           </div>
         </div>
-        <span class="text-xs text-notion-muted">▾</span>
+        <span class="w-2 h-2 rounded-full bg-accent-emerald shrink-0"></span>
       </div>
 
-      <!-- Quick Jump Links -->
+      <!-- Main Navigation Views -->
+      <div class="space-y-1">
+        <span class="px-2 text-[10px] font-semibold uppercase tracking-wider text-app-muted font-mono">Views</span>
+        <nav class="space-y-0.5 text-xs font-medium">
+          <button onclick="switchView('courses')" id="btn-view-courses" class="w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded-md tab-active border border-transparent transition">
+            <span>📚</span>
+            <span>Course Outlines</span>
+            <span class="ml-auto font-mono text-[10px] text-accent-cyan font-semibold">6</span>
+          </button>
+          <button onclick="switchView('deadlines')" id="btn-view-deadlines" class="w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded-md text-app-muted hover:bg-app-hover hover:text-white transition">
+            <span>⏳</span>
+            <span>Upcoming Timeline</span>
+            <span class="ml-auto font-mono text-[10px] text-accent-rose font-semibold">2 Urgent</span>
+          </button>
+          <button onclick="switchView('overview')" id="btn-view-overview" class="w-full flex items-center space-x-2.5 px-2.5 py-1.5 rounded-md text-app-muted hover:bg-app-hover hover:text-white transition">
+            <span>🌌</span>
+            <span>Master Dashboard</span>
+          </button>
+        </nav>
+      </div>
+
+      <!-- Course Jump Links -->
       <div class="space-y-1 pt-1">
-        <div class="px-2 text-[11px] font-semibold uppercase tracking-wider text-notion-muted/80 font-mono">
-          Course Outlines (6)
-        </div>
-        <nav id="course-sidebar-list" class="space-y-0.5 text-xs">
+        <span class="px-2 text-[10px] font-semibold uppercase tracking-wider text-app-muted font-mono">Quick Jump</span>
+        <nav id="sidebar-course-nav" class="space-y-0.5 text-xs">
           <!-- Dynamically populated -->
         </nav>
       </div>
 
     </div>
 
-    <!-- Sidebar Footer -->
-    <div class="space-y-1 text-xs text-notion-muted pt-3 hairline-t">
-      <div class="flex items-center justify-between px-2 py-1 text-[11px]">
-        <span class="flex items-center space-x-1.5">
-          <span class="w-2 h-2 rounded-full bg-accent-emerald animate-pulse"></span>
-          <span class="text-gray-300">Outlines Synced</span>
-        </span>
-        <span id="active-count-badge" class="font-mono text-accent-cyan text-[10px]">600% Total</span>
+    <!-- Sidebar Bottom Status -->
+    <div class="p-2.5 rounded-lg bg-app-card border border-app-border space-y-1.5 text-xs">
+      <div class="flex justify-between items-center text-[11px]">
+        <span class="text-app-muted">Student ID</span>
+        <span class="font-mono text-white font-semibold">301390261</span>
+      </div>
+      <div class="flex justify-between items-center text-[11px]">
+        <span class="text-app-muted">Completed Weight</span>
+        <span id="sidebar-grand-weight" class="font-mono text-accent-emerald font-semibold">175% / 600%</span>
+      </div>
+      <div class="w-full bg-app-base h-1 rounded-full overflow-hidden border border-app-border/40">
+        <div id="sidebar-progress-bar" class="bg-indigo-500 h-full rounded-full transition-all duration-500" style="width: 29%"></div>
       </div>
     </div>
   </aside>
 
-  <!-- ─── NOTION MAIN DOCUMENT CANVAS ──────────────────────────────────────── -->
-  <main class="flex-1 h-full overflow-y-auto custom-scrollbar bg-notion-canvas">
+  <!-- ─── MAIN CONTENT VIEWPORT ────────────────────────────────────────── -->
+  <main class="flex-1 h-full overflow-y-auto custom-scrollbar bg-app-base flex flex-col">
     
-    <!-- Top Breadcrumb Bar -->
-    <div class="h-11 px-8 hairline-b flex items-center justify-between text-xs text-notion-muted bg-notion-canvas/80 backdrop-blur sticky top-0 z-10">
+    <!-- Top Sleek Header Bar -->
+    <header class="h-12 px-6 hairline-b flex items-center justify-between text-xs bg-app-base/90 backdrop-blur sticky top-0 z-20 shrink-0">
+      <div class="flex items-center space-x-2 text-app-muted">
+        <span class="hover:text-white cursor-pointer transition">Centennial Luminate</span>
+        <span class="text-app-border">/</span>
+        <span id="breadcrumb-title" class="text-white font-medium">Course Outlines & Evaluation Schemes</span>
+      </div>
+
+      <!-- Action Chips & Filters -->
       <div class="flex items-center space-x-2">
-        <span>Centennial Luminate</span>
-        <span class="text-notion-border">/</span>
-        <span class="text-white font-medium">Fall 2026 Course Outlines & Grading Schemes</span>
-      </div>
-      <div class="flex items-center space-x-3">
-        <span id="overall-grade-pill" class="text-accent-cyan font-mono text-[11px] px-2.5 py-0.5 rounded bg-indigo-950/60 border border-indigo-800/40">
-          Evaluations: 6 Courses Synced
-        </span>
-      </div>
-    </div>
+        <!-- Filter Tabs -->
+        <div class="flex items-center p-0.5 rounded-md bg-app-card border border-app-border text-[11px]">
+          <button onclick="setFilter('all')" id="filter-all" class="px-2 py-0.5 rounded font-medium tab-active transition">All Items</button>
+          <button onclick="setFilter('pending')" id="filter-pending" class="px-2 py-0.5 rounded font-medium text-app-muted hover:text-white transition">Pending Only</button>
+          <button onclick="setFilter('completed')" id="filter-completed" class="px-2 py-0.5 rounded font-medium text-app-muted hover:text-white transition">Completed</button>
+        </div>
 
-    <!-- Centered Notion Page Container (max-w-4xl) -->
-    <div class="max-w-4xl mx-auto px-8 py-7 space-y-7">
+        <button onclick="expandAll(true)" class="px-2 py-1 rounded bg-app-card hover:bg-app-hover border border-app-border text-app-muted hover:text-white text-[11px] transition">
+          Expand All
+        </button>
+        <button onclick="expandAll(false)" class="px-2 py-1 rounded bg-app-card hover:bg-app-hover border border-app-border text-app-muted hover:text-white text-[11px] transition">
+          Collapse All
+        </button>
+      </div>
+    </header>
+
+    <!-- Main Content Canvas -->
+    <div class="flex-1 px-8 py-6 max-w-4xl mx-auto w-full space-y-6">
       
-      <!-- PAGE COVER & TITLE BLOCK -->
-      <div class="space-y-4">
-        <div class="text-4xl select-none">📋</div>
-
+      <!-- HEADER HERO SUMMARY -->
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 hairline-b">
         <div>
-          <h1 class="text-3xl font-bold text-white tracking-tight">Complete Course Outlines & Grading Weights</h1>
-          <p class="text-notion-muted text-sm mt-1">
-            Complete evaluation schemes, assignments, labs, term projects, practical tests, and grade weightings extracted from official Centennial syllabi.
+          <h1 class="text-xl font-bold text-white tracking-tight">Academic Syllabus & Evaluation Tracker</h1>
+          <p class="text-app-muted text-xs mt-0.5">
+            Full deliverables, grade weights, and submission status across all 6 enrolled courses.
           </p>
         </div>
 
-        <!-- Notion Summary Stats Bar -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3.5 rounded-lg bg-notion-card border border-notion-border text-xs">
-          <div>
-            <span class="text-notion-muted block text-[11px]">Total Deliverables</span>
-            <span id="stat-total" class="text-white font-bold text-sm">57 Items</span>
+        <div class="flex items-center space-x-3 shrink-0">
+          <div class="text-right">
+            <span class="text-[10px] text-app-muted uppercase font-mono tracking-wider block">Semester Progress</span>
+            <span id="hero-weight-pct" class="text-base font-bold font-mono text-white">29.2%</span>
           </div>
-          <div>
-            <span class="text-notion-muted block text-[11px]">Completed Weight</span>
-            <span id="stat-weight" class="text-accent-emerald font-bold text-sm">0% / 600%</span>
-          </div>
-          <div>
-            <span class="text-notion-muted block text-[11px]">Urgent Due Tomorrow</span>
-            <span class="text-accent-rose font-bold text-sm">COMP307 Lab 6 & Proj</span>
-          </div>
-          <div>
-            <span class="text-notion-muted block text-[11px]">Format</span>
-            <span class="text-accent-cyan font-bold text-sm">Practical / Open Book</span>
+          <div class="w-10 h-10 rounded-lg bg-app-card border border-app-border flex items-center justify-center font-mono font-bold text-accent-cyan text-sm">
+            29%
           </div>
         </div>
       </div>
 
-      <!-- ════════════════════════════════════════════════════════════════════
-           COURSE CARDS ACCORDIONS (All 6 Courses with exact weights & timelines)
-           ════════════════════════════════════════════════════════════════════ -->
-      <div id="courses-outline-container" class="space-y-5">
+      <!-- CRITICAL DEADLINE BANNER -->
+      <div class="p-3 rounded-lg bg-rose-950/20 border border-rose-900/40 flex items-center justify-between text-xs">
+        <div class="flex items-center space-x-2.5">
+          <span class="w-2 h-2 rounded-full bg-accent-rose animate-pulse"></span>
+          <span class="text-gray-300 font-medium">Due Tomorrow (Sunday, Nov 15 • 11:59 PM):</span>
+          <span class="text-rose-300 font-mono font-semibold">COMP307 Lab 6 (4%) & Research Project (20%)</span>
+        </div>
+        <span class="font-mono text-[10px] px-2 py-0.5 rounded badge-urgent font-bold">URGENT</span>
+      </div>
+
+      <!-- ACCORDION COURSES LIST -->
+      <div id="course-accordion-list" class="space-y-3">
         <!-- Rendered dynamically -->
       </div>
 
@@ -159,86 +216,71 @@
   </main>
 
   <script>
-    const courseOutlines = [
-      {
-        id: "comp303",
-        code: "COMP303",
-        name: "Enterprise Application Development",
-        instructor: "Dr. Vinay Vaithilingam",
-        crn: "COMP303002.91940.2026F",
-        items: [
-          { name: "Lab Exercise 1", weight: 5, time: "Week 2 - Week 4 (Friday midnight)", done: true },
-          { name: "Lab Exercise 2", weight: 5, time: "Week 4 - Week 6 (Friday midnight)", done: true },
-          { name: "Midterm Test 1 (Practical Open-Book)", weight: 20, time: "Week 7 or 8", done: true },
-          { name: "Lab Exercise 3", weight: 5, time: "Week 8 - Week 9 (Friday midnight)", done: true },
-          { name: "Term Project: Part 1 - Design", weight: 10, time: "Week 6 - Week 8 (Friday midnight)", done: true },
-          { name: "Assignment 3: Spring Boot REST App", weight: 10, time: "Due Tuesday, Nov 17 • 11:59 PM", done: false },
-          { name: "Lab Exercise 4", weight: 5, time: "Week 10 - Week 11 (Friday midnight)", done: false },
-          { name: "Term Project: Part 2 - Implementation", weight: 20, time: "Week 8 - Week 12 (Friday midnight)", done: false },
-          { name: "Final Test 2 (Practical Open-Book)", weight: 20, time: "Week 13", done: false },
-          { name: "Term Project: Part 3 - Presentation", weight: 5, time: "Week 13 - Week 14", done: false },
-          { name: "Cloud Services Usage (Responsible Use)", weight: 5, time: "All Semester - Week 14", done: false }
-        ]
-      },
+    const syllabusData = [
       {
         id: "comp307",
         code: "COMP307",
         name: "Software Security",
         instructor: "Bindu Goel",
         crn: "COMP307002.91943.2026F",
+        expanded: true,
         items: [
-          { name: "Lab 1: Linux Command-Line & Scripting", weight: 4, time: "Week 1 - Week 2", done: true },
-          { name: "Lab 2: Cross-Site Scripting (XSS)", weight: 4, time: "Week 2 - Week 3", done: true },
-          { name: "Lab 3: SQL Injection", weight: 4, time: "Week 3 - Week 4", done: true },
-          { name: "Lab 4: Insecure Direct Object References (IDOR)", weight: 4, time: "Week 4 - Week 5", done: true },
-          { name: "Lab 5: Command Injection", weight: 4, time: "Week 5 - Week 6", done: false },
-          { name: "Lab 6: Local & Remote File Inclusion (LFI/RFI)", weight: 4, time: "Due Tomorrow (Nov 15 • 11:59 PM)", done: false },
-          { name: "Security Project: Proposal", weight: 5, time: "Week 7 - Week 8", done: true },
-          { name: "Research Project Submission", weight: 20, time: "Due Tomorrow (Nov 15 • 11:59 PM)", done: false },
-          { name: "Lab 7: Web Authentication Vulnerabilities", weight: 4, time: "Week 7 - Week 8", done: false },
-          { name: "Test 1 (Practical Exam)", weight: 15, time: "Week 8 or 9", done: true },
-          { name: "Lab 8: Broken Object-Level Authorization (BOLA)", weight: 4, time: "Week 8 - Week 9", done: false },
-          { name: "Lab 9: SSRF & CSRF Vulnerabilities", weight: 4, time: "Week 9 - Week 11", done: false },
-          { name: "Lab 10: Security Auditing & Reporting", weight: 4, time: "Week 11 - Week 13", done: false },
-          { name: "Test 2 (Practical Exam)", weight: 15, time: "Week 14", done: false },
-          { name: "Security Project: Presentation", weight: 5, time: "Week 14", done: false }
+          { id: "s307_1", name: "Lab 1: Linux Command-Line & Scripting", weight: 4, due: "Week 2", done: true },
+          { id: "s307_2", name: "Lab 2: Cross-Site Scripting (XSS)", weight: 4, due: "Week 3", done: true },
+          { id: "s307_3", name: "Lab 3: SQL Injection", weight: 4, due: "Week 4", done: true },
+          { id: "s307_4", name: "Lab 4: Insecure Direct Object References (IDOR)", weight: 4, due: "Week 5", done: true },
+          { id: "s307_5", name: "Lab 5: Command Injection", weight: 4, due: "Week 6 (Review)", done: false },
+          { id: "s307_6", name: "Lab 6: Local & Remote File Inclusion (LFI/RFI)", weight: 4, due: "Sunday, Nov 15 • 11:59 PM", done: false, urgent: true },
+          { id: "s307_7", name: "Security Project: Proposal", weight: 5, due: "Week 8", done: true },
+          { id: "s307_8", name: "Research Project Submission", weight: 20, due: "Sunday, Nov 15 • 11:59 PM", done: false, urgent: true },
+          { id: "s307_9", name: "Lab 7: Web Authentication Vulnerabilities", weight: 4, due: "Week 8", done: false },
+          { id: "s307_10", name: "Test 1 (Practical Exam)", weight: 15, due: "Week 8 or 9", done: true },
+          { id: "s307_11", name: "Lab 8: Broken Object-Level Authorization (BOLA)", weight: 4, due: "Week 9", done: false },
+          { id: "s307_12", name: "Lab 9: SSRF & CSRF Vulnerabilities", weight: 4, due: "Week 11", done: false },
+          { id: "s307_13", name: "Lab 10: Security Auditing & Reporting", weight: 4, due: "Week 13", done: false },
+          { id: "s307_14", name: "Test 2 (Practical Exam)", weight: 15, due: "Week 14", done: false },
+          { id: "s307_15", name: "Security Project: Presentation", weight: 5, due: "Week 14", done: false }
         ]
       },
       {
-        id: "comp306",
-        code: "COMP306",
-        name: "API Engineering & Cloud Computing",
-        instructor: "Multiple Instructors",
-        crn: "COMP306002.91939.2026F",
+        id: "comp303",
+        code: "COMP303",
+        name: "Enterprise Application Development",
+        instructor: "Dr. Vinay Vaithilingam",
+        crn: "COMP303002.91940.2026F",
+        expanded: true,
         items: [
-          { name: "Lab 1: AWS S3", weight: 10, time: "Week 2 - Week 3", done: true },
-          { name: "Lab 2: AWS DynamoDB", weight: 10, time: "Week 3 - Week 5", done: true },
-          { name: "Lab 3: Data-driven Web App", weight: 15, time: "Week 5 - Week 7", done: true },
-          { name: "Test 1: Weeks 1-6 Materials (Open Book)", weight: 20, time: "Week 8 or 9", done: true },
-          { name: "Group Project: Proposal", weight: 5, time: "Week 8", done: true },
-          { name: "Group Project: Implementation & Doc", weight: 15, time: "Due Friday, Nov 27 • 11:59 PM", done: false },
-          { name: "Group Project: Presentation & Report", weight: 5, time: "Due Friday, Dec 4 • 11:59 PM", done: false },
-          { name: "Lab 4: Serverless Apps with AWS Step Functions", weight: 15, time: "Week 12 - Week 14", done: false },
-          { name: "Cloud Services Responsible Usage", weight: 5, time: "Week 14", done: false }
+          { id: "s303_1", name: "Lab Exercise 1", weight: 5, due: "Week 4", done: true },
+          { id: "s303_2", name: "Lab Exercise 2", weight: 5, due: "Week 6", done: true },
+          { id: "s303_3", name: "Midterm Test 1 (Practical Open-Book)", weight: 20, due: "Week 8", done: true },
+          { id: "s303_4", name: "Lab Exercise 3", weight: 5, due: "Week 9", done: true },
+          { id: "s303_5", name: "Term Project: Part 1 - Design", weight: 10, due: "Week 8", done: true },
+          { id: "s303_6", name: "Assignment 3: Developing Spring Boot REST App", weight: 10, due: "Tuesday, Nov 17 • 11:59 PM", done: false, urgent: true },
+          { id: "s303_7", name: "Lab Exercise 4", weight: 5, due: "Week 11", done: false },
+          { id: "s303_8", name: "Term Project: Part 2 - Implementation", weight: 20, due: "Week 12", done: false },
+          { id: "s303_9", name: "Final Test 2 (Practical Open-Book)", weight: 20, due: "Week 13", done: false },
+          { id: "s303_10", name: "Term Project: Part 3 - Presentation", weight: 5, due: "Week 14", done: false },
+          { id: "s303_11", name: "Cloud Services Usage (Responsible Use)", weight: 5, due: "Week 14", done: false }
         ]
       },
       {
         id: "comp309",
         code: "COMP309",
-        name: "Data Warehousing & Predictive Analytics / AI",
+        name: "Data Warehousing & Predictive Analytics",
         instructor: "Vijayalakshmi Tiruchengode Angamuthu",
         crn: "COMP309002.91946.2026F",
+        expanded: false,
         items: [
-          { name: "Lab Assignment 1", weight: 5, time: "Week 2 - Week 3", done: true },
-          { name: "Term Project: Proposal (Groups of 2-3)", weight: 5, time: "Week 3 - Week 5", done: true },
-          { name: "Lab Assignment 2", weight: 5, time: "Week 4 - Week 6", done: true },
-          { name: "Midterm Exam (Theory & Coding)", weight: 20, time: "Week 7 or 8", done: true },
-          { name: "Term Project: Midterm Progress Report", weight: 10, time: "Week 7 - Week 9", done: true },
-          { name: "COMP 309 Analytics Project (10%)", weight: 10, time: "Due Wednesday, Nov 18 • 8:30 AM", done: false },
-          { name: "Lab Assignment 3", weight: 5, time: "Week 8 - Week 10", done: false },
-          { name: "Lab Assignment 4", weight: 5, time: "Week 11 - Week 13", done: false },
-          { name: "Term Project: Final Report & Code", weight: 15, time: "Week 10 - Week 13", done: false },
-          { name: "Final Exam / Project Presentation", weight: 30, time: "Week 13 - Week 14", done: false }
+          { id: "s309_1", name: "Lab Assignment 1", weight: 5, due: "Week 3", done: true },
+          { id: "s309_2", name: "Term Project: Proposal (Groups of 2-3)", weight: 5, due: "Week 5", done: true },
+          { id: "s309_3", name: "Lab Assignment 2", weight: 5, due: "Week 6", done: true },
+          { id: "s309_4", name: "Midterm Exam (Theory & Practical Coding)", weight: 20, due: "Week 8", done: true },
+          { id: "s309_5", name: "Term Project: Midterm Progress Report", weight: 10, due: "Week 9", done: true },
+          { id: "s309_6", name: "COMP 309 Analytics Project (10%)", weight: 10, due: "Wednesday, Nov 18 • 8:30 AM", done: false, urgent: true },
+          { id: "s309_7", name: "Lab Assignment 3", weight: 5, due: "Week 10", done: false },
+          { id: "s309_8", name: "Lab Assignment 4", weight: 5, due: "Week 13", done: false },
+          { id: "s309_9", name: "Term Project: Final Report & Code", weight: 15, due: "Week 13", done: false },
+          { id: "s309_10", name: "Final Exam / Project Presentation", weight: 30, due: "Week 14", done: false }
         ]
       },
       {
@@ -247,16 +289,36 @@
         name: "Software Development Project 1",
         instructor: "Jin Li",
         crn: "COMP231002.91942.2026F",
+        expanded: false,
         items: [
-          { name: "Project Charter & Proposal (Group)", weight: 10, time: "Week 1 - Week 3", done: true },
-          { name: "Requirements Specification Document (SRS)", weight: 15, time: "Week 3 - Week 5", done: true },
-          { name: "System Design & Architecture Document (SDD)", weight: 15, time: "Week 6 - Week 8", done: true },
-          { name: "Progress Monitoring (Iteration 1)", weight: 15, time: "Due Sunday, Nov 22 • 11:59 PM", done: false },
-          { name: "Iteration 2 Planning", weight: 5, time: "Due Sunday, Nov 29 • 11:59 PM", done: false },
-          { name: "Progress Monitoring (Iteration 2)", weight: 15, time: "Due Sunday, Dec 6 • 11:59 PM", done: false },
-          { name: "Software Release 1.0", weight: 15, time: "Due Sunday, Dec 13 • 11:59 PM", done: false },
-          { name: "Final Presentation & Demo", weight: 10, time: "Week 13 - Week 14", done: false },
-          { name: "TAC Technical Report & Peer Evaluation", weight: 5, time: "Due Friday, Dec 18 • 11:59 PM", done: false }
+          { id: "s231_1", name: "Project Charter & Proposal (Group)", weight: 10, due: "Week 3", done: true },
+          { id: "s231_2", name: "Requirements Specification Document (SRS)", weight: 15, due: "Week 5", done: true },
+          { id: "s231_3", name: "System Design & Architecture Document (SDD)", weight: 15, due: "Week 8", done: true },
+          { id: "s231_4", name: "Progress Monitoring (Iteration 1)", weight: 15, due: "Sunday, Nov 22 • 11:59 PM", done: false },
+          { id: "s231_5", name: "Iteration 2 Planning", weight: 5, due: "Sunday, Nov 29 • 11:59 PM", done: false },
+          { id: "s231_6", name: "Progress Monitoring (Iteration 2)", weight: 15, due: "Sunday, Dec 6 • 11:59 PM", done: false },
+          { id: "s231_7", name: "Software Release 1.0 Milestone", weight: 15, due: "Sunday, Dec 13 • 11:59 PM", done: false },
+          { id: "s231_8", name: "Final Presentation & Demo", weight: 10, due: "Week 14", done: false },
+          { id: "s231_9", name: "TAC Technical Report & Peer Evaluation", weight: 5, due: "Friday, Dec 18 • 11:59 PM", done: false }
+        ]
+      },
+      {
+        id: "comp306",
+        code: "COMP306",
+        name: "API Engineering & Cloud Computing",
+        instructor: "Multiple Instructors",
+        crn: "COMP306002.91939.2026F",
+        expanded: false,
+        items: [
+          { id: "s306_1", name: "Lab 1: AWS S3", weight: 10, due: "Week 3", done: true },
+          { id: "s306_2", name: "Lab 2: AWS DynamoDB", weight: 10, due: "Week 5", done: true },
+          { id: "s306_3", name: "Lab 3: Data-driven Web App", weight: 15, due: "Week 7", done: true },
+          { id: "s306_4", name: "Test 1: Weeks 1-6 Materials (Open Book)", weight: 20, due: "Week 9", done: true },
+          { id: "s306_5", name: "Group Project: Proposal", weight: 5, due: "Week 8", done: true },
+          { id: "s306_6", name: "Group Project: Implementation & Doc", weight: 15, due: "Friday, Nov 27 • 11:59 PM", done: false },
+          { id: "s306_7", name: "Group Project: Presentation & Report", weight: 5, due: "Friday, Dec 4 • 11:59 PM", done: false },
+          { id: "s306_8", name: "Lab 4: Serverless Apps with AWS Step Functions", weight: 15, due: "Week 14", done: false },
+          { id: "s306_9", name: "Cloud Services Responsible Usage", weight: 5, due: "Week 14", done: false }
         ]
       },
       {
@@ -265,88 +327,123 @@
         name: "Business & Entrepreneurship - SET",
         instructor: "Jean-Luc David",
         crn: "COMP255003.91896.2026F",
+        expanded: false,
         items: [
-          { name: "Discussion 1", weight: 5, time: "Week 2 - Week 4", done: true },
-          { name: "Group Assignment 1: Business Model Canvas", weight: 10, time: "Week 2 - Week 4", done: true },
-          { name: "Group Assignment 2: Marketing & Customer Analysis", weight: 10, time: "Week 5 - Week 7", done: true },
-          { name: "Midterm Test (Weeks 1-6)", weight: 15, time: "Week 7", done: true },
-          { name: "Discussion 2", weight: 5, time: "Week 7 - Week 9", done: false },
-          { name: "Group Assignment 3: Operations & Legal Structure", weight: 10, time: "Week 9 - Week 11", done: false },
-          { name: "Discussion 3", weight: 5, time: "Week 10 - Week 12", done: false },
-          { name: "Group Assignment 4: Finance & Funding Plan", weight: 10, time: "Week 11 - Week 13", done: false },
-          { name: "Group Assignment 5: Pitch Presentation", weight: 10, time: "Week 12 - Week 14", done: false },
-          { name: "Final Test (Weeks 7-13)", weight: 20, time: "Week 14", done: false }
+          { id: "s255_1", name: "Discussion 1", weight: 5, due: "Week 4", done: true },
+          { id: "s255_2", name: "Group Assignment 1: Business Model Canvas", weight: 10, due: "Week 4", done: true },
+          { id: "s255_3", name: "Group Assignment 2: Marketing & Customer Analysis", weight: 10, due: "Week 7", done: true },
+          { id: "s255_4", name: "Midterm Test (Weeks 1-6)", weight: 15, due: "Week 7", done: true },
+          { id: "s255_5", name: "Discussion 2", weight: 5, due: "Week 9", done: false },
+          { id: "s255_6", name: "Group Assignment 3: Operations & Legal Structure", weight: 10, due: "Week 11", done: false },
+          { id: "s255_7", name: "Discussion 3", weight: 5, due: "Week 12", done: false },
+          { id: "s255_8", name: "Group Assignment 4: Finance & Funding Plan", weight: 10, due: "Week 13", done: false },
+          { id: "s255_9", name: "Group Assignment 5: Pitch Presentation", weight: 10, due: "Week 14", done: false },
+          { id: "s255_10", name: "Final Test (Weeks 7-13)", weight: 20, due: "Friday, Dec 18 • 11:59 PM", done: false }
         ]
       }
     ];
 
-    let outlines = JSON.parse(localStorage.getItem('centennial_outlines_v1') || 'null') || courseOutlines;
+    let currentFilter = 'all';
+    let data = JSON.parse(localStorage.getItem('centennial_pro_v3') || 'null') || syllabusData;
 
-    function saveOutlineState() {
-      localStorage.setItem('centennial_outlines_v1', JSON.stringify(outlines));
-      renderOutlines();
+    function save() {
+      localStorage.setItem('centennial_pro_v3', JSON.stringify(data));
+      render();
     }
 
-    function toggleItem(cIdx, iIdx) {
-      outlines[cIdx].items[iIdx].done = !outlines[cIdx].items[iIdx].done;
-      saveOutlineState();
+    function toggleExpand(cIdx) {
+      data[cIdx].expanded = !data[cIdx].expanded;
+      render();
     }
 
-    function renderOutlines() {
-      const container = document.getElementById('courses-outline-container');
-      const sidebarNav = document.getElementById('course-sidebar-list');
+    function expandAll(state) {
+      data.forEach(c => c.expanded = state);
+      render();
+    }
+
+    function toggleCheck(cIdx, iIdx) {
+      data[cIdx].items[iIdx].done = !data[cIdx].items[iIdx].done;
+      save();
+    }
+
+    function setFilter(f) {
+      currentFilter = f;
+      ['all', 'pending', 'completed'].forEach(id => {
+        const btn = document.getElementById('filter-' + id);
+        if (id === f) {
+          btn.className = 'px-2 py-0.5 rounded font-medium tab-active transition';
+        } else {
+          btn.className = 'px-2 py-0.5 rounded font-medium text-app-muted hover:text-white transition';
+        }
+      });
+      render();
+    }
+
+    function render() {
+      const container = document.getElementById('course-accordion-list');
+      const sideNav = document.getElementById('sidebar-course-nav');
       container.innerHTML = '';
-      sidebarNav.innerHTML = '';
+      sideNav.innerHTML = '';
 
       let grandTotalWeight = 0;
-      let grandCompletedWeight = 0;
-      let totalDeliverables = 0;
+      let grandDoneWeight = 0;
 
-      outlines.forEach((c, cIdx) => {
-        let courseWeight = 0;
-        let courseDoneWeight = 0;
+      data.forEach((c, cIdx) => {
+        let cTotalWeight = 0;
+        let cDoneWeight = 0;
 
         c.items.forEach(item => {
-          courseWeight += item.weight;
-          if (item.done) courseDoneWeight += item.weight;
-          totalDeliverables++;
+          cTotalWeight += item.weight;
+          if (item.done) cDoneWeight += item.weight;
         });
 
-        grandTotalWeight += courseWeight;
-        grandCompletedWeight += courseDoneWeight;
-
-        const cPct = Math.round((courseDoneWeight / courseWeight) * 100);
+        grandTotalWeight += cTotalWeight;
+        grandDoneWeight += cDoneWeight;
 
         // Sidebar link
         const sb = document.createElement('a');
-        sb.href = `#${c.id}`;
-        sb.className = 'flex items-center justify-between px-2 py-1.5 rounded-md text-notion-muted hover:bg-notion-hover hover:text-gray-200 transition';
+        sb.href = `#c_${c.id}`;
+        sb.className = 'flex items-center justify-between px-2.5 py-1.5 rounded-md text-app-muted hover:bg-app-hover hover:text-white transition';
         sb.innerHTML = `
-          <span class="truncate font-medium">• ${c.code}</span>
-          <span class="font-mono text-[10px] text-indigo-400 font-semibold">${courseDoneWeight}%</span>
+          <span class="truncate">• ${c.code}</span>
+          <span class="font-mono text-[10px] text-accent-cyan">${cDoneWeight}%</span>
         `;
-        sidebarNav.appendChild(sb);
+        sideNav.appendChild(sb);
 
-        // Course Card
+        // Filter items
+        const visibleItems = c.items.filter(item => {
+          if (currentFilter === 'pending') return !item.done;
+          if (currentFilter === 'completed') return item.done;
+          return true;
+        });
+
+        if (visibleItems.length === 0 && currentFilter !== 'all') return;
+
+        // Card Accordion
         const card = document.createElement('div');
-        card.id = c.id;
-        card.className = 'p-4 rounded-xl bg-notion-card border border-notion-border space-y-3 shadow-md';
+        card.id = `c_${c.id}`;
+        card.className = 'rounded-xl bg-app-card border border-app-border overflow-hidden transition';
 
-        let rows = '';
-        c.items.forEach((item, iIdx) => {
-          rows += `
-            <div class="p-2.5 rounded-lg bg-notion-canvas border border-notion-border flex items-center justify-between gap-3 hover:border-notion-subtle transition">
+        let itemRows = '';
+        visibleItems.forEach((item) => {
+          const originalIdx = c.items.findIndex(x => x.id === item.id);
+          const badgeClass = item.done 
+            ? 'badge-done' 
+            : (item.urgent ? 'badge-urgent' : 'badge-later');
+
+          itemRows += `
+            <div class="px-4 py-2.5 border-t border-app-border flex items-center justify-between gap-3 hover:bg-app-hover/50 transition">
               <label class="flex items-center space-x-3 overflow-hidden cursor-pointer">
                 <input type="checkbox" ${item.done ? 'checked' : ''} 
-                       onchange="toggleItem(${cIdx}, ${iIdx})"
-                       class="w-4 h-4 rounded bg-notion-canvas border-notion-border text-indigo-600 focus:ring-0 cursor-pointer">
-                <span class="text-xs ${item.done ? 'line-through text-gray-500' : 'text-gray-200 font-medium'} truncate">
+                       onchange="toggleCheck(${cIdx}, ${originalIdx})"
+                       class="w-4 h-4 rounded bg-app-base border-app-border text-indigo-600 focus:ring-0 cursor-pointer">
+                <span class="text-xs ${item.done ? 'line-through text-app-muted' : 'text-gray-200 font-medium'} truncate">
                   ${item.name}
                 </span>
               </label>
-              <div class="flex items-center space-x-3 shrink-0">
-                <span class="text-[11px] font-mono text-notion-muted">${item.time}</span>
-                <span class="text-[10px] font-mono px-2 py-0.5 rounded font-bold ${item.done ? 'bg-emerald-950 text-emerald-300 border border-emerald-800/40' : 'bg-indigo-950 text-indigo-300 border border-indigo-800/40'}">
+              <div class="flex items-center space-x-2.5 shrink-0">
+                <span class="text-[11px] font-mono text-app-muted">${item.due}</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded font-bold ${badgeClass}">
                   ${item.weight}%
                 </span>
               </div>
@@ -355,34 +452,37 @@
         });
 
         card.innerHTML = `
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 hairline-b">
-            <div>
-              <div class="flex items-center space-x-2">
-                <span class="font-bold text-white text-sm">${c.code} — ${c.name}</span>
-                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800/40">${courseDoneWeight}% / 100%</span>
+          <div onclick="toggleExpand(${cIdx})" class="px-4 py-3 flex items-center justify-between cursor-pointer hover:bg-app-hover transition select-none">
+            <div class="flex items-center space-x-3">
+              <span class="text-xs text-app-muted font-mono">${c.expanded ? '▼' : '▶'}</span>
+              <div>
+                <span class="font-bold text-white text-xs tracking-tight">${c.code} — ${c.name}</span>
+                <span class="text-[11px] text-app-muted ml-2">(${c.instructor})</span>
               </div>
-              <p class="text-[11px] text-notion-muted mt-0.5">Instructor: ${c.instructor} • CRN: ${c.crn}</p>
             </div>
-            <div class="flex items-center space-x-2">
-              <span class="font-mono text-xs text-indigo-400 font-bold">${cPct}%</span>
-              <div class="w-24 bg-notion-canvas h-2 rounded-full overflow-hidden border border-notion-border">
-                <div class="bg-indigo-500 h-full rounded-full transition-all duration-500" style="width: ${cPct}%"></div>
+            <div class="flex items-center space-x-3">
+              <div class="text-right">
+                <span class="font-mono text-xs text-accent-cyan font-bold">${cDoneWeight}%</span>
+                <span class="text-[10px] text-app-muted font-mono">/ 100%</span>
+              </div>
+              <div class="w-16 bg-app-base h-1.5 rounded-full overflow-hidden border border-app-border">
+                <div class="bg-indigo-500 h-full rounded-full" style="width: ${cDoneWeight}%"></div>
               </div>
             </div>
           </div>
-          <div class="space-y-1.5">
-            ${rows}
-          </div>
+          ${c.expanded ? `<div>${itemRows}</div>` : ''}
         `;
         container.appendChild(card);
       });
 
-      document.getElementById('stat-total').innerText = `${totalDeliverables} Items`;
-      document.getElementById('stat-weight').innerText = `${grandCompletedWeight}% / ${grandTotalWeight}%`;
-      document.getElementById('active-count-badge').innerText = `${grandCompletedWeight}% Done`;
+      // Update grand stats
+      const grandPct = Math.round((grandDoneWeight / grandTotalWeight) * 100);
+      document.getElementById('sidebar-grand-weight').innerText = `${grandDoneWeight}% / ${grandTotalWeight}%`;
+      document.getElementById('sidebar-progress-bar').style.width = `${grandPct}%`;
+      document.getElementById('hero-weight-pct').innerText = `${grandPct}% (${grandDoneWeight} pts)`;
     }
 
-    renderOutlines();
+    render();
   </script>
 </body>
 </html>
