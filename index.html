@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Personal Command Center — Notion OS</title>
+  <title>Centennial College Fall 2026 — Course Outlines & Deliverables</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -50,7 +50,6 @@
     .custom-scrollbar::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 9999px; }
     .hairline-b { border-bottom: 1px solid #1E293B; }
     .hairline-r { border-right: 1px solid #1E293B; }
-    .modal-backdrop { background-color: rgba(10, 13, 20, 0.85); backdrop-filter: blur(4px); }
   </style>
 </head>
 <body class="h-screen w-screen overflow-hidden flex antialiased select-none text-[13px]">
@@ -66,33 +65,20 @@
             C
           </div>
           <div class="overflow-hidden">
-            <span class="font-semibold text-white text-xs truncate block">Centennial Fall 2026</span>
-            <span class="text-[10px] text-notion-muted font-mono block">ID: 301390261</span>
+            <span class="font-semibold text-white text-xs truncate block">Centennial College</span>
+            <span class="text-[10px] text-notion-muted font-mono block">Student: 301390261</span>
           </div>
         </div>
         <span class="text-xs text-notion-muted">▾</span>
       </div>
 
-      <!-- Quick Actions -->
-      <div class="space-y-0.5 text-xs text-notion-muted">
-        <div onclick="openAddModal()" class="flex items-center space-x-2.5 px-2 py-1.5 rounded-md hover:bg-notion-hover hover:text-gray-200 cursor-pointer">
-          <span class="text-indigo-400 font-bold">+</span>
-          <span class="text-indigo-300 font-medium">New Assignment</span>
-        </div>
-        <div class="flex items-center space-x-2.5 px-2 py-1.5 rounded-md hover:bg-notion-hover hover:text-gray-200 cursor-pointer">
-          <span>📅</span>
-          <span>Due Dates Calendar</span>
-          <span class="ml-auto text-[10px] font-mono border border-notion-border px-1 rounded">Nov-Dec</span>
-        </div>
-      </div>
-
-      <!-- Notion Page Tree (6 Centennial Courses) -->
+      <!-- Quick Jump Links -->
       <div class="space-y-1 pt-1">
         <div class="px-2 text-[11px] font-semibold uppercase tracking-wider text-notion-muted/80 font-mono">
-          Enrolled Courses (6)
+          Course Outlines (6)
         </div>
         <nav id="course-sidebar-list" class="space-y-0.5 text-xs">
-          <!-- Dynamically populated courses -->
+          <!-- Dynamically populated -->
         </nav>
       </div>
 
@@ -103,9 +89,9 @@
       <div class="flex items-center justify-between px-2 py-1 text-[11px]">
         <span class="flex items-center space-x-1.5">
           <span class="w-2 h-2 rounded-full bg-accent-emerald animate-pulse"></span>
-          <span class="text-gray-300">Luminate Synced</span>
+          <span class="text-gray-300">Outlines Synced</span>
         </span>
-        <span id="active-count-badge" class="font-mono text-accent-cyan text-[10px]">11 Deadlines</span>
+        <span id="active-count-badge" class="font-mono text-accent-cyan text-[10px]">600% Total</span>
       </div>
     </div>
   </aside>
@@ -118,248 +104,228 @@
       <div class="flex items-center space-x-2">
         <span>Centennial Luminate</span>
         <span class="text-notion-border">/</span>
-        <span class="text-white font-medium">Fall 2026 Academic Course Tracker</span>
+        <span class="text-white font-medium">Fall 2026 Course Outlines & Grading Schemes</span>
       </div>
       <div class="flex items-center space-x-3">
-        <span id="overall-progress-pill" class="text-accent-cyan font-mono text-[11px] px-2 py-0.5 rounded bg-indigo-950/60 border border-indigo-800/40">
-          Semester: 25% Complete
+        <span id="overall-grade-pill" class="text-accent-cyan font-mono text-[11px] px-2.5 py-0.5 rounded bg-indigo-950/60 border border-indigo-800/40">
+          Evaluations: 6 Courses Synced
         </span>
-        <button onclick="openAddModal()" class="px-2.5 py-1 rounded bg-indigo-600 hover:bg-indigo-500 text-white font-medium text-xs transition">
-          + Add Assignment
-        </button>
       </div>
     </div>
 
     <!-- Centered Notion Page Container (max-w-4xl) -->
     <div class="max-w-4xl mx-auto px-8 py-7 space-y-7">
       
-      <!-- NOTION PAGE COVER & TITLE BLOCK -->
+      <!-- PAGE COVER & TITLE BLOCK -->
       <div class="space-y-4">
-        <div class="text-4xl select-none">🎓</div>
+        <div class="text-4xl select-none">📋</div>
 
         <div>
-          <h1 class="text-3xl font-bold text-white tracking-tight">Centennial College — Fall 2026 Tracker</h1>
+          <h1 class="text-3xl font-bold text-white tracking-tight">Complete Course Outlines & Grading Weights</h1>
           <p class="text-notion-muted text-sm mt-1">
-            Real-time syllabus, live assignment deadlines, and milestone submissions synced from Centennial Luminate.
+            Complete evaluation schemes, assignments, labs, term projects, practical tests, and grade weightings extracted from official Centennial syllabi.
           </p>
         </div>
 
         <!-- Notion Summary Stats Bar -->
         <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3.5 rounded-lg bg-notion-card border border-notion-border text-xs">
           <div>
-            <span class="text-notion-muted block text-[11px]">Enrolled Courses</span>
-            <span id="stat-courses" class="text-white font-bold text-sm">6 Courses</span>
+            <span class="text-notion-muted block text-[11px]">Total Deliverables</span>
+            <span id="stat-total" class="text-white font-bold text-sm">57 Items</span>
           </div>
           <div>
-            <span class="text-notion-muted block text-[11px]">Upcoming Deadlines</span>
-            <span id="stat-pending" class="text-accent-amber font-bold text-sm">11 Items</span>
+            <span class="text-notion-muted block text-[11px]">Completed Weight</span>
+            <span id="stat-weight" class="text-accent-emerald font-bold text-sm">0% / 600%</span>
           </div>
           <div>
-            <span class="text-notion-muted block text-[11px]">Urgent Due (Tomorrow)</span>
-            <span id="stat-urgent" class="text-accent-rose font-bold text-sm">COMP307 (2 Items)</span>
+            <span class="text-notion-muted block text-[11px]">Urgent Due Tomorrow</span>
+            <span class="text-accent-rose font-bold text-sm">COMP307 Lab 6 & Proj</span>
           </div>
           <div>
-            <span class="text-notion-muted block text-[11px]">Next Milestone</span>
-            <span id="stat-next" class="text-accent-cyan font-bold text-sm">Nov 17 (COMP303)</span>
-          </div>
-        </div>
-
-        <!-- Urgent Alert Banner -->
-        <div class="p-3.5 rounded-lg bg-rose-950/40 border border-rose-900/60 flex items-start space-x-3 text-xs">
-          <span class="text-base text-rose-400">⚠️</span>
-          <div class="space-y-0.5 text-gray-300">
-            <span class="font-bold text-white">Immediate Urgent Deadlines (Sunday, Nov 15 • 11:59 PM):</span>
-            <p class="text-gray-400">
-              <strong class="text-rose-300 font-mono">COMP307:</strong> Lab Assignment 6 & Research Project are due tomorrow night!
-            </p>
+            <span class="text-notion-muted block text-[11px]">Format</span>
+            <span class="text-accent-cyan font-bold text-sm">Practical / Open Book</span>
           </div>
         </div>
       </div>
 
       <!-- ════════════════════════════════════════════════════════════════════
-           COURSE CARDS & LIVE ASSIGNMENT CHECKLISTS (Synced from Luminate)
+           COURSE CARDS ACCORDIONS (All 6 Courses with exact weights & timelines)
            ════════════════════════════════════════════════════════════════════ -->
-      <div id="courses-container" class="space-y-4">
+      <div id="courses-outline-container" class="space-y-5">
         <!-- Rendered dynamically -->
       </div>
 
     </div>
   </main>
 
-  <!-- ─── ADD ASSIGNMENT MODAL ───────────────────────────────────────────── -->
-  <div id="add-modal" class="fixed inset-0 modal-backdrop hidden items-center justify-center p-4 z-50">
-    <div class="w-full max-w-md bg-notion-card border border-notion-border rounded-xl p-5 shadow-2xl space-y-4">
-      <div class="flex justify-between items-center pb-2 hairline-b">
-        <h3 class="font-bold text-white text-sm">Add New Assignment</h3>
-        <button onclick="closeAddModal()" class="text-notion-muted hover:text-white">✕</button>
-      </div>
-
-      <div class="space-y-3 text-xs">
-        <div>
-          <label class="block text-notion-muted mb-1">Course</label>
-          <select id="modal-course" class="w-full px-3 py-2 rounded-lg bg-notion-canvas border border-notion-border text-white focus:outline-none focus:border-indigo-500">
-            <option value="COMP307">COMP307: Software Security</option>
-            <option value="COMP303">COMP303: Enterprise Application Development</option>
-            <option value="COMP309">COMP309: Data Warehousing & Predictive Analytics</option>
-            <option value="COMP231">COMP231: Software Development Project 1</option>
-            <option value="COMP306">COMP306: API Engineering & Cloud Computing</option>
-            <option value="COMP255">COMP255: Business & Entrepreneurship</option>
-          </select>
-        </div>
-
-        <div>
-          <label class="block text-notion-muted mb-1">Assignment / Project Title</label>
-          <input type="text" id="modal-title" placeholder="e.g. Iteration 3 Demonstration" 
-                 class="w-full px-3 py-2 rounded-lg bg-notion-canvas border border-notion-border text-white focus:outline-none focus:border-indigo-500">
-        </div>
-
-        <div class="grid grid-cols-2 gap-2">
-          <div>
-            <label class="block text-notion-muted mb-1">Due Date</label>
-            <input type="text" id="modal-due" placeholder="e.g. Nov 22, 11:59 PM" 
-                   class="w-full px-3 py-2 rounded-lg bg-notion-canvas border border-notion-border text-white focus:outline-none focus:border-indigo-500">
-          </div>
-          <div>
-            <label class="block text-notion-muted mb-1">Urgency</label>
-            <select id="modal-urgency" class="w-full px-3 py-2 rounded-lg bg-notion-canvas border border-notion-border text-white focus:outline-none focus:border-indigo-500">
-              <option value="urgent">Urgent (Due 1-2 Days)</option>
-              <option value="upcoming">Upcoming (This Month)</option>
-              <option value="later">Later (December)</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      <div class="flex justify-end space-x-2 pt-2">
-        <button onclick="closeAddModal()" class="px-3 py-1.5 rounded-lg text-notion-muted hover:text-white">Cancel</button>
-        <button onclick="saveAssignment()" class="px-4 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-white font-semibold">Save Assignment</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- ─── CLIENT-SIDE STATE ENGINE (Preloaded with your real Luminate Courses) ── -->
   <script>
-    // Exact Centennial College Courses & Real Luminate Deadlines
-    const defaultData = [
+    const courseOutlines = [
       {
-        id: "c_comp307",
-        code: "COMP307",
-        name: "Software Security (Sec. 002)",
-        instructor: "Bindu Goel",
-        assignments: [
-          { id: "a_307_1", title: "Lab Assignment 6", due: "Sunday, Nov 15 • 11:59 PM", urgency: "urgent", done: false },
-          { id: "a_307_2", title: "Research Project Submission", due: "Sunday, Nov 15 • 11:59 PM", urgency: "urgent", done: false },
-          { id: "a_307_3", title: "Lab Assignment 5 (Review/Submit)", due: "Nov 8 (Overdue)", urgency: "urgent", done: false }
-        ]
-      },
-      {
-        id: "c_comp303",
+        id: "comp303",
         code: "COMP303",
-        name: "Enterprise Application Development (Sec. 001)",
+        name: "Enterprise Application Development",
         instructor: "Dr. Vinay Vaithilingam",
-        assignments: [
-          { id: "a_303_1", title: "Assignment 3: Spring Boot REST Application", due: "Tuesday, Nov 17 • 11:59 PM", urgency: "urgent", done: false },
-          { id: "a_303_2", title: "Lab Exercise 4 (Catch-up Review)", due: "Completed / Graded", urgency: "later", done: true }
+        crn: "COMP303002.91940.2026F",
+        items: [
+          { name: "Lab Exercise 1", weight: 5, time: "Week 2 - Week 4 (Friday midnight)", done: true },
+          { name: "Lab Exercise 2", weight: 5, time: "Week 4 - Week 6 (Friday midnight)", done: true },
+          { name: "Midterm Test 1 (Practical Open-Book)", weight: 20, time: "Week 7 or 8", done: true },
+          { name: "Lab Exercise 3", weight: 5, time: "Week 8 - Week 9 (Friday midnight)", done: true },
+          { name: "Term Project: Part 1 - Design", weight: 10, time: "Week 6 - Week 8 (Friday midnight)", done: true },
+          { name: "Assignment 3: Spring Boot REST App", weight: 10, time: "Due Tuesday, Nov 17 • 11:59 PM", done: false },
+          { name: "Lab Exercise 4", weight: 5, time: "Week 10 - Week 11 (Friday midnight)", done: false },
+          { name: "Term Project: Part 2 - Implementation", weight: 20, time: "Week 8 - Week 12 (Friday midnight)", done: false },
+          { name: "Final Test 2 (Practical Open-Book)", weight: 20, time: "Week 13", done: false },
+          { name: "Term Project: Part 3 - Presentation", weight: 5, time: "Week 13 - Week 14", done: false },
+          { name: "Cloud Services Usage (Responsible Use)", weight: 5, time: "All Semester - Week 14", done: false }
         ]
       },
       {
-        id: "c_comp309",
-        code: "COMP309",
-        name: "Data Warehousing & Predictive Analytics (Sec. 002)",
-        instructor: "Vijayalakshmi Tiruchengode Angamuthu",
-        assignments: [
-          { id: "a_309_1", title: "COMP 309 Analytics Project (10%)", due: "Wednesday, Nov 18 • 8:30 AM", urgency: "urgent", done: false }
+        id: "comp307",
+        code: "COMP307",
+        name: "Software Security",
+        instructor: "Bindu Goel",
+        crn: "COMP307002.91943.2026F",
+        items: [
+          { name: "Lab 1: Linux Command-Line & Scripting", weight: 4, time: "Week 1 - Week 2", done: true },
+          { name: "Lab 2: Cross-Site Scripting (XSS)", weight: 4, time: "Week 2 - Week 3", done: true },
+          { name: "Lab 3: SQL Injection", weight: 4, time: "Week 3 - Week 4", done: true },
+          { name: "Lab 4: Insecure Direct Object References (IDOR)", weight: 4, time: "Week 4 - Week 5", done: true },
+          { name: "Lab 5: Command Injection", weight: 4, time: "Week 5 - Week 6", done: false },
+          { name: "Lab 6: Local & Remote File Inclusion (LFI/RFI)", weight: 4, time: "Due Tomorrow (Nov 15 • 11:59 PM)", done: false },
+          { name: "Security Project: Proposal", weight: 5, time: "Week 7 - Week 8", done: true },
+          { name: "Research Project Submission", weight: 20, time: "Due Tomorrow (Nov 15 • 11:59 PM)", done: false },
+          { name: "Lab 7: Web Authentication Vulnerabilities", weight: 4, time: "Week 7 - Week 8", done: false },
+          { name: "Test 1 (Practical Exam)", weight: 15, time: "Week 8 or 9", done: true },
+          { name: "Lab 8: Broken Object-Level Authorization (BOLA)", weight: 4, time: "Week 8 - Week 9", done: false },
+          { name: "Lab 9: SSRF & CSRF Vulnerabilities", weight: 4, time: "Week 9 - Week 11", done: false },
+          { name: "Lab 10: Security Auditing & Reporting", weight: 4, time: "Week 11 - Week 13", done: false },
+          { name: "Test 2 (Practical Exam)", weight: 15, time: "Week 14", done: false },
+          { name: "Security Project: Presentation", weight: 5, time: "Week 14", done: false }
         ]
       },
       {
-        id: "c_comp231",
-        code: "COMP231",
-        name: "Software Development Project 1 (Sec. 002)",
-        instructor: "Jin Li",
-        assignments: [
-          { id: "a_231_1", title: "Progress Monitoring (Iteration 1)", due: "Sunday, Nov 22 • 11:59 PM", urgency: "upcoming", done: false },
-          { id: "a_231_2", title: "Iteration 2 Planning", due: "Sunday, Nov 29 • 11:59 PM", urgency: "upcoming", done: false },
-          { id: "a_231_3", title: "Progress Monitoring (Iteration 2)", due: "Sunday, Dec 6 • 11:59 PM", urgency: "later", done: false },
-          { id: "a_231_4", title: "Software Release 1.0 Milestone", due: "Sunday, Dec 13 • 11:59 PM", urgency: "later", done: false },
-          { id: "a_231_5", title: "TAC Technical Report & Peer Evaluation", due: "Friday, Dec 18 • 11:59 PM", urgency: "later", done: false }
-        ]
-      },
-      {
-        id: "c_comp306",
+        id: "comp306",
         code: "COMP306",
-        name: "API Engineering & Cloud Computing (Sec. 002)",
+        name: "API Engineering & Cloud Computing",
         instructor: "Multiple Instructors",
-        assignments: [
-          { id: "a_306_1", title: "Project Demo Implementation & Complementary Document", due: "Friday, Nov 27 • 11:59 PM", urgency: "upcoming", done: false },
-          { id: "a_306_2", title: "Final Project Presentation & Report", due: "Friday, Dec 4 • 11:59 PM", urgency: "later", done: false }
+        crn: "COMP306002.91939.2026F",
+        items: [
+          { name: "Lab 1: AWS S3", weight: 10, time: "Week 2 - Week 3", done: true },
+          { name: "Lab 2: AWS DynamoDB", weight: 10, time: "Week 3 - Week 5", done: true },
+          { name: "Lab 3: Data-driven Web App", weight: 15, time: "Week 5 - Week 7", done: true },
+          { name: "Test 1: Weeks 1-6 Materials (Open Book)", weight: 20, time: "Week 8 or 9", done: true },
+          { name: "Group Project: Proposal", weight: 5, time: "Week 8", done: true },
+          { name: "Group Project: Implementation & Doc", weight: 15, time: "Due Friday, Nov 27 • 11:59 PM", done: false },
+          { name: "Group Project: Presentation & Report", weight: 5, time: "Due Friday, Dec 4 • 11:59 PM", done: false },
+          { name: "Lab 4: Serverless Apps with AWS Step Functions", weight: 15, time: "Week 12 - Week 14", done: false },
+          { name: "Cloud Services Responsible Usage", weight: 5, time: "Week 14", done: false }
         ]
       },
       {
-        id: "c_comp255",
+        id: "comp309",
+        code: "COMP309",
+        name: "Data Warehousing & Predictive Analytics / AI",
+        instructor: "Vijayalakshmi Tiruchengode Angamuthu",
+        crn: "COMP309002.91946.2026F",
+        items: [
+          { name: "Lab Assignment 1", weight: 5, time: "Week 2 - Week 3", done: true },
+          { name: "Term Project: Proposal (Groups of 2-3)", weight: 5, time: "Week 3 - Week 5", done: true },
+          { name: "Lab Assignment 2", weight: 5, time: "Week 4 - Week 6", done: true },
+          { name: "Midterm Exam (Theory & Coding)", weight: 20, time: "Week 7 or 8", done: true },
+          { name: "Term Project: Midterm Progress Report", weight: 10, time: "Week 7 - Week 9", done: true },
+          { name: "COMP 309 Analytics Project (10%)", weight: 10, time: "Due Wednesday, Nov 18 • 8:30 AM", done: false },
+          { name: "Lab Assignment 3", weight: 5, time: "Week 8 - Week 10", done: false },
+          { name: "Lab Assignment 4", weight: 5, time: "Week 11 - Week 13", done: false },
+          { name: "Term Project: Final Report & Code", weight: 15, time: "Week 10 - Week 13", done: false },
+          { name: "Final Exam / Project Presentation", weight: 30, time: "Week 13 - Week 14", done: false }
+        ]
+      },
+      {
+        id: "comp231",
+        code: "COMP231",
+        name: "Software Development Project 1",
+        instructor: "Jin Li",
+        crn: "COMP231002.91942.2026F",
+        items: [
+          { name: "Project Charter & Proposal (Group)", weight: 10, time: "Week 1 - Week 3", done: true },
+          { name: "Requirements Specification Document (SRS)", weight: 15, time: "Week 3 - Week 5", done: true },
+          { name: "System Design & Architecture Document (SDD)", weight: 15, time: "Week 6 - Week 8", done: true },
+          { name: "Progress Monitoring (Iteration 1)", weight: 15, time: "Due Sunday, Nov 22 • 11:59 PM", done: false },
+          { name: "Iteration 2 Planning", weight: 5, time: "Due Sunday, Nov 29 • 11:59 PM", done: false },
+          { name: "Progress Monitoring (Iteration 2)", weight: 15, time: "Due Sunday, Dec 6 • 11:59 PM", done: false },
+          { name: "Software Release 1.0", weight: 15, time: "Due Sunday, Dec 13 • 11:59 PM", done: false },
+          { name: "Final Presentation & Demo", weight: 10, time: "Week 13 - Week 14", done: false },
+          { name: "TAC Technical Report & Peer Evaluation", weight: 5, time: "Due Friday, Dec 18 • 11:59 PM", done: false }
+        ]
+      },
+      {
+        id: "comp255",
         code: "COMP255",
-        name: "Business & Entrepreneurship - SET (Sec. 003)",
+        name: "Business & Entrepreneurship - SET",
         instructor: "Jean-Luc David",
-        assignments: [
-          { id: "a_255_1", title: "Weekly Discussion Questions Batch (Weeks 1 - 6)", due: "Friday, Dec 18 • 11:59 PM", urgency: "later", done: false },
-          { id: "a_255_2", title: "Weekly Discussion Questions Batch (Weeks 8 - 11)", due: "Friday, Dec 18 • 11:59 PM", urgency: "later", done: false }
+        crn: "COMP255003.91896.2026F",
+        items: [
+          { name: "Discussion 1", weight: 5, time: "Week 2 - Week 4", done: true },
+          { name: "Group Assignment 1: Business Model Canvas", weight: 10, time: "Week 2 - Week 4", done: true },
+          { name: "Group Assignment 2: Marketing & Customer Analysis", weight: 10, time: "Week 5 - Week 7", done: true },
+          { name: "Midterm Test (Weeks 1-6)", weight: 15, time: "Week 7", done: true },
+          { name: "Discussion 2", weight: 5, time: "Week 7 - Week 9", done: false },
+          { name: "Group Assignment 3: Operations & Legal Structure", weight: 10, time: "Week 9 - Week 11", done: false },
+          { name: "Discussion 3", weight: 5, time: "Week 10 - Week 12", done: false },
+          { name: "Group Assignment 4: Finance & Funding Plan", weight: 10, time: "Week 11 - Week 13", done: false },
+          { name: "Group Assignment 5: Pitch Presentation", weight: 10, time: "Week 12 - Week 14", done: false },
+          { name: "Final Test (Weeks 7-13)", weight: 20, time: "Week 14", done: false }
         ]
       }
     ];
 
-    let courses = JSON.parse(localStorage.getItem('centennial_courses_v2') || 'null') || defaultData;
+    let outlines = JSON.parse(localStorage.getItem('centennial_outlines_v1') || 'null') || courseOutlines;
 
-    function saveState() {
-      localStorage.setItem('centennial_courses_v2', JSON.stringify(courses));
-      render();
+    function saveOutlineState() {
+      localStorage.setItem('centennial_outlines_v1', JSON.stringify(outlines));
+      renderOutlines();
     }
 
-    function toggleDone(courseId, assignmentId) {
-      const course = courses.find(c => c.id === courseId);
-      if (course) {
-        const item = course.assignments.find(a => a.id === assignmentId);
-        if (item) {
-          item.done = !item.done;
-          saveState();
-        }
-      }
+    function toggleItem(cIdx, iIdx) {
+      outlines[cIdx].items[iIdx].done = !outlines[cIdx].items[iIdx].done;
+      saveOutlineState();
     }
 
-    function deleteAssignment(courseId, assignmentId) {
-      const course = courses.find(c => c.id === courseId);
-      if (course) {
-        course.assignments = course.assignments.filter(a => a.id !== assignmentId);
-        saveState();
-      }
-    }
-
-    function render() {
-      const container = document.getElementById('courses-container');
+    function renderOutlines() {
+      const container = document.getElementById('courses-outline-container');
       const sidebarNav = document.getElementById('course-sidebar-list');
       container.innerHTML = '';
       sidebarNav.innerHTML = '';
 
-      let totalTasks = 0;
-      let completedTasks = 0;
-      let pendingCount = 0;
+      let grandTotalWeight = 0;
+      let grandCompletedWeight = 0;
+      let totalDeliverables = 0;
 
-      courses.forEach(c => {
-        const cTotal = c.assignments.length;
-        const cDone = c.assignments.filter(a => a.done).length;
-        const cPct = cTotal === 0 ? 100 : Math.round((cDone / cTotal) * 100);
+      outlines.forEach((c, cIdx) => {
+        let courseWeight = 0;
+        let courseDoneWeight = 0;
 
-        totalTasks += cTotal;
-        completedTasks += cDone;
-        pendingCount += (cTotal - cDone);
+        c.items.forEach(item => {
+          courseWeight += item.weight;
+          if (item.done) courseDoneWeight += item.weight;
+          totalDeliverables++;
+        });
 
-        // Sidebar item
-        const sbItem = document.createElement('a');
-        sbItem.href = `#${c.id}`;
-        sbItem.className = 'flex items-center justify-between px-2 py-1.5 rounded-md text-notion-muted hover:bg-notion-hover hover:text-gray-200 transition';
-        sbItem.innerHTML = `
+        grandTotalWeight += courseWeight;
+        grandCompletedWeight += courseDoneWeight;
+
+        const cPct = Math.round((courseDoneWeight / courseWeight) * 100);
+
+        // Sidebar link
+        const sb = document.createElement('a');
+        sb.href = `#${c.id}`;
+        sb.className = 'flex items-center justify-between px-2 py-1.5 rounded-md text-notion-muted hover:bg-notion-hover hover:text-gray-200 transition';
+        sb.innerHTML = `
           <span class="truncate font-medium">• ${c.code}</span>
-          <span class="font-mono text-[10px] text-indigo-400 font-semibold">${cPct}%</span>
+          <span class="font-mono text-[10px] text-indigo-400 font-semibold">${courseDoneWeight}%</span>
         `;
-        sidebarNav.appendChild(sbItem);
+        sidebarNav.appendChild(sb);
 
         // Course Card
         const card = document.createElement('div');
@@ -367,24 +333,22 @@
         card.className = 'p-4 rounded-xl bg-notion-card border border-notion-border space-y-3 shadow-md';
 
         let rows = '';
-        c.assignments.forEach(a => {
-          const badgeClass = a.urgency === 'urgent' 
-            ? 'text-rose-400 font-semibold' 
-            : (a.urgency === 'upcoming' ? 'text-amber-400 font-medium' : 'text-notion-muted');
-
+        c.items.forEach((item, iIdx) => {
           rows += `
             <div class="p-2.5 rounded-lg bg-notion-canvas border border-notion-border flex items-center justify-between gap-3 hover:border-notion-subtle transition">
               <label class="flex items-center space-x-3 overflow-hidden cursor-pointer">
-                <input type="checkbox" ${a.done ? 'checked' : ''} 
-                       onchange="toggleDone('${c.id}', '${a.id}')"
+                <input type="checkbox" ${item.done ? 'checked' : ''} 
+                       onchange="toggleItem(${cIdx}, ${iIdx})"
                        class="w-4 h-4 rounded bg-notion-canvas border-notion-border text-indigo-600 focus:ring-0 cursor-pointer">
-                <span class="text-xs ${a.done ? 'line-through text-gray-500' : 'text-gray-200 font-medium'} truncate">
-                  ${a.title}
+                <span class="text-xs ${item.done ? 'line-through text-gray-500' : 'text-gray-200 font-medium'} truncate">
+                  ${item.name}
                 </span>
               </label>
               <div class="flex items-center space-x-3 shrink-0">
-                <span class="text-[11px] font-mono ${badgeClass}">${a.due}</span>
-                <button onclick="deleteAssignment('${c.id}', '${a.id}')" class="text-gray-600 hover:text-rose-400 text-xs">✕</button>
+                <span class="text-[11px] font-mono text-notion-muted">${item.time}</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded font-bold ${item.done ? 'bg-emerald-950 text-emerald-300 border border-emerald-800/40' : 'bg-indigo-950 text-indigo-300 border border-indigo-800/40'}">
+                  ${item.weight}%
+                </span>
               </div>
             </div>
           `;
@@ -395,9 +359,9 @@
             <div>
               <div class="flex items-center space-x-2">
                 <span class="font-bold text-white text-sm">${c.code} — ${c.name}</span>
-                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800/40">${cDone}/${cTotal} Submitted</span>
+                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800/40">${courseDoneWeight}% / 100%</span>
               </div>
-              <p class="text-[11px] text-notion-muted mt-0.5">Instructor: ${c.instructor}</p>
+              <p class="text-[11px] text-notion-muted mt-0.5">Instructor: ${c.instructor} • CRN: ${c.crn}</p>
             </div>
             <div class="flex items-center space-x-2">
               <span class="font-mono text-xs text-indigo-400 font-bold">${cPct}%</span>
@@ -407,56 +371,18 @@
             </div>
           </div>
           <div class="space-y-1.5">
-            ${rows || '<p class="text-gray-500 text-xs italic py-1">All tasks completed! 🎉</p>'}
+            ${rows}
           </div>
         `;
         container.appendChild(card);
       });
 
-      // Overall Progress
-      const overall = totalTasks === 0 ? 100 : Math.round((completedTasks / totalTasks) * 100);
-      document.getElementById('overall-progress-pill').innerText = `Semester: ${overall}% Complete`;
-      document.getElementById('stat-courses').innerText = `${courses.length} Courses`;
-      document.getElementById('stat-pending').innerText = `${pendingCount} Deadlines`;
-      document.getElementById('active-count-badge').innerText = `${pendingCount} Deadlines`;
+      document.getElementById('stat-total').innerText = `${totalDeliverables} Items`;
+      document.getElementById('stat-weight').innerText = `${grandCompletedWeight}% / ${grandTotalWeight}%`;
+      document.getElementById('active-count-badge').innerText = `${grandCompletedWeight}% Done`;
     }
 
-    // Modal controls
-    function openAddModal() {
-      document.getElementById('add-modal').classList.remove('hidden');
-      document.getElementById('add-modal').classList.add('flex');
-    }
-    function closeAddModal() {
-      document.getElementById('add-modal').classList.add('hidden');
-      document.getElementById('add-modal').classList.remove('flex');
-    }
-
-    function saveAssignment() {
-      const code = document.getElementById('modal-course').value;
-      const title = document.getElementById('modal-title').value.trim();
-      const due = document.getElementById('modal-due').value.trim() || 'TBD';
-      const urgency = document.getElementById('modal-urgency').value;
-
-      if (!title) return alert('Please enter a title');
-
-      const target = courses.find(c => c.code === code);
-      if (target) {
-        target.assignments.push({
-          id: 'a_' + Date.now(),
-          title,
-          due,
-          urgency,
-          done: false
-        });
-      }
-
-      closeAddModal();
-      document.getElementById('modal-title').value = '';
-      document.getElementById('modal-due').value = '';
-      saveState();
-    }
-
-    render();
+    renderOutlines();
   </script>
 </body>
 </html>
