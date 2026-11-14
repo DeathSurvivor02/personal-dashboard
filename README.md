@@ -69,7 +69,7 @@ App Layout Shell
 ### 6. Wordle Mini-App
 * Built-in lightweight daily 5-letter word game with streak counters, score distribution, and local history.
 
-### 7. ⏱️ Focus & Daily Utilities
+### 7. Focus & Daily Utilities
 * **Pomodoro Timer:** Preset work/break sessions with sound alerts.
 * **Quick Scratchpad (`Ctrl/Cmd + K`):** Instant modal for fleeting ideas and POS terminal notes.
 * **Weather & Status Indicator:** Current local conditions and user activity status.
