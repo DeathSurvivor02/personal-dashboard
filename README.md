@@ -7,7 +7,7 @@ A unified, modular command center built for developers, STEM students, and engin
 
 ---
 
-## 🧭 System Architecture & Layout
+## System Architecture & Layout
 
 ```text
 App Layout Shell
@@ -35,20 +35,20 @@ App Layout Shell
 
 ---
 
-## 🚀 Core Modules & Features
+## Core Modules & Features
 
-### 1. 💼 Work Task Management — YM Inc. POS Support
+### 1. Work Task Management — YM Inc. POS Support
 * **Tailored POS Lifecycle:** Support tickets, terminal configurations, hardware provisioning, API integration checkpoints, and client rollout.
 * **Severity Matrix:** P0 (Store Blocker / Outage) to P3 (General inquiry).
-* **Kanban Board:** Backlog ➔ Investigating ➔ Testing ➔ Deployed / Resolved.
+* **Kanban Board:** Backlog -> Investigating -> Testing -> Deployed / Resolved.
 * **Incident Log / Quick Pad:** Fast scratchpad for store IDs, terminal serials, and phone notes.
 
-### 2. 📚 School Assignment & Course Progress Tracker
+### 2. School Assignment & Course Progress Tracker
 * **Course Organization:** Course-based grouping (e.g. CS-401, MATH-310).
 * **Visual Progress:** Dynamic progress bars (`% completed`) reflecting submitted vs. pending assignments.
 * **Urgency Alerts:** *Due Today*, *Upcoming (2-3 days)*, *Later*.
 
-### 3. 🔬 Personal Projects & R&D Hub (Simulations & Side Projects)
+### 3. Personal Projects & R&D Hub (Simulations & Side Projects)
 * **Project Concept & Architecture Cards:** Track technical experiments, indie builds, and simulation ideas.
 * **Engineering & Optimization Strategies:**
   * *Featured Example — **Neutron Star Simulation**:*
@@ -58,15 +58,15 @@ App Layout Shell
     * **Status:** Taking notes on options; specific strategies to be decided during development.
 * **Tech Stack & Tags:** Easily categorize by languages/frameworks (WebGPU, Rust, C++, Three.js, Python).
 
-### 4. 🐙 GitHub Activity & PR Monitor
+### 4. GitHub Activity & PR Monitor
 * **Pull Requests:** Reviews pending your action, authored PRs, and CI check indicators.
 * **Active Repositories:** Fast view of pinned repositories, star counts, open issues, and recent commits.
 
-### 5. ♟️ Chess.com Widget
+### 5. Chess.com Widget
 * **Daily Puzzle:** Auto-fetches the daily puzzle with interactive solving or board preview.
 * **Ongoing Games:** Real-time tracking of active games, current move turns, clock timers, and opponent stats.
 
-### 6. 🟩 Wordle Mini-App
+### 6. Wordle Mini-App
 * Built-in lightweight daily 5-letter word game with streak counters, score distribution, and local history.
 
 ### 7. ⏱️ Focus & Daily Utilities
@@ -76,21 +76,21 @@ App Layout Shell
 
 ---
 
-## 📋 Software Development Life Cycle (SDLC)
+## Software Development Life Cycle (SDLC)
 
 This project strictly adheres to an **Agile / Incremental SDLC Model**:
 
 | Phase | Description | Deliverables | Status |
 | :--- | :--- | :--- | :--- |
-| **Phase 1: Requirements** | Functional & non-functional requirements engineering, user stories, and acceptance criteria. | User Stories & Functional Spec | ✅ Completed |
-| **Phase 2: Design** | Component hierarchy, data schemas, UI wireframing, and tech stack selection. | [SDLC Spec Document](sdlc_specification.md) | ✅ Completed |
-| **Phase 3: Implementation** | Sprint-based feature development (Frontend, API layers, local persistence). | Codebase & Components | ⏳ Ready to Start (Sprint 0) |
-| **Phase 4: Testing & QA** | Unit testing, component tests, API integration tests, and E2E flows. | Vitest / RTL / Playwright suites | 📋 Planned |
-| **Phase 5: Deployment & CI** | Automated GitHub Actions CI/CD pipeline, build verification, and hosting. | Production deployment | 📋 Planned |
+| **Phase 1: Requirements** | Functional & non-functional requirements engineering, user stories, and acceptance criteria. | User Stories & Functional Spec | Completed - Completed |
+| **Phase 2: Design** | Component hierarchy, data schemas, UI wireframing, and tech stack selection. | [SDLC Spec Document](sdlc_specification.md) | Completed - Completed |
+| **Phase 3: Implementation** | Sprint-based feature development (Frontend, API layers, local persistence). | Codebase & Components | Ready - Ready to Start (Sprint 0) |
+| **Phase 4: Testing & QA** | Unit testing, component tests, API integration tests, and E2E flows. | Vitest / RTL / Playwright suites | Planned |
+| **Phase 5: Deployment & CI** | Automated GitHub Actions CI/CD pipeline, build verification, and hosting. | Production deployment | Planned |
 
 ---
 
-## 🛠️ Technology Stack (Rust-Powered)
+## Technology Stack (Rust-Powered)
 
 | Layer | Choice | Rationale |
 | :--- | :--- | :--- |
@@ -102,7 +102,7 @@ This project strictly adheres to an **Agile / Incremental SDLC Model**:
 
 ---
 
-## 🗺️ Sprint Implementation Plan
+## Sprint Implementation Plan
 - [x] **Phase 1 & 2: SDLC Requirements & Architectural Design**
 - [ ] **Sprint 0: Scaffolding & App Shell** (Sidebar, Top bar, Theme, Grid)
 - [ ] **Sprint 1: Productivity Modules** (YM Inc. POS Support + School Tracker)

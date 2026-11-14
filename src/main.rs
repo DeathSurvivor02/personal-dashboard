@@ -68,7 +68,7 @@ fn App() -> Element {
                     div { class: "space-y-3",
                         div { class: "flex items-center justify-between",
                             div { class: "flex items-center space-x-2",
-                                span { "💼" }
+                                span { "" }
                                 h3 { class: "font-semibold text-gray-200", "YM Inc. POS Support" }
                             }
                             span { class: "text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800/40", "3 Active" }
@@ -109,7 +109,7 @@ fn App() -> Element {
                     div { class: "space-y-3 pt-2",
                         div { class: "flex items-center justify-between",
                             div { class: "flex items-center space-x-2",
-                                span { "📚" }
+                                span { "" }
                                 h3 { class: "font-semibold text-gray-200", "Academic Course Progress" }
                             }
                             span { class: "text-[10px] font-mono text-gray-400", "Fall 2026" }
@@ -157,7 +157,7 @@ fn App() -> Element {
                         div { class: "flex items-center justify-between pb-2 border-b border-[#1E293B]",
                             div {
                                 div { class: "flex items-center space-x-2",
-                                    span { "🔬" }
+                                    span { "" }
                                     h3 { class: "font-bold text-white text-sm", "Neutron Star Simulation" }
                                     span { class: "text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800/40", "Active R&D" }
                                 }
@@ -179,19 +179,19 @@ fn App() -> Element {
 
                             div { class: "grid grid-cols-1 md:grid-cols-3 gap-2",
                                 StrategyCard {
-                                    title: "⏳ Fixed Step",
+                                    title: "Ready - Fixed Step",
                                     badge: "Decided",
                                     badge_class: "bg-emerald-950 text-emerald-300 border-emerald-800/40",
                                     desc: "Decouple physics calculations from frame rate."
                                 }
                                 StrategyCard {
-                                    title: "⚡ Multi-thread",
+                                    title: "Multi-thread",
                                     badge: "Planning",
                                     badge_class: "bg-amber-950 text-amber-300 border-amber-800/40",
                                     desc: "Offload heavy computations to worker threads."
                                 }
                                 StrategyCard {
-                                    title: "📐 Approx.",
+                                    title: "Approx.",
                                     badge: "Evaluating",
                                     badge_class: "bg-indigo-950 text-indigo-300 border-indigo-800/40",
                                     desc: "Use simplified models where high detail isn't critical."
@@ -206,7 +206,7 @@ fn App() -> Element {
                         // GitHub Card
                         div { class: "p-3 rounded-xl bg-[#0E131F] border border-[#1E293B] space-y-2",
                             div { class: "flex justify-between items-center pb-1.5 border-b border-[#1E293B]",
-                                span { class: "font-semibold text-white text-xs", "🐙 GitHub" }
+                                span { class: "font-semibold text-white text-xs", "GitHub" }
                                 span { class: "text-[10px] font-mono text-sky-400", "@DeathSurvivor02" }
                             }
                             div { class: "space-y-1.5 text-[11px]",
@@ -224,7 +224,7 @@ fn App() -> Element {
                         // Chess.com Card
                         div { class: "p-3 rounded-xl bg-[#0E131F] border border-[#1E293B] space-y-2",
                             div { class: "flex justify-between items-center pb-1.5 border-b border-[#1E293B]",
-                                span { class: "font-semibold text-white text-xs", "♟️ Chess.com" }
+                                span { class: "font-semibold text-white text-xs", "Chess.com" }
                                 span { class: "text-[10px] font-mono px-1.5 py-0.2 rounded bg-emerald-950 text-emerald-300", "Your Turn" }
                             }
                             div { class: "p-2 rounded bg-[#121826] border border-[#1E293B] flex justify-between items-center",
@@ -239,8 +239,8 @@ fn App() -> Element {
                         // Wordle Card
                         div { class: "p-3 rounded-xl bg-[#0E131F] border border-[#1E293B] space-y-2",
                             div { class: "flex justify-between items-center pb-1.5 border-b border-[#1E293B]",
-                                span { class: "font-semibold text-white text-xs", "🟩 Daily Wordle" }
-                                span { class: "text-[10px] font-mono text-indigo-400", "Streak: 14 🔥" }
+                                span { class: "font-semibold text-white text-xs", "Daily Wordle" }
+                                span { class: "text-[10px] font-mono text-indigo-400", "Streak: 14 " }
                             }
                             div { class: "flex justify-center space-x-1 pt-1",
                                 div { class: "w-6 h-6 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs", "R" }

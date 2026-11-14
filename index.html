@@ -77,7 +77,7 @@
           <span class="text-indigo-300 font-medium">New Assignment</span>
         </div>
         <div class="flex items-center space-x-2.5 px-2 py-1.5 rounded-md hover:bg-notion-hover hover:text-gray-200 cursor-pointer">
-          <span>🔍</span>
+          <span></span>
           <span>Quick Find</span>
           <span class="ml-auto text-[10px] font-mono border border-notion-border px-1 rounded">⌘K</span>
         </div>
@@ -115,7 +115,7 @@
       <div class="flex items-center space-x-2">
         <span>Workspace</span>
         <span class="text-notion-border">/</span>
-        <span class="text-white font-medium">📚 Academic Course Tracker & Deadlines</span>
+        <span class="text-white font-medium">Academic Course Tracker & Deadlines</span>
       </div>
       <div class="flex items-center space-x-3">
         <span id="overall-progress-pill" class="text-accent-cyan font-mono text-[11px] px-2 py-0.5 rounded bg-indigo-950/60 border border-indigo-800/40">
@@ -132,7 +132,7 @@
       
       <!-- NOTION PAGE COVER & TITLE BLOCK -->
       <div class="space-y-4">
-        <div class="text-4xl select-none">📚</div>
+        <div class="text-4xl select-none"></div>
 
         <div>
           <h1 class="text-3xl font-bold text-white tracking-tight">Academic Course Tracker</h1>
@@ -175,14 +175,14 @@
       <div class="pt-6 hairline-t space-y-4">
         <div class="flex items-center justify-between text-xs text-notion-muted font-mono uppercase tracking-wider">
           <span>Other Workspace Sections (Upcoming in Pipeline)</span>
-          <span>Order: B ➔ D ➔ C ➔ A</span>
+          <span>Order: B -> D -> C -> A</span>
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
           <!-- D: Recreation -->
           <div class="p-3.5 rounded-lg bg-notion-card border border-notion-border space-y-2 opacity-80">
             <div class="flex justify-between items-center">
-              <span class="font-semibold text-white">♟️ Step 2 (D): Recreation</span>
+              <span class="font-semibold text-white">Step 2 (D): Recreation</span>
               <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-indigo-950 text-indigo-300">Next Up</span>
             </div>
             <p class="text-notion-muted text-[11px]">Chess.com API live puzzle solver + interactive Wordle keyboard game.</p>
@@ -191,7 +191,7 @@
           <!-- C: Simulation -->
           <div class="p-3.5 rounded-lg bg-notion-card border border-notion-border space-y-2 opacity-80">
             <div class="flex justify-between items-center">
-              <span class="font-semibold text-white">🔬 Step 3 (C): Simulations</span>
+              <span class="font-semibold text-white">Step 3 (C): Simulations</span>
               <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-surface-bg text-gray-400">Queued</span>
             </div>
             <p class="text-notion-muted text-[11px]">Neutron Star Simulation R&D specs, RK4 equations & benchmark notes.</p>
@@ -200,7 +200,7 @@
           <!-- A: POS Support -->
           <div class="p-3.5 rounded-lg bg-notion-card border border-notion-border space-y-2 opacity-80">
             <div class="flex justify-between items-center">
-              <span class="font-semibold text-white">💼 Step 4 (A): POS Support</span>
+              <span class="font-semibold text-white">Step 4 (A): POS Support</span>
               <span class="text-[10px] font-mono px-1.5 py-0.2 rounded bg-surface-bg text-gray-400">Queued</span>
             </div>
             <p class="text-notion-muted text-[11px]">YM Inc. interactive ticket manager, priority triage & incident log.</p>
@@ -216,7 +216,7 @@
     <div class="w-full max-w-md bg-notion-card border border-notion-border rounded-xl p-5 shadow-2xl space-y-4">
       <div class="flex justify-between items-center pb-2 hairline-b">
         <h3 class="font-bold text-white text-sm">Add New Assignment</h3>
-        <button onclick="closeAddModal()" class="text-notion-muted hover:text-white">✕</button>
+        <button onclick="closeAddModal()" class="text-notion-muted hover:text-white"></button>
       </div>
 
       <div class="space-y-3 text-xs">
@@ -381,7 +381,7 @@
               </div>
               <div class="flex items-center space-x-3 shrink-0">
                 <span class="text-[11px] font-mono ${badgeClass}">${a.due}</span>
-                <button onclick="deleteAssignment('${c.id}', '${a.id}')" class="text-gray-600 hover:text-rose-400 text-xs">✕</button>
+                <button onclick="deleteAssignment('${c.id}', '${a.id}')" class="text-gray-600 hover:text-rose-400 text-xs"></button>
               </div>
             </div>
           `;
@@ -401,7 +401,7 @@
             </div>
           </div>
           <div class="space-y-1.5">
-            ${assignmentRows || '<p class="text-gray-500 text-xs italic py-1">No assignments pending! 🎉</p>'}
+            ${assignmentRows || '<p class="text-gray-500 text-xs italic py-1">No assignments pending! </p>'}
           </div>
         `;
         container.appendChild(card);
