@@ -12,6 +12,7 @@ fn main() -> wry::Result<()> {
     let event_loop = EventLoop::new();
     let window = WindowBuilder::new()
         .with_title("Official Academic Record & Gradebook — Centennial College")
+        .with_theme(None)
         .with_inner_size(LogicalSize::new(1280.0, 820.0))
         .with_min_inner_size(LogicalSize::new(800.0, 600.0))
         .build(&event_loop)
