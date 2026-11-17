@@ -222,16 +222,31 @@
       <!-- NOTION CALLOUT BLOCK (DEADLINE NOTICE) -->
       <section class="p-4 rounded-md bg-notion-sidebar border border-notion-border flex flex-wrap items-start justify-between gap-3 text-xs">
         <div class="space-y-1">
-          <div class="font-semibold text-notion-ink uppercase tracking-wide font-mono text-[11px]">
-            Upcoming Deadlines — Sunday, Nov 15 @ 23:59 EST
+          <div class="font-semibold text-notion-ink uppercase tracking-wide font-mono text-[11px]" id="callout-date-header">
+            Active Deadlines — Tuesday, Nov 17, 2026
           </div>
           <p class="text-notion-muted leading-relaxed">
-            <strong class="text-notion-ink font-semibold">COMP307 Software Security:</strong> Lab Assignment 6 (4.0%) and Research Project (20.0%) are due tomorrow night.
+            <strong class="text-notion-ink font-semibold">COMP303:</strong> Assignment 3: Spring Boot REST App (10.0%) is due <strong class="text-notion-ink font-medium">tonight @ 23:59</strong>.
+            <strong class="text-notion-ink font-semibold ml-1">COMP309:</strong> Analytics Project (10.0%) is due <strong class="text-notion-ink font-medium">tomorrow (Nov 18) @ 08:30</strong>.
           </p>
         </div>
         <span class="font-mono text-[11px] font-semibold px-2.5 py-1 rounded pill-urgent shrink-0">
-          Due in 24 Hours
+          Due Tonight
         </span>
+      </section>
+
+      <!-- UPCOMING SCHEDULE TIMELINE -->
+      <section class="rounded-md border border-notion-border bg-white overflow-hidden">
+        <div class="px-4 py-2.5 bg-notion-sidebar/70 border-b border-notion-border flex items-center justify-between">
+          <div class="flex items-center space-x-2">
+            <span class="font-mono text-[11px] font-semibold uppercase tracking-wider text-notion-ink">Upcoming Schedule</span>
+            <span class="text-[11px] text-notion-muted font-mono">Chronological Deadlines</span>
+          </div>
+          <span class="text-[11px] font-mono text-notion-subtle" id="schedule-today-label"></span>
+        </div>
+        <div id="upcoming-schedule-list" class="divide-y divide-notion-border text-xs">
+          <!-- Rendered dynamically -->
+        </div>
       </section>
 
       <!-- COLLAPSIBLE COURSE SECTIONS -->
@@ -262,7 +277,7 @@
           { name: "Lab 4", weight: "5.0%", score: "20.0", total: "20", pct: "100.00%", status: "GRADED" },
           { name: "Test 2 (Practical Exam)", weight: "20.0%", score: "82.0", total: "100", pct: "82.00%", status: "GRADED" },
           { name: "Attendance & Participation", weight: "5.0%", score: "90.0%", total: "—", pct: "90.00%", status: "GRADED" },
-          { name: "Assignment 3: Spring Boot REST App", weight: "10.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Nov 17 • 23:59" },
+          { name: "Assignment 3: Spring Boot REST App", weight: "10.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Nov 17 • 23:59", urgent: true },
           { name: "Term Project: Final Deliverables & Code", weight: "20.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Week 13" },
           { name: "Final Test 3 (Practical Exam)", weight: "20.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Week 14" }
         ]
@@ -304,7 +319,7 @@
           { name: "Assignment 1", weight: "5.0%", score: "10.0", total: "10", pct: "100.00%", status: "GRADED" },
           { name: "Assignment 2", weight: "5.0%", score: "10.0", total: "10", pct: "100.00%", status: "GRADED" },
           { name: "Midterm Examination", weight: "20.0%", score: "44.5", total: "50", pct: "89.00%", status: "GRADED" },
-          { name: "COMP 309 Analytics Project (10%)", weight: "10.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Nov 18 • 08:30" },
+          { name: "COMP 309 Analytics Project (10%)", weight: "10.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Nov 18 • 08:30", urgent: true },
           { name: "Assignment 3", weight: "5.0%", score: "—", total: "10", pct: "—", status: "PENDING", due: "Week 10" },
           { name: "Assignment 4", weight: "5.0%", score: "—", total: "10", pct: "—", status: "PENDING", due: "Week 13" },
           { name: "Final Examination", weight: "30.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Week 14" }
@@ -329,8 +344,8 @@
           { name: "Discussions #3", weight: "2.5%", score: "8.0", total: "10", pct: "80.00%", status: "GRADED" },
           { name: "Blockchain Workshop", weight: "5.0%", score: "0.0", total: "10", pct: "0.00%", status: "GRADED" },
           { name: "Attendance & Professionalism", weight: "5.0%", score: "53.12%", total: "—", pct: "53.12%", status: "GRADED" },
-          { name: "Lab Assignment 6 (LFI/RFI)", weight: "4.0%", score: "—", total: "10", pct: "—", status: "PENDING", due: "Nov 15 • 23:59", urgent: true },
-          { name: "Research Project Submission", weight: "20.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Nov 15 • 23:59", urgent: true },
+          { name: "Lab Assignment 6 (LFI/RFI)", weight: "4.0%", score: "—", total: "10", pct: "—", status: "PENDING", due: "Nov 15 • 23:59 (Past Due)" },
+          { name: "Research Project Submission", weight: "20.0%", score: "—", total: "100", pct: "—", status: "PENDING", due: "Nov 15 • 23:59 (Past Due)" },
           { name: "Lab Assignment 7", weight: "4.0%", score: "—", total: "10", pct: "—", status: "PENDING", due: "Week 8" },
           { name: "Final Test #2 (Practical Exam)", weight: "15.0%", score: "—", total: "50", pct: "—", status: "PENDING", due: "Week 14" }
         ]
@@ -521,6 +536,66 @@
       });
     }
 
+    function renderSchedule() {
+      const scheduleItems = [
+        { date: "2026-11-17T23:59:00", code: "COMP303", title: "Assignment 3: Spring Boot REST App", weight: "10.0%", dueLabel: "Nov 17 • 23:59", href: "#sec_comp303" },
+        { date: "2026-11-18T08:30:00", code: "COMP309", title: "COMP 309 Analytics Project", weight: "10.0%", dueLabel: "Nov 18 • 08:30", href: "#sec_comp309" },
+        { date: "2026-11-22T23:59:00", code: "COMP231", title: "Evaluation 6: Working Prototype / Code (Iteration 1)", weight: "15.0%", dueLabel: "Nov 22 • 23:59", href: "#sec_comp231" },
+        { date: "2026-11-27T23:59:00", code: "COMP306", title: "Cloud Engineering Project: Implementation", weight: "15.0%", dueLabel: "Nov 27 • 23:59", href: "#sec_comp306" },
+        { date: "2026-12-04T23:59:00", code: "COMP306", title: "Cloud Engineering Project: Report & Presentation", weight: "5.0%", dueLabel: "Dec 04 • 23:59", href: "#sec_comp306" },
+        { date: "2026-12-13T23:59:00", code: "COMP231", title: "Evaluation 7: Final Project Deliverables & Release 1.0", weight: "15.0%", dueLabel: "Dec 13 • 23:59", href: "#sec_comp231" },
+        { date: "2026-12-18T23:59:00", code: "COMP231", title: "TAC Technical Report & Peer Evaluation", weight: "5.0%", dueLabel: "Dec 18 • 23:59", href: "#sec_comp231" },
+        { date: "2026-12-18T23:59:00", code: "COMP255", title: "Final Examination", weight: "20.0%", dueLabel: "Dec 18 • 23:59", href: "#sec_comp255" }
+      ];
+
+      const now = new Date();
+      const todayLabel = document.getElementById('schedule-today-label');
+      if (todayLabel) {
+        todayLabel.textContent = "Updated " + now.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+      }
+
+      const listEl = document.getElementById('upcoming-schedule-list');
+      if (!listEl) return;
+
+      listEl.innerHTML = scheduleItems.map(item => {
+        const target = new Date(item.date);
+        const diffMs = target - now;
+        const diffHours = Math.ceil(diffMs / (1000 * 60 * 60));
+        const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+
+        let badgeClass = "pill-neutral";
+        let badgeText = "UPCOMING";
+        if (diffMs <= 0) {
+          badgeClass = "pill-urgent";
+          badgeText = "PAST DUE";
+        } else if (diffHours <= 24) {
+          badgeClass = "pill-urgent";
+          badgeText = diffHours <= 12 ? `IN ${diffHours}H` : "DUE TONIGHT";
+        } else if (diffDays <= 1) {
+          badgeClass = "pill-c";
+          badgeText = "TOMORROW";
+        } else {
+          badgeClass = "pill-neutral";
+          badgeText = `IN ${diffDays} DAYS`;
+        }
+
+        return `
+          <a href="${item.href}" class="px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 notion-row transition-colors">
+            <div class="flex items-center space-x-3 min-w-0">
+              <span class="font-mono text-[11px] font-semibold text-notion-ink w-16 shrink-0">${item.code}</span>
+              <span class="font-medium text-notion-ink truncate">${item.title}</span>
+            </div>
+            <div class="flex items-center space-x-3 font-mono text-[11px] shrink-0">
+              <span class="text-notion-subtle">${item.weight}</span>
+              <span class="text-notion-muted">${item.dueLabel}</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-semibold ${badgeClass}">${badgeText}</span>
+            </div>
+          </a>
+        `;
+      }).join('');
+    }
+
+    renderSchedule();
     renderTables();
   </script>
 </body>
