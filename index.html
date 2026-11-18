@@ -1588,8 +1588,15 @@
     let dailyPuzzles = [], dailySolved = [false, false, false], dailyIdx = 0;
     let pz = null, puzzleToken = 0, lastChessDateKey = '', lastChessAt = 0, chessCtx = null;
 
-    function playChessSound(kind) {
-      if (!chessSound) return;
+    const CHESS_SND_URLS = {
+      move: 'https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/move-self.mp3',
+      capture: 'https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/capture.mp3',
+      check: 'https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/move-check.mp3',
+      wrong: 'https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/illegal.mp3',
+      solved: 'https://images.chesscomfiles.com/chess-themes/sounds/_MP3_/default/game-end.mp3'
+    };
+    const chessSndCache = {};
+    function playChessSoundFallback(kind) {
       try {
         const AC = window.AudioContext || window.webkitAudioContext;
         if (!AC) return;
@@ -1611,6 +1618,20 @@
         else if (kind === 'wrong') beep(150, 0.16, 'sawtooth', 0.12, 0);
         else if (kind === 'solved') { beep(523.25, 0.12, 'triangle', 0.14, 0); beep(659.25, 0.12, 'triangle', 0.14, 0.09); beep(783.99, 0.22, 'triangle', 0.16, 0.18); }
       } catch (e) {}
+    }
+    function playChessSound(kind) {
+      if (!chessSound) return;
+      const url = CHESS_SND_URLS[kind];
+      if (!url) { playChessSoundFallback(kind); return; }
+      try {
+        let a = chessSndCache[kind];
+        if (!a) { a = new Audio(url); a.volume = 0.7; chessSndCache[kind] = a; }
+        a.currentTime = 0;
+        const pr = a.play();
+        if (pr && pr.catch) pr.catch(() => playChessSoundFallback(kind));
+      } catch (e) {
+        playChessSoundFallback(kind);
+      }
     }
 
     const CHESS_PIECE_SETS = { glass: 'Glass', '3d_staunton': '3D Staunton', '3d_wood': '3D Wood', icy_sea: 'Icy Sea', neo: 'Neo', classic: 'Classic', wood: 'Wood', space: 'Space', gothic: 'Gothic' };
