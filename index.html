@@ -442,6 +442,7 @@
         <div class="form" id="sp-config-form">
           <button class="btn primary" type="button" id="sp-connect">Connect Spotify</button>
           <button class="btn" type="button" id="sp-liked-btn">Liked Songs</button>
+          <button class="btn" type="button" id="sp-queue-btn">Queue</button>
           <button class="btn" type="button" id="sp-pl-toggle">Hide Playlists</button>
           <button class="btn" type="button" id="sp-refresh">Refresh</button>
           <button class="btn" type="button" id="sp-disconnect" hidden>Disconnect</button>
@@ -2229,6 +2230,31 @@
       }
       renderSpotify();
     }
+    async function loadQueue() {
+      spTracksHeading = 'Playback Queue';
+      spTracks = []; spScrollTop = 0;
+      renderSpotify();
+      try {
+        const res = await spFetch('/me/player/queue');
+        const q = (res && res.queue) || [];
+        spTracks = q.filter(Boolean);
+        await refreshLikedSet();
+      } catch (e) {
+        spNotice = 'Could not load queue (' + e.message + ').';
+      }
+      renderSpotify();
+    }
+    async function addToSpotifyQueue(uri, name) {
+      if (!uri) return;
+      try {
+        const dq = spNowPlaying && spNowPlaying.device && spNowPlaying.device.id ? '&device_id=' + encodeURIComponent(spNowPlaying.device.id) : '';
+        await spFetch('/me/player/queue?uri=' + encodeURIComponent(uri) + dq, { method: 'POST' });
+        spNotice = 'Added "' + stripEmojis(name || 'Track') + '" to queue.';
+      } catch (e) {
+        spNotice = 'Could not add to queue: ' + e.message;
+      }
+      renderSpotify();
+    }
     async function loadLikedSongs() {
       spTracksHeading = 'Liked Songs';
       spTracks = [];
@@ -2469,6 +2495,7 @@
               <div style="min-width:0"><strong>${albId ? `<button type="button" class="sp-link" data-sp-alb-id="${esc(albId)}" data-sp-alb-name="${esc(albName)}">${esc(stripEmojis(t.name))}</button>` : esc(stripEmojis(t.name))}</strong><span class="note">${artsHtml}${albName ? ' · ' + esc(albName) : ''} · ${fmtMs(t.duration_ms)}</span></div>
             </div>
             <div style="display:flex;gap:6px;flex:none">
+              <button type="button" class="mini-btn" data-sp-queue="${idx}">+ Queue</button>
               <button type="button" class="mini-btn${liked ? ' primary' : ''}" data-sp-like="${idx}">${liked ? 'Saved' : '+ Like'}</button>
               <button type="button" class="mini-btn primary" data-sp-play="${idx}">Play</button>
             </div>
@@ -2477,6 +2504,10 @@
         itemsEl.innerHTML = rowsHtml;
         itemsEl.querySelectorAll('[data-sp-alb-id]').forEach(b => b.onclick = () => loadAlbumTracks(b.dataset.spAlbId, b.dataset.spAlbName));
         itemsEl.querySelectorAll('[data-sp-art-name]').forEach(b => b.onclick = () => loadArtistTracks(b.dataset.spArtId, b.dataset.spArtName));
+        itemsEl.querySelectorAll('[data-sp-queue]').forEach(b => b.onclick = () => {
+          const t = spTracks[+b.dataset.spQueue];
+          if (t && t.uri) addToSpotifyQueue(t.uri, t.name);
+        });
         itemsEl.querySelectorAll('[data-sp-like]').forEach(b => b.onclick = () => {
           const t = spTracks[+b.dataset.spLike];
           if (t && t.uri) toggleLikeTrack(t.uri);
@@ -2550,6 +2581,7 @@
         spBound = true;
         document.getElementById('sp-connect').onclick = startSpotifyAuth;
         document.getElementById('sp-liked-btn').onclick = loadLikedSongs;
+        document.getElementById('sp-queue-btn').onclick = loadQueue;
         document.getElementById('sp-pl-toggle').onclick = () => {
           spPlHidden = !spPlHidden;
           store.set('sp_pl_hidden', spPlHidden ? '1' : '0');
