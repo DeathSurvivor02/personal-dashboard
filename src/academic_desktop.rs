@@ -236,7 +236,7 @@ fn main() -> wry::Result<()> {
     let proxy = event_loop.create_proxy();
 
     let main_window = WindowBuilder::new()
-        .with_title("Personal Workspace & Academic Record - Centennial College")
+        .with_title("Fall 2026 Dashboard")
         .with_theme(None)
         .with_visible(true)
         .with_inner_size(LogicalSize::new(1280.0, 840.0))
@@ -318,8 +318,26 @@ fn main() -> wry::Result<()> {
                         reveal_in_explorer(p);
                     }
                 }
+                Some("save_ui_state") => {
+                    if let Some(ui_val) = msg.get("uiStore") {
+                        let mut existing = fs::read_to_string(&state_path_for_ipc)
+                            .ok()
+                            .and_then(|raw| serde_json::from_str::<serde_json::Value>(&raw).ok())
+                            .unwrap_or_else(|| serde_json::json!({}));
+                        existing["uiStore"] = ui_val.clone();
+                        if let Ok(pretty) = serde_json::to_string_pretty(&existing) {
+                            let _ = fs::write(&state_path_for_ipc, pretty);
+                        }
+                    }
+                }
                 _ => {}
             }
+        })
+        .with_new_window_req_handler(|url| {
+            if url.starts_with("http://") || url.starts_with("https://") {
+                open_in_browser(&url, "chrome");
+            }
+            false
         })
         .with_html(html_content)
         .build()?;

@@ -219,11 +219,24 @@
     .dist i.hit { background: var(--w-good); }
 
     /* ── Chess ────────────────────────────────────────── */
-    .board { display: grid; grid-template-columns: repeat(8, 1fr); width: min(400px, 100%); aspect-ratio: 1; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
-    .sq { aspect-ratio: 1; display: grid; place-items: center; font-size: clamp(24px, 6.4vw, 40px); line-height: 1; background: var(--sq-l); }
+    .board { display: grid; grid-template-columns: repeat(8, 1fr); width: min(400px, 100%); aspect-ratio: 1; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); user-select: none; }
+    .sq { aspect-ratio: 1; display: grid; place-items: center; position: relative; border: 0; padding: 0; font-size: clamp(24px, 6.4vw, 40px); line-height: 1; background: var(--sq-l); cursor: pointer; }
     .sq.d { background: var(--sq-d); }
-    .pc-w { color: #fff; text-shadow: 0 0 2px #000, 0 0 2px #000, 0 1px 1px #000; }
-    .pc-b { color: #101820; text-shadow: 0 0 1px rgba(255,255,255,.6); }
+    .sq.sel { box-shadow: inset 0 0 0 3px var(--focus), inset 0 0 0 999px rgba(31, 79, 224, 0.22); }
+    .sq.last { box-shadow: inset 0 0 0 999px rgba(240, 176, 74, 0.28); }
+    .sq.sel.last { box-shadow: inset 0 0 0 3px var(--focus), inset 0 0 0 999px rgba(31, 79, 224, 0.25); }
+    .sq.hint-sq { box-shadow: inset 0 0 0 3px var(--w-good), inset 0 0 0 999px rgba(46, 125, 50, 0.24); }
+    .sq.wrong { box-shadow: inset 0 0 0 3px var(--danger), inset 0 0 0 999px rgba(179, 38, 30, 0.32); }
+    .sq .dot { position: absolute; width: 28%; height: 28%; border-radius: 50%; background: rgba(18, 32, 43, 0.34); pointer-events: none; }
+    .sq.cap .dot { width: 82%; height: 82%; background: transparent; border: 3px solid rgba(18, 32, 43, 0.36); }
+    .pc-w { color: #fff; text-shadow: 0 0 2px #000, 0 0 2px #000, 0 1px 1px #000; position: relative; z-index: 1; }
+    .pc-b { color: #101820; text-shadow: 0 0 1px rgba(255,255,255,.6); position: relative; z-index: 1; }
+    .chess-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; }
+    .chess-msg { margin: 10px 0 0; font-size: 14px; font-weight: 500; min-height: 21px; }
+    .chess-msg.ok { color: var(--w-good); font-weight: 600; }
+    .chess-msg.bad { color: var(--danger); font-weight: 600; }
+    .chess-moves { margin-top: 8px; display: flex; flex-wrap: wrap; gap: 6px; font-size: 13px; color: var(--ink2); }
+    .chess-promo { display: flex; gap: 6px; align-items: center; margin-top: 10px; }
     .ratings { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 
     @media (max-width: 880px) {
@@ -320,8 +333,8 @@
    <!-- Chess.com -->
    <section role="tabpanel" id="panel-chess" aria-labelledby="tab-chess" hidden>
     <div class="page-h">
-      <div><h1>Chess.com</h1><p>Today's puzzle, your ratings and your daily games.</p></div>
-      <form class="form" id="chess-form"><label class="sr" for="chess-user">Chess.com username</label><input id="chess-user" placeholder="Chess.com username" autocomplete="off" spellcheck="false"><button class="btn" type="submit">Save</button></form>
+      <div><h1>Chess.com</h1><p>Solve today's puzzle on the board, track ratings, and review daily & recent games.</p></div>
+      <form class="form" id="chess-form"><label class="sr" for="chess-user">Chess.com username</label><input id="chess-user" placeholder="Chess.com username" autocomplete="off" spellcheck="false"><button class="btn" type="submit">Save</button><button class="btn" type="button" id="chess-refresh">Refresh</button></form>
     </div>
     <div class="two">
       <div class="card" id="chess-puzzle"></div>
@@ -442,9 +455,23 @@
     const now = params.get('today') ? new Date(params.get('today') + 'T07:00:00') : new Date();
     const STORE = 'dashboard_done_v2', LEGACY = 'centennial_outlines_v1', THEME = 'dashboard_theme';
     const key = (c, it) => c.id + '|' + it.name;
+    const uiCache = Object.assign({}, (window.__PERSISTED_ACADEMIC_STATE__ && window.__PERSISTED_ACADEMIC_STATE__.uiStore) || {});
     const store = {
-      get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
-      set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+      get(k) {
+        if (Object.prototype.hasOwnProperty.call(uiCache, k) && uiCache[k] != null) return String(uiCache[k]);
+        try { const v = localStorage.getItem(k); if (v != null) { uiCache[k] = v; return v; } } catch (e) {}
+        return null;
+      },
+      set(k, v) {
+        const s = String(v);
+        uiCache[k] = s;
+        try { localStorage.setItem(k, s); } catch (e) {}
+        try {
+          if (window.ipc && typeof window.ipc.postMessage === 'function') {
+            window.ipc.postMessage(JSON.stringify({ type: 'save_ui_state', uiStore: uiCache }));
+          }
+        } catch (e) {}
+      }
     };
 
     // Completion lives in one map. Older saves (the previous layout) are migrated by item position.
@@ -709,7 +736,13 @@
       store.set(THEME, root.dataset.theme);
     });
 
-    document.addEventListener('visibilitychange', () => { if (!document.hidden) { now.setTime(params.get('today') ? now.getTime() : Date.now()); render(); } });
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) {
+        now.setTime(params.get('today') ? now.getTime() : Date.now());
+        render();
+        if (typeof maybeAutoRefreshChess === 'function') maybeAutoRefreshChess(false);
+      }
+    });
     render();
 
     /* ══ Tabs ═══════════════════════════════════════════ */
@@ -752,10 +785,12 @@
       if (s < 86400) return Math.round(s / 3600) + ' h ago';
       const n = Math.round(s / 86400); return n < 45 ? plural(n, 'day') + ' ago' : new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
     };
-    async function getJson(url, ttlMin) {
+    async function getJson(url, ttlMin, force) {
       const ck = 'cache:' + url;
-      try { const c = JSON.parse(sessionStorage.getItem(ck) || 'null'); if (c && Date.now() - c.t < ttlMin * 60000) return c.d; } catch (e) {}
-      const r = await fetch(url, { headers: { Accept: 'application/json' } });
+      if (!force) {
+        try { const c = JSON.parse(sessionStorage.getItem(ck) || 'null'); if (c && Date.now() - c.t < ttlMin * 60000) return c.d; } catch (e) {}
+      }
+      const r = await fetch(url, { headers: { Accept: 'application/json' }, cache: force ? 'no-store' : 'default' });
       if (!r.ok) { const err = new Error('HTTP ' + r.status); err.status = r.status; throw err; }
       const d = await r.json();
       try { sessionStorage.setItem(ck, JSON.stringify({ t: Date.now(), d })); } catch (e) {}
@@ -895,56 +930,469 @@
     }
 
     /* ══ Chess.com ══════════════════════════════════════ */
-    let chessUser = store.get('chess_user') || 'eanbynoe';
+    function normalizeChessUser(raw) {
+      const t = (raw || '').trim().toLowerCase();
+      if (!t) return '';
+      if (t === 'bynoeean@gmail.com' || t === 'ean bynoe' || t === 'mastereob') return 'eanbynoe';
+      return t.replace(/\s+/g, '');
+    }
+    const cfgChess = window.__SCHOOL_SYNC_CONFIG__ && window.__SCHOOL_SYNC_CONFIG__.chess_username;
+    const rawSavedChess = store.get('chess_user');
+    let chessUser = normalizeChessUser(rawSavedChess || cfgChess) || 'eanbynoe';
+    if (rawSavedChess && rawSavedChess !== chessUser) store.set('chess_user', chessUser);
     const chessInput = document.getElementById('chess-user'); chessInput.value = chessUser;
     document.getElementById('chess-form').addEventListener('submit', e => {
-      e.preventDefault(); chessUser = chessInput.value.trim().toLowerCase(); store.set('chess_user', chessUser); loadChessPlayer();
+      e.preventDefault();
+      chessUser = normalizeChessUser(chessInput.value);
+      chessInput.value = chessUser;
+      store.set('chess_user', chessUser);
+      loadChessPlayer(true);
     });
+    document.getElementById('chess-refresh').addEventListener('click', () => loadChess(true));
+
     const GLYPH = { k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟︎' };
-    function boardHtml(fen) {
-      const [place, side] = fen.split(' ');
-      const grid = place.split('/').map(r => [...r].flatMap(ch => /\d/.test(ch) ? Array(+ch).fill('') : [ch]));
-      const flip = side === 'b';
-      const rows = flip ? grid.map(r => [...r].reverse()).reverse() : grid;
-      return `<div class="board" role="img" aria-label="Chess puzzle position, ${side === 'b' ? 'Black' : 'White'} to move">${rows.map((r, y) => r.map((p, x) =>
-        `<div class="sq${(x + y) % 2 ? ' d' : ''}">${p ? `<span class="${p === p.toUpperCase() ? 'pc-w' : 'pc-b'}">${GLYPH[p.toLowerCase()]}</span>` : ''}</div>`).join('')).join('')}</div>`;
+    const PROMO_NAMES = { q: 'Queen', r: 'Rook', b: 'Bishop', n: 'Knight' };
+    let pz = null, puzzleToken = 0, lastChessDateKey = '', lastChessAt = 0;
+
+    function localDateKey(d) {
+      return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
     }
-    async function loadChess() {
+    function sqToRC(sq) { return [8 - parseInt(sq[1], 10), sq.charCodeAt(0) - 97]; }
+    function rcToSq(r, c) { return 'abcdefgh'[c] + (8 - r); }
+    function sideOf(p) { return p ? (p === p.toUpperCase() ? 'w' : 'b') : ''; }
+    function parseFen(fen) {
+      const [pl, turn, cast, ep] = fen.trim().split(/\s+/);
+      const grid = pl.split('/').map(r => [...r].flatMap(ch => /\d/.test(ch) ? Array(+ch).fill('') : [ch]));
+      return { grid, turn: turn || 'w', cast: cast && cast !== '-' ? cast : '', ep: ep && ep !== '-' ? ep : null };
+    }
+    function clonePos(pos) {
+      return { grid: pos.grid.map(r => [...r]), turn: pos.turn, cast: pos.cast, ep: pos.ep };
+    }
+    function inBounds(r, c) { return r >= 0 && r < 8 && c >= 0 && c < 8; }
+    function isSquareAttacked(pos, tr, tc, bySide) {
+      const g = pos.grid;
+      const pDir = bySide === 'w' ? 1 : -1;
+      for (const dc of [-1, 1]) {
+        const pr = tr + pDir, pc = tc + dc;
+        if (inBounds(pr, pc) && g[pr][pc] === (bySide === 'w' ? 'P' : 'p')) return true;
+      }
+      const kn = bySide === 'w' ? 'N' : 'n';
+      for (const [dr, dc] of [[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]]) {
+        const nr = tr + dr, nc = tc + dc;
+        if (inBounds(nr, nc) && g[nr][nc] === kn) return true;
+      }
+      const kg = bySide === 'w' ? 'K' : 'k';
+      for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) {
+        if (!dr && !dc) continue;
+        const kr = tr + dr, kc = tc + dc;
+        if (inBounds(kr, kc) && g[kr][kc] === kg) return true;
+      }
+      const rq = bySide === 'w' ? ['R', 'Q'] : ['r', 'q'];
+      for (const [dr, dc] of [[1,0],[-1,0],[0,1],[0,-1]]) {
+        for (let r = tr + dr, c = tc + dc; inBounds(r, c); r += dr, c += dc) {
+          if (g[r][c]) { if (rq.includes(g[r][c])) return true; break; }
+        }
+      }
+      const bq = bySide === 'w' ? ['B', 'Q'] : ['b', 'q'];
+      for (const [dr, dc] of [[1,1],[1,-1],[-1,1],[-1,-1]]) {
+        for (let r = tr + dr, c = tc + dc; inBounds(r, c); r += dr, c += dc) {
+          if (g[r][c]) { if (bq.includes(g[r][c])) return true; break; }
+        }
+      }
+      return false;
+    }
+    function inCheck(pos, side) {
+      const k = side === 'w' ? 'K' : 'k';
+      for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+        if (pos.grid[r][c] === k) return isSquareAttacked(pos, r, c, side === 'w' ? 'b' : 'w');
+      }
+      return false;
+    }
+    function applyRawMove(pos, m) {
+      const np = clonePos(pos);
+      const g = np.grid;
+      const pc = g[m.fr][m.fc];
+      g[m.tr][m.tc] = m.promo ? (pos.turn === 'w' ? m.promo.toUpperCase() : m.promo.toLowerCase()) : pc;
+      g[m.fr][m.fc] = '';
+      if (m.enPassant) g[m.fr][m.tc] = '';
+      if (m.castle === 'K') { g[m.fr][5] = g[m.fr][7]; g[m.fr][7] = ''; }
+      if (m.castle === 'Q') { g[m.fr][3] = g[m.fr][0]; g[m.fr][0] = ''; }
+      np.ep = pc.toLowerCase() === 'p' && Math.abs(m.tr - m.fr) === 2 ? rcToSq((m.fr + m.tr) / 2, m.fc) : null;
+      let cast = np.cast;
+      if (pc === 'K') cast = cast.replace(/[KQ]/g, '');
+      if (pc === 'k') cast = cast.replace(/[kq]/g, '');
+      const stripCorner = (r, c) => {
+        if (r === 7 && c === 7) cast = cast.replace('K', '');
+        if (r === 7 && c === 0) cast = cast.replace('Q', '');
+        if (r === 0 && c === 7) cast = cast.replace('k', '');
+        if (r === 0 && c === 0) cast = cast.replace('q', '');
+      };
+      stripCorner(m.fr, m.fc);
+      stripCorner(m.tr, m.tc);
+      np.cast = cast;
+      np.turn = pos.turn === 'w' ? 'b' : 'w';
+      return np;
+    }
+    function legalMoves(pos) {
+      const out = [], turn = pos.turn, opp = turn === 'w' ? 'b' : 'w', g = pos.grid;
+      const pushPawn = (fr, fc, tr, tc, extra) => {
+        if (tr === 0 || tr === 7) {
+          for (const promo of ['q', 'r', 'b', 'n']) out.push({ fr, fc, tr, tc, promo, ...extra });
+        } else out.push({ fr, fc, tr, tc, ...extra });
+      };
+      for (let r = 0; r < 8; r++) for (let c = 0; c < 8; c++) {
+        const pc = g[r][c];
+        if (!pc || sideOf(pc) !== turn) continue;
+        const pt = pc.toLowerCase();
+        if (pt === 'p') {
+          const dir = turn === 'w' ? -1 : 1, start = turn === 'w' ? 6 : 1;
+          if (inBounds(r + dir, c) && !g[r + dir][c]) {
+            pushPawn(r, c, r + dir, c);
+            if (r === start && !g[r + dir * 2][c]) out.push({ fr: r, fc: c, tr: r + dir * 2, tc: c });
+          }
+          for (const dc of [-1, 1]) {
+            const nr = r + dir, nc = c + dc;
+            if (!inBounds(nr, nc)) continue;
+            if (g[nr][nc] && sideOf(g[nr][nc]) === opp) pushPawn(r, c, nr, nc);
+            else if (pos.ep && rcToSq(nr, nc) === pos.ep) out.push({ fr: r, fc: c, tr: nr, tc: nc, enPassant: true });
+          }
+        } else if (pt === 'n') {
+          for (const [dr, dc] of [[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]]) {
+            const nr = r + dr, nc = c + dc;
+            if (inBounds(nr, nc) && sideOf(g[nr][nc]) !== turn) out.push({ fr: r, fc: c, tr: nr, tc: nc });
+          }
+        } else if (pt === 'k') {
+          for (let dr = -1; dr <= 1; dr++) for (let dc = -1; dc <= 1; dc++) {
+            if (!dr && !dc) continue;
+            const nr = r + dr, nc = c + dc;
+            if (inBounds(nr, nc) && sideOf(g[nr][nc]) !== turn) out.push({ fr: r, fc: c, tr: nr, tc: nc });
+          }
+          const kr = turn === 'w' ? 7 : 0;
+          if (r === kr && c === 4 && !inCheck(pos, turn)) {
+            if (pos.cast.includes(turn === 'w' ? 'K' : 'k') && !g[kr][5] && !g[kr][6] && !isSquareAttacked(pos, kr, 5, opp) && !isSquareAttacked(pos, kr, 6, opp)) {
+              out.push({ fr: r, fc: c, tr: kr, tc: 6, castle: 'K' });
+            }
+            if (pos.cast.includes(turn === 'w' ? 'Q' : 'q') && !g[kr][3] && !g[kr][2] && !g[kr][1] && !isSquareAttacked(pos, kr, 3, opp) && !isSquareAttacked(pos, kr, 2, opp)) {
+              out.push({ fr: r, fc: c, tr: kr, tc: 2, castle: 'Q' });
+            }
+          }
+        } else {
+          const dirs = pt === 'b' ? [[1,1],[1,-1],[-1,1],[-1,-1]] : pt === 'r' ? [[1,0],[-1,0],[0,1],[0,-1]] : [[1,1],[1,-1],[-1,1],[-1,-1],[1,0],[-1,0],[0,1],[0,-1]];
+          for (const [dr, dc] of dirs) {
+            for (let nr = r + dr, nc = c + dc; inBounds(nr, nc); nr += dr, nc += dc) {
+              if (!g[nr][nc]) out.push({ fr: r, fc: c, tr: nr, tc: nc });
+              else { if (sideOf(g[nr][nc]) === opp) out.push({ fr: r, fc: c, tr: nr, tc: nc }); break; }
+            }
+          }
+        }
+      }
+      return out.filter(m => !inCheck(applyRawMove(pos, m), turn));
+    }
+    function parsePuzzlePgn(pgn) {
+      if (!pgn) return [];
+      let s = '', i = 0, depth = 0, inQuote = false, inTag = false, inComment = false;
+      while (i < pgn.length) {
+        const ch = pgn[i];
+        if (inComment) { if (ch === '}') inComment = false; i++; continue; }
+        if (inTag) {
+          if (ch === '\\' && inQuote) { i += 2; continue; }
+          if (ch === '"') inQuote = !inQuote;
+          else if (ch === ']' && !inQuote) inTag = false;
+          i++; continue;
+        }
+        if (ch === '{') { inComment = true; i++; continue; }
+        if (ch === '[') { inTag = true; i++; continue; }
+        if (ch === '(') { depth++; i++; continue; }
+        if (ch === ')') { if (depth > 0) depth--; i++; continue; }
+        if (ch === ';') { while (i < pgn.length && pgn[i] !== '\n') i++; continue; }
+        if (depth === 0) s += ch;
+        i++;
+      }
+      return s.trim().split(/\s+/).filter(tok =>
+        tok && !/^\d+\.+$/.test(tok) && !/^\$\d+$/.test(tok) && !['*', '1-0', '0-1', '1/2-1/2', '...'].includes(tok)
+      );
+    }
+    function findSanMoves(pos, san, moves) {
+      const clean = (san || '').replace(/[+#!?]+$/g, '').trim();
+      if (clean === 'O-O' || clean === '0-0') return moves.filter(m => m.castle === 'K');
+      if (clean === 'O-O-O' || clean === '0-0-0') return moves.filter(m => m.castle === 'Q');
+      const mt = /^([KQRBN])?([a-h])?([1-8])?x?([a-h][1-8])(?:=([QRBN]))?$/.exec(clean);
+      if (!mt) return [];
+      const pt = (mt[1] || 'P').toLowerCase(), ff = mt[2], frk = mt[3], toSq = mt[4], promo = mt[5] ? mt[5].toLowerCase() : null;
+      return moves.filter(m =>
+        pos.grid[m.fr][m.fc].toLowerCase() === pt &&
+        (!ff || 'abcdefgh'[m.fc] === ff) &&
+        (!frk || String(8 - m.fr) === frk) &&
+        rcToSq(m.tr, m.tc) === toSq &&
+        (m.promo || null) === promo
+      );
+    }
+    function getPuzzleStats() {
+      try { const s = JSON.parse(store.get('chess_puzzle_v1') || 'null'); if (s && typeof s.count === 'number') return s; } catch (e) {}
+      return { count: 0, urls: [] };
+    }
+    function markPuzzleSolved(url) {
+      const st = getPuzzleStats();
+      const urls = Array.isArray(st.urls) ? st.urls : [];
+      if (url && !urls.includes(url)) {
+        urls.push(url);
+        st.urls = urls.slice(-30);
+        st.count = (st.count || 0) + 1;
+        store.set('chess_puzzle_v1', JSON.stringify(st));
+      }
+      return st;
+    }
+    function boardHtml(pos, opts) {
+      const flip = opts.flip, sel = opts.sel, lFrom = opts.lastFrom, lTo = opts.lastTo, hint = opts.hint, wrong = opts.wrong;
+      const targets = new Map();
+      if (sel && opts.legal) {
+        for (const m of opts.legal) if (m.fr === sel[0] && m.fc === sel[1]) targets.set(m.tr + ',' + m.tc, m);
+      }
+      const cells = [];
+      for (let vy = 0; vy < 8; vy++) {
+        const r = flip ? 7 - vy : vy;
+        for (let vx = 0; vx < 8; vx++) {
+          const c = flip ? 7 - vx : vx;
+          const sq = rcToSq(r, c), p = pos.grid[r][c];
+          const cls = ['sq'];
+          if ((vx + vy) % 2) cls.push('d');
+          if (sel && sel[0] === r && sel[1] === c) cls.push('sel');
+          if ((lFrom && lFrom[0] === r && lFrom[1] === c) || (lTo && lTo[0] === r && lTo[1] === c)) cls.push('last');
+          if (hint && hint[0] === r && hint[1] === c) cls.push('hint-sq');
+          if (wrong && wrong[0] === r && wrong[1] === c) cls.push('wrong');
+          const tgt = targets.get(r + ',' + c);
+          if (tgt && (p || tgt.enPassant)) cls.push('cap');
+          cells.push(`<button type="button" class="${cls.join(' ')}" data-r="${r}" data-c="${c}" aria-label="${sq}${p ? ' ' + p : ''}">${p ? `<span class="${p === p.toUpperCase() ? 'pc-w' : 'pc-b'}">${GLYPH[p.toLowerCase()]}</span>` : ''}${tgt ? '<span class="dot"></span>' : ''}</button>`);
+        }
+      }
+      return `<div class="board" role="group" aria-label="Interactive chess puzzle board">${cells.join('')}</div>`;
+    }
+    function renderPuzzleBox() {
       const box = document.getElementById('chess-puzzle');
+      if (!pz) return;
+      const st = getPuzzleStats(), solvedCount = st.count || 0;
+      const sideLabel = parseFen(pz.fen).turn === 'b' ? 'Black' : 'White';
+      const solved = pz.solSan.length > 0 && pz.stepIdx >= pz.solSan.length;
+      const legal = solved || pz.busy ? [] : legalMoves(pz.pos);
+      const alreadyToday = Array.isArray(st.urls) && st.urls.includes(pz.url);
+      box.innerHTML = `<h2>${esc(stripEmojis(pz.title) || 'Daily Puzzle')}</h2>
+        <p class="note" style="margin-bottom:12px">${sideLabel} to move${alreadyToday && !solved ? ' · Solved today' : ''} · Solved total: ${solvedCount}</p>
+        ${boardHtml(pz.pos, { flip: pz.flip, sel: pz.selSq, lastFrom: pz.lastFrom, lastTo: pz.lastTo, hint: pz.hintSq, wrong: pz.wrongSq, legal })}
+        <p class="chess-msg ${pz.kind || ''}">${esc(pz.status)}</p>
+        ${pz.promoPending ? `<div class="chess-promo"><span class="note">Promote to:</span>${pz.promoPending.map((m, idx) => `<button type="button" class="btn" data-promo="${idx}">${PROMO_NAMES[m.promo]}</button>`).join('')}</div>` : ''}
+        ${pz.history.length ? `<div class="chess-moves">Solution: ${pz.history.map((mv, idx) => `<span>${idx % 2 === 0 ? (Math.floor(idx / 2) + 1) + '. ' : ''}${esc(mv)}</span>`).join(' ')}</div>` : ''}
+        <div class="chess-bar">
+          ${pz.solSan.length && !solved ? '<button type="button" class="btn" id="chess-hint">Hint</button>' : ''}
+          <button type="button" class="btn" id="chess-reset">Reset</button>
+          <a class="btn" style="text-decoration:none" href="${esc(pz.url)}" target="_blank" rel="noopener">Open on Chess.com</a>
+        </div>`;
+
+      box.querySelectorAll('.sq').forEach(btn => {
+        btn.addEventListener('click', () => handleSquareClick(parseInt(btn.dataset.r, 10), parseInt(btn.dataset.c, 10)));
+      });
+      box.querySelectorAll('[data-promo]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const mv = pz.promoPending && pz.promoPending[parseInt(btn.dataset.promo, 10)];
+          pz.promoPending = null;
+          if (mv) tryPuzzleMove(mv);
+        });
+      });
+      const hintBtn = document.getElementById('chess-hint');
+      if (hintBtn) hintBtn.onclick = showPuzzleHint;
+      document.getElementById('chess-reset').onclick = resetPuzzleBoard;
+    }
+    function resetPuzzleBoard() {
+      if (!pz) return;
+      puzzleToken++;
+      const pos = parseFen(pz.fen);
+      pz.pos = pos;
+      pz.stepIdx = 0;
+      pz.selSq = null; pz.lastFrom = null; pz.lastTo = null; pz.hintSq = null; pz.wrongSq = null;
+      pz.busy = false; pz.promoPending = null; pz.hintFresh = false; pz.history = [];
+      pz.status = (pos.turn === 'b' ? 'Black' : 'White') + ' to move — click a piece to solve.';
+      pz.kind = '';
+      renderPuzzleBox();
+    }
+    function showPuzzleHint() {
+      if (!pz || pz.busy || pz.stepIdx >= pz.solSan.length) return;
+      const expSan = pz.solSan[pz.stepIdx];
+      const exp = findSanMoves(pz.pos, expSan, legalMoves(pz.pos));
+      if (!exp.length) return;
+      const m = exp[0];
+      if (pz.hintSq && pz.hintSq[0] === m.fr && pz.hintSq[1] === m.fc) {
+        pz.status = 'Hint: play ' + expSan + '.';
+        pz.selSq = [m.fr, m.fc];
+        pz.hintFresh = true;
+      } else {
+        pz.hintSq = [m.fr, m.fc];
+        pz.selSq = [m.fr, m.fc];
+        pz.hintFresh = true;
+        pz.status = 'Hint: move the highlighted piece.';
+      }
+      pz.kind = '';
+      renderPuzzleBox();
+    }
+    function handleSquareClick(r, c) {
+      if (!pz || pz.busy || !pz.solSan.length || pz.stepIdx >= pz.solSan.length) return;
+      if (pz.promoPending) { pz.promoPending = null; renderPuzzleBox(); return; }
+      const legal = legalMoves(pz.pos);
+      if (pz.selSq) {
+        const matches = legal.filter(m => m.fr === pz.selSq[0] && m.fc === pz.selSq[1] && m.tr === r && m.tc === c);
+        if (matches.length === 1) { pz.selSq = null; pz.hintFresh = false; tryPuzzleMove(matches[0]); return; }
+        if (matches.length > 1) { pz.selSq = null; pz.hintFresh = false; pz.promoPending = matches; renderPuzzleBox(); return; }
+        if (pz.hintFresh && r === pz.selSq[0] && c === pz.selSq[1]) {
+          pz.hintFresh = false; renderPuzzleBox(); return;
+        }
+        pz.hintFresh = false;
+        if (sideOf(pz.pos.grid[r][c]) === pz.pos.turn && (r !== pz.selSq[0] || c !== pz.selSq[1])) {
+          pz.selSq = [r, c]; renderPuzzleBox(); return;
+        }
+        pz.selSq = null; renderPuzzleBox(); return;
+      }
+      pz.hintFresh = false;
+      if (sideOf(pz.pos.grid[r][c]) === pz.pos.turn) {
+        pz.selSq = [r, c];
+        renderPuzzleBox();
+      }
+    }
+    function tryPuzzleMove(m) {
+      const expSan = pz.solSan[pz.stepIdx];
+      const expList = findSanMoves(pz.pos, expSan, legalMoves(pz.pos));
+      let ok = expList.some(em => em.fr === m.fr && em.fc === m.fc && em.tr === m.tr && em.tc === m.tc && (em.promo || null) === (m.promo || null));
+      if (!ok && pz.stepIdx === pz.solSan.length - 1 && expSan.endsWith('#')) {
+        const after = applyRawMove(pz.pos, m);
+        if (inCheck(after, after.turn) && legalMoves(after).length === 0) ok = true;
+      }
+      if (!ok) {
+        pz.wrongSq = [m.tr, m.tc];
+        pz.status = 'Not the best move — try again.';
+        pz.kind = 'bad';
+        const tok = puzzleToken;
+        renderPuzzleBox();
+        setTimeout(() => { if (pz && puzzleToken === tok && pz.wrongSq) { pz.wrongSq = null; renderPuzzleBox(); } }, 650);
+        return;
+      }
+      pz.hintSq = null; pz.wrongSq = null;
+      pz.pos = applyRawMove(pz.pos, m);
+      pz.lastFrom = [m.fr, m.fc]; pz.lastTo = [m.tr, m.tc];
+      pz.history.push(expSan);
+      pz.stepIdx++;
+      if (pz.stepIdx >= pz.solSan.length) {
+        markPuzzleSolved(pz.url);
+        pz.status = 'Puzzle solved!';
+        pz.kind = 'ok';
+        renderPuzzleBox();
+        return;
+      }
+      const replySan = pz.solSan[pz.stepIdx];
+      const tok = puzzleToken;
+      pz.status = 'Good move (' + expSan + ') — opponent replying…';
+      pz.kind = 'ok';
+      pz.busy = true;
+      renderPuzzleBox();
+      setTimeout(() => {
+        if (!pz || puzzleToken !== tok) return;
+        const replies = findSanMoves(pz.pos, replySan, legalMoves(pz.pos));
+        if (replies.length) {
+          const rm = replies[0];
+          pz.pos = applyRawMove(pz.pos, rm);
+          pz.lastFrom = [rm.fr, rm.fc]; pz.lastTo = [rm.tr, rm.tc];
+          pz.history.push(replySan);
+          pz.stepIdx++;
+        }
+        pz.busy = false;
+        if (pz.stepIdx >= pz.solSan.length) {
+          markPuzzleSolved(pz.url);
+          pz.status = 'Puzzle solved!';
+          pz.kind = 'ok';
+        } else {
+          pz.status = 'Your move — find the continuation.';
+          pz.kind = '';
+        }
+        renderPuzzleBox();
+      }, 420);
+    }
+
+    function maybeAutoRefreshChess(force) {
+      const todayKey = localDateKey(now);
+      const stale = force || !lastChessAt || todayKey !== lastChessDateKey || (Date.now() - lastChessAt > 15 * 60 * 1000);
+      if (!stale) return;
+      const chessPanel = document.getElementById('panel-chess');
+      if (chessPanel && !chessPanel.hidden) loadChess(force);
+    }
+    setInterval(() => {
+      if (!params.get('today')) now.setTime(Date.now());
+      maybeAutoRefreshChess(false);
+    }, 300000);
+
+    async function loadChess(force) {
+      const box = document.getElementById('chess-puzzle');
+      lastChessDateKey = localDateKey(now);
+      lastChessAt = Date.now();
       box.innerHTML = '<h2>Daily puzzle</h2><p class="note">Loading today\'s puzzle…</p>';
       try {
-        const p = await getJson('https://api.chess.com/pub/puzzle', 30);
-        const side = p.fen.split(' ')[1] === 'b' ? 'Black' : 'White';
-        box.innerHTML = `<h2>${esc(stripEmojis(p.title) || 'Daily Puzzle')}</h2><p class="note" style="margin-bottom:12px">${side} to move. Find the best line, then check it on Chess.com.</p>
-          ${boardHtml(p.fen)}<p style="margin:14px 0 0"><a class="btn primary" style="display:inline-block;text-decoration:none" href="${esc(p.url)}" target="_blank" rel="noopener">Solve on Chess.com</a></p>`;
+        const p = await getJson('https://api.chess.com/pub/puzzle', 30, !!force);
+        const pos = parseFen(p.fen);
+        const solSan = parsePuzzlePgn(p.pgn);
+        puzzleToken++;
+        pz = {
+          url: p.url, title: p.title, fen: p.fen, flip: pos.turn === 'b',
+          pos, solSan, stepIdx: 0, selSq: null, lastFrom: null, lastTo: null,
+          hintSq: null, wrongSq: null, busy: false, promoPending: null, history: [],
+          status: solSan.length ? (pos.turn === 'b' ? 'Black' : 'White') + ' to move — click a piece to solve.' : 'Interactive board ready — click pieces or verify on Chess.com.',
+          kind: ''
+        };
+        renderPuzzleBox();
       } catch (e) {
         box.innerHTML = '<h2>Daily puzzle</h2><div class="err"><span>Could not load the puzzle. Check your connection and try again.</span><button class="btn" type="button" id="chess-retry">Try again</button></div>';
-        document.getElementById('chess-retry').onclick = loadChess;
+        document.getElementById('chess-retry').onclick = () => loadChess(true);
       }
-      loadChessPlayer();
+      loadChessPlayer(!!force);
     }
-    async function loadChessPlayer() {
+    async function loadChessPlayer(force) {
       const stats = document.getElementById('chess-stats'), games = document.getElementById('chess-games');
       if (!chessUser) {
-        stats.innerHTML = '<h2>Ratings</h2><p class="note">Enter your Chess.com username above to see your ratings and daily games.</p>';
+        stats.innerHTML = '<h2>Ratings</h2><p class="note">Enter your Chess.com username above (e.g. eanbynoe) to see your ratings and games.</p>';
         games.innerHTML = ''; games.hidden = true; return;
       }
       games.hidden = false;
       stats.innerHTML = '<h2>Ratings</h2><p class="note">Loading…</p>'; games.innerHTML = '';
       const u = encodeURIComponent(chessUser), base = 'https://api.chess.com/pub/player/' + u;
+      const y = now.getFullYear(), m = String(now.getMonth() + 1).padStart(2, '0');
+      const prevD = new Date(y, now.getMonth() - 1, 1);
+      const py = prevD.getFullYear(), pm = String(prevD.getMonth() + 1).padStart(2, '0');
       try {
-        const [s, g] = await Promise.all([getJson(base + '/stats', 5), getJson(base + '/games', 2)]);
+        const [s, g, archCur] = await Promise.all([
+          getJson(base + '/stats', 5, !!force),
+          getJson(base + '/games', 2, !!force),
+          getJson(`${base}/games/${y}/${m}`, 5, !!force).catch(() => ({ games: [] }))
+        ]);
+        let recent = (archCur && archCur.games) || [];
+        if (!recent.length) {
+          const archPrev = await getJson(`${base}/games/${py}/${pm}`, 15, !!force).catch(() => ({ games: [] }));
+          recent = (archPrev && archPrev.games) || [];
+        }
         const modes = [['chess_rapid', 'Rapid'], ['chess_blitz', 'Blitz'], ['chess_bullet', 'Bullet'], ['chess_daily', 'Daily']];
         stats.innerHTML = `<h2>${esc(chessUser)}</h2><div class="ratings" style="margin-top:12px">${modes.map(([k, n]) =>
           `<div class="stat"><b>${s[k] && s[k].last ? s[k].last.rating : '–'}</b><span>${n}</span></div>`).join('')}</div>
           ${s.tactics && s.tactics.highest ? `<p class="note" style="margin-top:12px">Best puzzle rating: ${s.tactics.highest.rating}</p>` : ''}`;
-        const list = g.games || [];
-        games.innerHTML = `<h2>Daily games</h2>${list.length ? list.map(m => {
-          const white = m.white.split('/').pop().toLowerCase() === chessUser, opp = (white ? m.black : m.white).split('/').pop();
-          const mine = (m.turn === 'white') === white;
-          const days = Math.round(parseInt(m.time_control.split('/')[1] || '0', 10) / 86400);
-          return `<div class="li"><a href="${esc(m.url)}" target="_blank" rel="noopener">vs ${esc(opp)}</a><span class="sub"><span style="${mine ? 'color:var(--ink);font-weight:600' : ''}">${mine ? 'Your move' : 'Their move'}</span><span>${days ? days + (days === 1 ? ' day' : ' days') + ' per move' : ''}</span></span></div>`;
-        }).join('') : '<p class="note">No daily games in progress.</p>'}`;
+        const active = g.games || [];
+        const sortedRecent = [...recent].sort((a, b) => (b.end_time || 0) - (a.end_time || 0)).slice(0, 5);
+        const activeHtml = active.length ? active.map(gm => {
+          const white = gm.white.split('/').pop().toLowerCase() === chessUser, opp = (white ? gm.black : gm.white).split('/').pop();
+          const mine = (gm.turn === 'white') === white;
+          const days = Math.round(parseInt((gm.time_control || '').split('/')[1] || '0', 10) / 86400);
+          return `<div class="li"><a href="${esc(gm.url)}" target="_blank" rel="noopener">vs ${esc(opp)} (Active daily)</a><span class="sub"><span style="${mine ? 'color:var(--ink);font-weight:600' : ''}">${mine ? 'Your move' : 'Their move'}</span><span>${days ? days + (days === 1 ? ' day' : ' days') + ' per move' : ''}</span></span></div>`;
+        }).join('') : '<p class="note" style="margin-bottom:10px">No daily games currently waiting in progress.</p>';
+        const recentHtml = sortedRecent.length ? `<h3 style="margin:12px 0 4px;font-size:14px;color:var(--ink2)">Recent finished games</h3>` + sortedRecent.map(gm => {
+          const wUser = (gm.white && gm.white.username || '').toLowerCase();
+          const me = wUser === chessUser ? gm.white : gm.black;
+          const opp = wUser === chessUser ? gm.black : gm.white;
+          const res = me && me.result === 'win' ? 'Won' : (me && ['agreed','repetition','stalemate','insufficient','50move','timevsinsufficient'].includes(me.result) ? 'Draw' : 'Loss (' + (me && me.result || 'ended') + ')');
+          const when = gm.end_time ? new Date(gm.end_time * 1000).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '';
+          return `<div class="li"><a href="${esc(gm.url)}" target="_blank" rel="noopener">vs ${esc(opp && opp.username || 'Opponent')} (${esc(gm.time_class || 'chess')})</a><span class="sub"><span style="${me && me.result === 'win' ? 'color:var(--w-good);font-weight:600' : ''}">${esc(res)}</span><span>${esc(when)}</span></span></div>`;
+        }).join('') : '';
+        games.innerHTML = `<h2>Daily & recent games</h2>${activeHtml}${recentHtml}`;
       } catch (e) {
         stats.innerHTML = `<h2>Ratings</h2><div class="err"><span>${e.status === 404 ? `No Chess.com player named “${esc(chessUser)}”. Check the spelling and save again.` : 'Could not load your Chess.com data. Try again in a moment.'}</span></div>`;
         games.innerHTML = ''; games.hidden = true;
