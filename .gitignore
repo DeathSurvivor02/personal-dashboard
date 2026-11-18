@@ -5,4 +5,5 @@ Cargo.lock
 Thumbs.db
 submissions/**/target/
 submissions/**/__pycache__/
+__pycache__/
 submissions/**/.venv/
