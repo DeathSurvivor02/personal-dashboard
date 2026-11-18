@@ -219,18 +219,26 @@
     .dist i.hit { background: var(--w-good); }
 
     /* ── Chess ────────────────────────────────────────── */
-    .board { display: grid; grid-template-columns: repeat(8, 1fr); width: min(400px, 100%); aspect-ratio: 1; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); user-select: none; }
+    .board { display: grid; grid-template-columns: repeat(8, 1fr); width: min(420px, 100%); aspect-ratio: 1; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); user-select: none; position: relative; }
+    .board.theme-frosted { background: radial-gradient(circle at 82% 28%, #53e3d8 0%, #1d4e58 34%, #10242c 68%, #0a1419 100%); border-color: #2c4a54; }
+    .board.theme-frosted .sq { background: rgba(228, 240, 246, 0.24); }
+    .board.theme-frosted .sq.d { background: rgba(14, 24, 32, 0.44); }
+    .board.theme-frosted .sq.last { box-shadow: inset 0 0 0 999px rgba(96, 190, 245, 0.34); }
+    .board.theme-frosted .sq .coord-r, .board.theme-frosted .sq .coord-f { color: rgba(235, 245, 250, 0.78); }
+    .board.theme-green { --sq-l: #EEEED2; --sq-d: #769656; }
     .sq { aspect-ratio: 1; display: grid; place-items: center; position: relative; border: 0; padding: 0; font-size: clamp(24px, 6.4vw, 40px); line-height: 1; background: var(--sq-l); cursor: pointer; }
     .sq.d { background: var(--sq-d); }
-    .sq.sel { box-shadow: inset 0 0 0 3px var(--focus), inset 0 0 0 999px rgba(31, 79, 224, 0.22); }
+    .sq.sel { box-shadow: inset 0 0 0 3px var(--focus), inset 0 0 0 999px rgba(31, 79, 224, 0.24); }
     .sq.last { box-shadow: inset 0 0 0 999px rgba(240, 176, 74, 0.28); }
-    .sq.sel.last { box-shadow: inset 0 0 0 3px var(--focus), inset 0 0 0 999px rgba(31, 79, 224, 0.25); }
+    .sq.sel.last { box-shadow: inset 0 0 0 3px var(--focus), inset 0 0 0 999px rgba(31, 79, 224, 0.28); }
     .sq.hint-sq { box-shadow: inset 0 0 0 3px var(--w-good), inset 0 0 0 999px rgba(46, 125, 50, 0.24); }
     .sq.wrong { box-shadow: inset 0 0 0 3px var(--danger), inset 0 0 0 999px rgba(179, 38, 30, 0.32); }
-    .sq .dot { position: absolute; width: 28%; height: 28%; border-radius: 50%; background: rgba(18, 32, 43, 0.34); pointer-events: none; }
-    .sq.cap .dot { width: 82%; height: 82%; background: transparent; border: 3px solid rgba(18, 32, 43, 0.36); }
-    .pc-w { color: #fff; text-shadow: 0 0 2px #000, 0 0 2px #000, 0 1px 1px #000; position: relative; z-index: 1; }
-    .pc-b { color: #101820; text-shadow: 0 0 1px rgba(255,255,255,.6); position: relative; z-index: 1; }
+    .sq .dot { position: absolute; width: 26%; height: 26%; border-radius: 50%; background: rgba(20, 32, 42, 0.42); pointer-events: none; z-index: 2; }
+    .sq.cap .dot { width: 82%; height: 82%; background: transparent; border: 3px solid rgba(255, 255, 255, 0.46); }
+    .sq svg.pc { width: 82%; height: 82%; position: relative; z-index: 1; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.45)); pointer-events: none; }
+    .sq .coord-r { position: absolute; top: 2px; left: 3px; font-size: 10px; font-weight: 700; opacity: .75; pointer-events: none; line-height: 1; }
+    .sq .coord-f { position: absolute; bottom: 2px; right: 3px; font-size: 10px; font-weight: 700; opacity: .75; pointer-events: none; line-height: 1; }
+    .chess-top-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }
     .chess-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 14px; }
     .chess-msg { margin: 10px 0 0; font-size: 14px; font-weight: 500; min-height: 21px; }
     .chess-msg.ok { color: var(--w-good); font-weight: 600; }
@@ -273,13 +281,28 @@
     .q-tile.miss { background: var(--w-miss); border-color: var(--w-miss); color: #fff; }
 
     /* ── Spotify ──────────────────────────────────────── */
+    .sp-shell { background: #121212; color: #FFFFFF; border-radius: 16px; padding: 20px; border: 1px solid #282828; }
+    .sp-shell h1, .sp-shell h2, .sp-shell strong { color: #FFFFFF; }
+    .sp-shell .note { color: #B3B3B3; }
+    .sp-shell .card { background: #181818; border-color: #282828; color: #FFFFFF; }
+    .sp-shell .btn, .sp-shell .mini-btn { background: #242424; border-color: #383838; color: #FFFFFF; }
+    .sp-shell .btn:hover, .sp-shell .mini-btn:hover { background: #2E2E2E; }
+    .sp-shell .btn.primary, .sp-shell .mini-btn.primary { background: #1DB954; border-color: #1DB954; color: #000000; font-weight: 700; }
+    .sp-shell .btn.primary:hover, .sp-shell .mini-btn.primary:hover { background: #1ED760; }
+    .sp-shell input { background: #242424; border-color: #383838; color: #FFFFFF; }
+    .sp-shell input::placeholder { color: #A7A7A7; }
+    .sp-shell .status-pill { background: #242424; border-color: #383838; color: #B3B3B3; }
+    .sp-shell .status-pill.submitted { border-color: #1DB954; color: #1DB954; }
     .sp-now { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
-    .sp-art { width: 84px; height: 84px; border-radius: 10px; background: var(--track); object-fit: cover; border: 1px solid var(--line); flex: none; display: grid; place-items: center; font-weight: 700; color: var(--ink2); }
-    .sp-ctrls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
+    .sp-art { width: 88px; height: 88px; border-radius: 8px; background: #282828; object-fit: cover; border: 1px solid #333; flex: none; display: grid; place-items: center; font-weight: 700; color: #1DB954; }
+    .sp-ctrls { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin-top: 14px; }
+    .sp-play-circle { width: 42px; height: 42px; border-radius: 999px; display: inline-grid; place-items: center; padding: 0; font-size: 13px; }
     .sp-bars { display: grid; grid-template-columns: minmax(0, 1fr) 140px; gap: 12px; align-items: center; margin-top: 12px; }
-    .sp-range { width: 100%; accent-color: var(--focus); }
-    .sp-track { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 9px 0; border-top: 1px solid var(--line); }
+    .sp-range { width: 100%; accent-color: #1DB954; }
+    .sp-track { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 9px 8px; border-radius: 8px; border-top: 1px solid #262626; }
     .sp-track:first-of-type { border-top: 0; }
+    .sp-track:hover { background: #242424; }
+    .sp-devs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #262626; align-items: center; }
     .sp-embed { margin-top: 14px; }
     .sp-embed iframe { width: 100%; height: 152px; border: 0; border-radius: 12px; }
 
@@ -401,19 +424,22 @@
 
    <!-- Spotify -->
    <section role="tabpanel" id="panel-spotify" aria-labelledby="tab-spotify" hidden>
-    <div class="page-h">
-      <div><h1>Spotify</h1><p id="sp-subtitle">Web Playback SDK and Web API player for your dashboard.</p></div>
-      <div class="form" id="sp-config-form">
-        <button class="btn primary" type="button" id="sp-connect">Connect Spotify</button>
-        <button class="btn" type="button" id="sp-refresh">Refresh</button>
-        <button class="btn" type="button" id="sp-disconnect" hidden>Disconnect</button>
+    <div class="sp-shell">
+      <div class="page-h">
+        <div><h1>Spotify</h1><p id="sp-subtitle">Web Playback SDK and Web API player for your dashboard.</p></div>
+        <div class="form" id="sp-config-form">
+          <button class="btn primary" type="button" id="sp-connect">Connect Spotify</button>
+          <button class="btn" type="button" id="sp-liked-btn">Liked Songs</button>
+          <button class="btn" type="button" id="sp-refresh">Refresh</button>
+          <button class="btn" type="button" id="sp-disconnect" hidden>Disconnect</button>
+        </div>
       </div>
-    </div>
-    <div class="card" id="sp-auth-bar" style="margin-bottom:16px"></div>
-    <div class="card" id="sp-player-card" style="margin-bottom:16px"></div>
-    <div class="two">
-      <div class="card" id="sp-tracks-card"></div>
-      <div class="card" id="sp-playlists-card"></div>
+      <div class="card" id="sp-auth-bar" style="margin-bottom:16px"></div>
+      <div class="card" id="sp-player-card" style="margin-bottom:16px"></div>
+      <div class="two">
+        <div class="card" id="sp-tracks-card"></div>
+        <div class="card" id="sp-playlists-card"></div>
+      </div>
     </div>
    </section>
   </main>
@@ -1420,7 +1446,55 @@
 
     const GLYPH = { k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟︎' };
     const PROMO_NAMES = { q: 'Queen', r: 'Rook', b: 'Bishop', n: 'Knight' };
-    let pz = null, puzzleToken = 0, lastChessDateKey = '', lastChessAt = 0;
+    let chessTheme = store.get('chess_theme') || 'frosted';
+    let chessSound = store.get('chess_sound') !== 'off';
+    let dailyPuzzles = [], dailySolved = [false, false, false], dailyIdx = 0;
+    let pz = null, puzzleToken = 0, lastChessDateKey = '', lastChessAt = 0, chessCtx = null;
+
+    function playChessSound(kind) {
+      if (!chessSound) return;
+      try {
+        const AC = window.AudioContext || window.webkitAudioContext;
+        if (!AC) return;
+        if (!chessCtx) chessCtx = new AC();
+        if (chessCtx.state === 'suspended') chessCtx.resume();
+        const t = chessCtx.currentTime;
+        const beep = (freq, dur, type, gainVal, delay) => {
+          const osc = chessCtx.createOscillator(), g = chessCtx.createGain();
+          osc.type = type || 'triangle';
+          osc.frequency.setValueAtTime(freq, t + (delay || 0));
+          g.gain.setValueAtTime(gainVal || 0.14, t + (delay || 0));
+          g.gain.exponentialRampToValueAtTime(0.001, t + (delay || 0) + dur);
+          osc.connect(g); g.connect(chessCtx.destination);
+          osc.start(t + (delay || 0)); osc.stop(t + (delay || 0) + dur);
+        };
+        if (kind === 'move') beep(260, 0.07, 'triangle', 0.16, 0);
+        else if (kind === 'capture') { beep(190, 0.08, 'sawtooth', 0.14, 0); beep(130, 0.09, 'triangle', 0.12, 0.02); }
+        else if (kind === 'check') { beep(520, 0.1, 'sine', 0.14, 0); beep(660, 0.12, 'sine', 0.12, 0.07); }
+        else if (kind === 'wrong') beep(150, 0.16, 'sawtooth', 0.12, 0);
+        else if (kind === 'solved') { beep(523.25, 0.12, 'triangle', 0.14, 0); beep(659.25, 0.12, 'triangle', 0.14, 0.09); beep(783.99, 0.22, 'triangle', 0.16, 0.18); }
+      } catch (e) {}
+    }
+
+    function pieceSvg(p) {
+      const isW = p === p.toUpperCase();
+      const fill = isW ? '#E6EBF0' : '#4C545C';
+      const shade = isW ? '#BAC4CE' : '#2C3238';
+      const stroke = '#14181C';
+      const pt = p.toLowerCase();
+      const body = pt === 'p'
+        ? `<circle cx="22.5" cy="14" r="5" fill="${fill}" stroke="${stroke}" stroke-width="2"/><path d="M16 33c1.5-5 4-9 6.5-11 2.5 2 5 6 6.5 11H16z" fill="${fill}" stroke="${stroke}" stroke-width="2" stroke-linejoin="round"/><rect x="12" y="33" width="21" height="4.5" rx="1.5" fill="${shade}" stroke="${stroke}" stroke-width="2"/>`
+        : pt === 'r'
+        ? `<path d="M12 10h4v3h3v-3h7v3h3v-3h4v7l-3 3v12l3 3v4H12v-4l3-3V20l-3-3v-7z" fill="${fill}" stroke="${stroke}" stroke-width="2" stroke-linejoin="round"/><rect x="14" y="33" width="17" height="3.5" fill="${shade}" stroke="${stroke}" stroke-width="1.5"/>`
+        : pt === 'n'
+        ? `<path d="M14 37h19v-4l-3-4c1-6 0-12-4-17l-2-3-3 3c-4 1-7 4-9 8l4 2c2-2 4-2 5-1-3 3-5 7-4 12l-3 4z" fill="${fill}" stroke="${stroke}" stroke-width="2" stroke-linejoin="round"/><circle cx="19.5" cy="17.5" r="1.4" fill="${stroke}"/>`
+        : pt === 'b'
+        ? `<circle cx="22.5" cy="8.5" r="2.5" fill="${fill}" stroke="${stroke}" stroke-width="1.8"/><path d="M22.5 11c-5 4-7 9-5 15l-3 7h16l-3-7c2-6 0-11-5-15z" fill="${fill}" stroke="${stroke}" stroke-width="2" stroke-linejoin="round"/><path d="M18.5 18.5l8 5" stroke="${stroke}" stroke-width="2" stroke-linecap="round"/><rect x="13" y="33" width="19" height="4" rx="1.5" fill="${shade}" stroke="${stroke}" stroke-width="2"/>`
+        : pt === 'q'
+        ? `<path d="M9 14l5 15h17l5-15-8 7-5.5-9-5.5 9-8-7z" fill="${fill}" stroke="${stroke}" stroke-width="2" stroke-linejoin="round"/><circle cx="9" cy="12" r="2" fill="${fill}" stroke="${stroke}" stroke-width="1.6"/><circle cx="22.5" cy="10" r="2.2" fill="${fill}" stroke="${stroke}" stroke-width="1.6"/><circle cx="36" cy="12" r="2" fill="${fill}" stroke="${stroke}" stroke-width="1.6"/><rect x="13" y="30" width="19" height="7" rx="1.5" fill="${shade}" stroke="${stroke}" stroke-width="2"/>`
+        : `<path d="M22.5 7v7M19 10.5h7" stroke="${stroke}" stroke-width="2.2" stroke-linecap="round"/><path d="M14 31c-3-4-4-10 0-14 3-3 7-1 8.5 2 1.5-3 5.5-5 8.5-2 4 4 3 10 0 14H14z" fill="${fill}" stroke="${stroke}" stroke-width="2" stroke-linejoin="round"/><rect x="13" y="31" width="19" height="6" rx="1.5" fill="${shade}" stroke="${stroke}" stroke-width="2"/>`;
+      return `<svg class="pc" viewBox="0 0 45 45" aria-hidden="true">${body}</svg>`;
+    }
 
     function localDateKey(d) {
       return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0');
@@ -1616,6 +1690,7 @@
       if (sel && opts.legal) {
         for (const m of opts.legal) if (m.fr === sel[0] && m.fc === sel[1]) targets.set(m.tr + ',' + m.tc, m);
       }
+      const themeCls = chessTheme === 'green' ? 'theme-green' : chessTheme === 'slate' ? '' : 'theme-frosted';
       const cells = [];
       for (let vy = 0; vy < 8; vy++) {
         const r = flip ? 7 - vy : vy;
@@ -1630,10 +1705,12 @@
           if (wrong && wrong[0] === r && wrong[1] === c) cls.push('wrong');
           const tgt = targets.get(r + ',' + c);
           if (tgt && (p || tgt.enPassant)) cls.push('cap');
-          cells.push(`<button type="button" class="${cls.join(' ')}" data-r="${r}" data-c="${c}" aria-label="${sq}${p ? ' ' + p : ''}">${p ? `<span class="${p === p.toUpperCase() ? 'pc-w' : 'pc-b'}">${GLYPH[p.toLowerCase()]}</span>` : ''}${tgt ? '<span class="dot"></span>' : ''}</button>`);
+          const rLbl = vx === 0 ? `<span class="coord-r">${8 - r}</span>` : '';
+          const fLbl = vy === 7 ? `<span class="coord-f">${'abcdefgh'[c]}</span>` : '';
+          cells.push(`<button type="button" class="${cls.join(' ')}" data-r="${r}" data-c="${c}" aria-label="${sq}${p ? ' ' + p : ''}">${rLbl}${fLbl}${p ? pieceSvg(p) : ''}${tgt ? '<span class="dot"></span>' : ''}</button>`);
         }
       }
-      return `<div class="board" role="group" aria-label="Interactive chess puzzle board">${cells.join('')}</div>`;
+      return `<div class="board ${themeCls}" role="group" aria-label="Interactive chess puzzle board">${cells.join('')}</div>`;
     }
     function renderPuzzleBox() {
       const box = document.getElementById('chess-puzzle');
@@ -1642,21 +1719,35 @@
       const sideLabel = parseFen(pz.fen).turn === 'b' ? 'Black' : 'White';
       const solved = pz.solSan.length > 0 && pz.stepIdx >= pz.solSan.length;
       const legal = solved || pz.busy ? [] : legalMoves(pz.pos);
-      const alreadyToday = Array.isArray(st.urls) && st.urls.includes(pz.url);
-      box.innerHTML = `<h2>${esc(stripEmojis(pz.title) || 'Daily Puzzle')}</h2>
-        <p class="note" style="margin-bottom:12px">${sideLabel} to move${alreadyToday && !solved ? ' · Solved today' : ''} · Solved total: ${solvedCount}</p>
+      const dailySolvedNum = dailySolved.filter(Boolean).length;
+      const dailyPills = dailyPuzzles.length ? `<div class="seg" role="group" aria-label="Daily puzzles">${dailyPuzzles.map((_, i) =>
+        `<button type="button" data-dpz="${i}" aria-pressed="${dailyIdx === i}">${i === 0 ? 'Daily 1' : 'Free ' + (i + 1)}${dailySolved[i] ? ' ✓' : ''}</button>`).join('')}</div>` : '';
+      box.innerHTML = `
+        <div class="chess-top-bar">
+          <div>
+            <h2>${esc(stripEmojis(pz.title) || 'Daily Puzzle')}</h2>
+            <p class="note">${sideLabel} to move · Daily puzzles: ${dailySolvedNum}/${dailyPuzzles.length || 1} · Total solved: ${solvedCount}</p>
+          </div>
+          ${dailyPills}
+        </div>
         ${boardHtml(pz.pos, { flip: pz.flip, sel: pz.selSq, lastFrom: pz.lastFrom, lastTo: pz.lastTo, hint: pz.hintSq, wrong: pz.wrongSq, legal })}
         <p class="chess-msg ${pz.kind || ''}">${esc(pz.status)}</p>
         ${pz.promoPending ? `<div class="chess-promo"><span class="note">Promote to:</span>${pz.promoPending.map((m, idx) => `<button type="button" class="btn" data-promo="${idx}">${PROMO_NAMES[m.promo]}</button>`).join('')}</div>` : ''}
         ${pz.history.length ? `<div class="chess-moves">Solution: ${pz.history.map((mv, idx) => `<span>${idx % 2 === 0 ? (Math.floor(idx / 2) + 1) + '. ' : ''}${esc(mv)}</span>`).join(' ')}</div>` : ''}
         <div class="chess-bar">
           ${pz.solSan.length && !solved ? '<button type="button" class="btn" id="chess-hint">Hint</button>' : ''}
+          ${solved && dailyPuzzles.length > 1 && dailyIdx < dailyPuzzles.length - 1 ? '<button type="button" class="btn primary" id="chess-next-pz">Next Puzzle</button>' : ''}
           <button type="button" class="btn" id="chess-reset">Reset</button>
+          <button type="button" class="btn" id="chess-theme-btn">Theme: ${chessTheme === 'frosted' ? 'Frosted Teal' : chessTheme === 'green' ? 'Classic Green' : 'Slate'}</button>
+          <button type="button" class="btn" id="chess-sound-btn">Sound: ${chessSound ? 'On' : 'Off'}</button>
           <a class="btn" style="text-decoration:none" href="${esc(pz.url)}" target="_blank" rel="noopener">Open on Chess.com</a>
         </div>`;
 
       box.querySelectorAll('.sq').forEach(btn => {
         btn.addEventListener('click', () => handleSquareClick(parseInt(btn.dataset.r, 10), parseInt(btn.dataset.c, 10)));
+      });
+      box.querySelectorAll('[data-dpz]').forEach(btn => {
+        btn.addEventListener('click', () => selectDailyPuzzle(parseInt(btn.dataset.dpz, 10)));
       });
       box.querySelectorAll('[data-promo]').forEach(btn => {
         btn.addEventListener('click', () => {
@@ -1667,7 +1758,20 @@
       });
       const hintBtn = document.getElementById('chess-hint');
       if (hintBtn) hintBtn.onclick = showPuzzleHint;
+      const nextBtn = document.getElementById('chess-next-pz');
+      if (nextBtn) nextBtn.onclick = () => selectDailyPuzzle(dailyIdx + 1);
       document.getElementById('chess-reset').onclick = resetPuzzleBoard;
+      document.getElementById('chess-theme-btn').onclick = () => {
+        chessTheme = chessTheme === 'frosted' ? 'green' : chessTheme === 'green' ? 'slate' : 'frosted';
+        store.set('chess_theme', chessTheme);
+        renderPuzzleBox();
+      };
+      document.getElementById('chess-sound-btn').onclick = () => {
+        chessSound = !chessSound;
+        store.set('chess_sound', chessSound ? 'on' : 'off');
+        if (chessSound) playChessSound('move');
+        renderPuzzleBox();
+      };
     }
     function resetPuzzleBoard() {
       if (!pz) return;
@@ -1732,6 +1836,7 @@
         if (inCheck(after, after.turn) && legalMoves(after).length === 0) ok = true;
       }
       if (!ok) {
+        playChessSound('wrong');
         pz.wrongSq = [m.tr, m.tc];
         pz.status = 'Not the best move — try again.';
         pz.kind = 'bad';
@@ -1740,18 +1845,25 @@
         setTimeout(() => { if (pz && puzzleToken === tok && pz.wrongSq) { pz.wrongSq = null; renderPuzzleBox(); } }, 650);
         return;
       }
+      const wasCap = !!(pz.pos.grid[m.tr][m.tc] || m.enPassant);
       pz.hintSq = null; pz.wrongSq = null;
       pz.pos = applyRawMove(pz.pos, m);
       pz.lastFrom = [m.fr, m.fc]; pz.lastTo = [m.tr, m.tc];
       pz.history.push(expSan);
       pz.stepIdx++;
       if (pz.stepIdx >= pz.solSan.length) {
+        playChessSound('solved');
         markPuzzleSolved(pz.url);
+        if (dailyPuzzles.length) {
+          dailySolved[dailyIdx] = true;
+          store.set('chess_daily3_v1', JSON.stringify({ date: wLocalDate(), puzzles: dailyPuzzles, solved: dailySolved }));
+        }
         pz.status = 'Puzzle solved!';
         pz.kind = 'ok';
         renderPuzzleBox();
         return;
       }
+      playChessSound(inCheck(pz.pos, pz.pos.turn) ? 'check' : (wasCap ? 'capture' : 'move'));
       const replySan = pz.solSan[pz.stepIdx];
       const tok = puzzleToken;
       pz.status = 'Good move (' + expSan + ') — opponent replying…';
@@ -1763,14 +1875,21 @@
         const replies = findSanMoves(pz.pos, replySan, legalMoves(pz.pos));
         if (replies.length) {
           const rm = replies[0];
+          const rCap = !!(pz.pos.grid[rm.tr][rm.tc] || rm.enPassant);
           pz.pos = applyRawMove(pz.pos, rm);
           pz.lastFrom = [rm.fr, rm.fc]; pz.lastTo = [rm.tr, rm.tc];
           pz.history.push(replySan);
           pz.stepIdx++;
+          playChessSound(inCheck(pz.pos, pz.pos.turn) ? 'check' : (rCap ? 'capture' : 'move'));
         }
         pz.busy = false;
         if (pz.stepIdx >= pz.solSan.length) {
+          playChessSound('solved');
           markPuzzleSolved(pz.url);
+          if (dailyPuzzles.length) {
+            dailySolved[dailyIdx] = true;
+            store.set('chess_daily3_v1', JSON.stringify({ date: wLocalDate(), puzzles: dailyPuzzles, solved: dailySolved }));
+          }
           pz.status = 'Puzzle solved!';
           pz.kind = 'ok';
         } else {
@@ -1779,6 +1898,23 @@
         }
         renderPuzzleBox();
       }, 420);
+    }
+
+    function selectDailyPuzzle(idx) {
+      if (!dailyPuzzles.length) return;
+      dailyIdx = Math.max(0, Math.min(dailyPuzzles.length - 1, idx));
+      const p = dailyPuzzles[dailyIdx];
+      const pos = parseFen(p.fen);
+      const solSan = parsePuzzlePgn(p.pgn);
+      puzzleToken++;
+      pz = {
+        url: p.url, title: p.title, fen: p.fen, flip: pos.turn === 'b',
+        pos, solSan, stepIdx: 0, selSq: null, lastFrom: null, lastTo: null,
+        hintSq: null, wrongSq: null, busy: false, promoPending: null, history: [],
+        status: solSan.length ? (pos.turn === 'b' ? 'Black' : 'White') + ' to move — click a piece to solve.' : 'Interactive board ready.',
+        kind: ''
+      };
+      renderPuzzleBox();
     }
 
     function maybeAutoRefreshChess(force) {
@@ -1797,20 +1933,24 @@
       const box = document.getElementById('chess-puzzle');
       lastChessDateKey = localDateKey(now);
       lastChessAt = Date.now();
-      box.innerHTML = '<h2>Daily puzzle</h2><p class="note">Loading today\'s puzzle…</p>';
+      box.innerHTML = '<h2>Daily puzzle</h2><p class="note">Loading today\'s 3 daily puzzles…</p>';
       try {
-        const p = await getJson('https://api.chess.com/pub/puzzle', 30, !!force);
-        const pos = parseFen(p.fen);
-        const solSan = parsePuzzlePgn(p.pgn);
-        puzzleToken++;
-        pz = {
-          url: p.url, title: p.title, fen: p.fen, flip: pos.turn === 'b',
-          pos, solSan, stepIdx: 0, selSq: null, lastFrom: null, lastTo: null,
-          hintSq: null, wrongSq: null, busy: false, promoPending: null, history: [],
-          status: solSan.length ? (pos.turn === 'b' ? 'Black' : 'White') + ' to move — click a piece to solve.' : 'Interactive board ready — click pieces or verify on Chess.com.',
-          kind: ''
-        };
-        renderPuzzleBox();
+        const p1 = await getJson('https://api.chess.com/pub/puzzle', 30, !!force);
+        let saved = null;
+        try { saved = JSON.parse(store.get('chess_daily3_v1') || 'null'); } catch (e) {}
+        if (!force && saved && saved.date === wLocalDate() && Array.isArray(saved.puzzles) && saved.puzzles.length === 3) {
+          dailyPuzzles = [p1, saved.puzzles[1], saved.puzzles[2]];
+          dailySolved = Array.isArray(saved.solved) && saved.solved.length === 3 ? saved.solved : [false, false, false];
+        } else {
+          const [p2, p3] = await Promise.all([
+            getJson('https://api.chess.com/pub/puzzle/random?r=2&d=' + Date.now(), 0, true).catch(() => null),
+            getJson('https://api.chess.com/pub/puzzle/random?r=3&d=' + (Date.now() + 1), 0, true).catch(() => null)
+          ]);
+          dailyPuzzles = [p1, p2, p3].filter(Boolean);
+          dailySolved = dailyPuzzles.map(() => false);
+          store.set('chess_daily3_v1', JSON.stringify({ date: wLocalDate(), puzzles: dailyPuzzles, solved: dailySolved }));
+        }
+        selectDailyPuzzle(Math.min(dailyIdx, dailyPuzzles.length - 1));
       } catch (e) {
         box.innerHTML = '<h2>Daily puzzle</h2><div class="err"><span>Could not load the puzzle. Check your connection and try again.</span><button class="btn" type="button" id="chess-retry">Try again</button></div>';
         document.getElementById('chess-retry').onclick = () => loadChess(true);
@@ -1870,10 +2010,10 @@
     /* ══ Spotify (PKCE + Web API + Web Playback SDK) ════ */
     const SP_DEFAULT_CID = 'bda745e8b0c1482bbe769748e7e2d02a';
     const SP_REDIRECT = 'http://127.0.0.1:43821/spotify/callback';
-    const SP_SCOPES = 'streaming user-read-email user-read-private user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-recently-played playlist-read-private playlist-read-collaborative';
+    const SP_SCOPES = 'streaming user-read-email user-read-private user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-recently-played playlist-read-private playlist-read-collaborative user-library-read user-library-modify';
     const cfgSpCid = (window.__SCHOOL_SYNC_CONFIG__ && window.__SCHOOL_SYNC_CONFIG__.spotify_client_id) || SP_DEFAULT_CID;
     let spClientId = store.get('spotify_client_id') || cfgSpCid;
-    let spPlayer = null, spDeviceId = '', spSdkLoaded = false, spProfile = null;
+    let spPlayer = null, spDeviceId = '', spSdkLoaded = false, spProfile = null, spDevices = [], spLiked = new Set();
     let spNowPlaying = null, spTracks = [], spTracksHeading = 'Recently played', spPlaylists = [], spEmbed = null, spNotice = '', spPollTimer = null;
     const spCidInput = document.getElementById('sp-client-id');
     if (spCidInput) spCidInput.value = spClientId;
@@ -2051,24 +2191,64 @@
         window.onSpotifyWebPlaybackSDKReady();
       }
     }
+    async function refreshLikedSet() {
+      const uris = [];
+      if (spNowPlaying && spNowPlaying.item && spNowPlaying.item.uri) uris.push(spNowPlaying.item.uri);
+      spTracks.slice(0, 20).forEach(t => { if (t && t.uri && !uris.includes(t.uri)) uris.push(t.uri); });
+      if (!uris.length) return;
+      try {
+        const res = await spFetch('/me/library/contains?uris=' + encodeURIComponent(uris.join(',')));
+        if (Array.isArray(res)) {
+          uris.forEach((u, i) => { if (res[i]) spLiked.add(u); else spLiked.delete(u); });
+        }
+      } catch (e) {}
+    }
+    async function toggleLikeTrack(uri) {
+      if (!uri) return;
+      const saved = spLiked.has(uri);
+      try {
+        await spFetch('/me/library?uris=' + encodeURIComponent(uri), { method: saved ? 'DELETE' : 'PUT' });
+        if (saved) spLiked.delete(uri); else spLiked.add(uri);
+        spNotice = saved ? 'Removed from Liked Songs.' : 'Saved to your Spotify Liked Songs.';
+      } catch (e) {
+        spNotice = 'Could not update Liked Songs (' + e.message + ') — try clicking Connect Spotify to grant library permission.';
+      }
+      renderSpotify();
+    }
+    async function loadLikedSongs() {
+      spTracksHeading = 'Liked Songs';
+      spTracks = [];
+      renderSpotify();
+      try {
+        const res = await spFetch('/me/tracks?limit=25');
+        spTracks = ((res && res.items) || []).map(x => x.track).filter(Boolean);
+        spTracks.forEach(t => { if (t.uri) spLiked.add(t.uri); });
+      } catch (e) {
+        spNotice = 'Could not load Liked Songs (' + e.message + ').';
+      }
+      renderSpotify();
+    }
     async function loadSpotifyDashboard() {
       const tok = await getValidSpotifyToken();
       if (!tok) { spProfile = null; renderSpotify(); return; }
       initSpotifySdk();
       try {
-        const [me, player, pls, recent] = await Promise.all([
+        const [me, player, pls, recent, devs] = await Promise.all([
           spFetch('/me').catch(() => null),
           spFetch('/me/player').catch(() => null),
           spFetch('/me/playlists?limit=20').catch(() => ({ items: [] })),
-          spFetch('/me/player/recently-played?limit=12').catch(() => ({ items: [] }))
+          spFetch('/me/player/recently-played?limit=12').catch(() => ({ items: [] })),
+          spFetch('/me/player/devices').catch(() => ({ devices: [] }))
         ]);
         spProfile = me;
         if (player && player.item) spNowPlaying = player;
         spPlaylists = (pls && pls.items) || [];
+        spDevices = (devs && devs.devices) || [];
         if (!spTracks.length || spTracksHeading === 'Recently played') {
           spTracksHeading = 'Recently played';
           spTracks = ((recent && recent.items) || []).map(x => x.track).filter(Boolean);
         }
+        await refreshLikedSet();
       } catch (e) {
         spNotice = 'Could not load Spotify profile: ' + e.message;
       }
@@ -2080,14 +2260,16 @@
         try { await spPlayer.activateElement(); } catch (e) {}
       }
       const q = spDeviceId ? '?device_id=' + encodeURIComponent(spDeviceId) : '';
-      const body = opts.contextUri ? { context_uri: opts.contextUri } : { uris: [opts.uri] };
+      const body = opts.contextUri
+        ? { context_uri: opts.contextUri }
+        : (Array.isArray(opts.uris) ? { uris: opts.uris, offset: opts.offset || { position: 0 } } : { uris: [opts.uri] });
       try {
         await spFetch('/me/player/play' + q, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body)
         });
-        setTimeout(() => spFetch('/me/player').then(p => { if (p) { spNowPlaying = p; renderSpotify(); } }).catch(() => {}), 450);
+        setTimeout(() => loadSpotifyDashboard(), 450);
       } catch (err) {
         if (opts.embedType && opts.embedId) {
           spEmbed = { type: opts.embedType, id: opts.embedId };
@@ -2154,26 +2336,31 @@
       const durMs = (it && it.duration_ms) || 0;
       const playing = !!(spNowPlaying && spNowPlaying.is_playing);
       const volPct = spNowPlaying && spNowPlaying.device && typeof spNowPlaying.device.volume_percent === 'number' ? spNowPlaying.device.volume_percent : 80;
+      const isLocalActive = !!(spPlayer && spDeviceId && spNowPlaying && spNowPlaying.device && spNowPlaying.device.id === spDeviceId);
+      const nowLiked = !!(it && it.uri && spLiked.has(it.uri));
       playerEl.innerHTML = `
         <div class="sp-now">
           ${img ? `<img class="sp-art" src="${esc(img)}" alt="Album art">` : '<div class="sp-art">SP</div>'}
           <div style="min-width:0;flex:1">
             <h2 style="margin:0 0 4px">${it ? esc(stripEmojis(it.name)) : 'Nothing playing right now'}</h2>
             <p class="note">${it ? esc(artists + (it.album && it.album.name ? ' — ' + stripEmojis(it.album.name) : '')) : (connected ? 'Pick any track or playlist below, or click Connect Spotify.' : 'Click Connect Spotify above to authenticate with your Spotify account.')}</p>
-            ${spNowPlaying && spNowPlaying.device ? `<p class="note" style="margin-top:4px">Device: ${esc(stripEmojis(spNowPlaying.device.name))}</p>` : ''}
+            ${spNowPlaying && spNowPlaying.device ? `<p class="note" style="margin-top:4px">Playing on: ${esc(stripEmojis(spNowPlaying.device.name))}</p>` : ''}
           </div>
+          ${it && it.uri ? `<button type="button" class="mini-btn${nowLiked ? ' primary' : ''}" id="sp-like-now">${nowLiked ? 'Saved' : '+ Like'}</button>` : ''}
         </div>
         <div class="sp-ctrls">
           <button type="button" class="btn" id="sp-prev" ${connected ? '' : 'disabled'}>Prev</button>
-          <button type="button" class="btn primary" id="sp-toggle" ${connected ? '' : 'disabled'}>${playing ? 'Pause' : 'Play'}</button>
+          <button type="button" class="btn primary sp-play-circle" id="sp-toggle" ${connected ? '' : 'disabled'}>${playing ? '||' : '>'}</button>
           <button type="button" class="btn" id="sp-next" ${connected ? '' : 'disabled'}>Next</button>
           <button type="button" class="btn" id="sp-shuffle" ${connected ? '' : 'disabled'}>Shuffle: ${spNowPlaying && spNowPlaying.shuffle_state ? 'On' : 'Off'}</button>
-          ${spDeviceId ? `<button type="button" class="btn" id="sp-transfer">Play on Dashboard</button>` : ''}
+          ${spDeviceId && !isLocalActive ? `<button type="button" class="btn" id="sp-transfer">Play Here</button>` : ''}
         </div>
         <div class="sp-bars">
           <div><input type="range" class="sp-range" id="sp-seek" min="0" max="${Math.max(1, durMs)}" value="${posMs}" ${connected && durMs ? '' : 'disabled'}><div class="note">${fmtMs(posMs)} / ${fmtMs(durMs)}</div></div>
           <div><input type="range" class="sp-range" id="sp-vol" min="0" max="100" value="${volPct}" ${connected ? '' : 'disabled'}><div class="note">Volume: ${volPct}%</div></div>
         </div>
+        ${connected ? `<div class="sp-devs"><span class="note">Devices:</span>${spDevices.length ? spDevices.map(d =>
+          `<button type="button" class="mini-btn${d.is_active ? ' primary' : ''}" data-sp-dev="${esc(d.id)}">${esc(stripEmojis(d.name))} (${esc(d.type)})${d.is_active ? ' · Active' : ''}</button>`).join('') : '<span class="note">No active Spotify Connect devices found. Open Spotify on your phone/PC or refresh.</span>'}</div>` : ''}
         ${spEmbed ? `<div class="sp-embed"><iframe src="https://open.spotify.com/embed/${esc(spEmbed.type)}/${esc(spEmbed.id)}?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>` : ''}`;
 
       tracksEl.innerHTML = `
@@ -2183,9 +2370,13 @@
         </div>
         ${spTracks.length ? spTracks.map((t, idx) => {
           const arts = (t.artists || []).map(a => stripEmojis(a.name)).join(', ');
+          const liked = !!(t.uri && spLiked.has(t.uri));
           return `<div class="sp-track">
             <div style="min-width:0"><strong>${esc(stripEmojis(t.name))}</strong><div class="note">${esc(arts)} · ${fmtMs(t.duration_ms)}</div></div>
-            <button type="button" class="mini-btn primary" data-sp-play="${idx}">Play</button>
+            <div style="display:flex;gap:6px;flex:none">
+              <button type="button" class="mini-btn${liked ? ' primary' : ''}" data-sp-like="${idx}">${liked ? 'Saved' : '+ Like'}</button>
+              <button type="button" class="mini-btn primary" data-sp-play="${idx}">Play</button>
+            </div>
           </div>`;
         }).join('') : `<p class="note">${connected ? 'Search above or select a playlist on the right.' : 'Connect Spotify to browse and play your tracks.'}</p>`}`;
 
@@ -2200,20 +2391,31 @@
           </div>`).join('') : `<p class="note">${connected ? 'No playlists loaded yet.' : 'Connect Spotify to load your playlists.'}</p>`}`;
 
       const bindClick = (id, fn) => { const el = document.getElementById(id); if (el) el.onclick = fn; };
-      bindClick('sp-prev', () => (spPlayer && spDeviceId ? spPlayer.previousTrack() : spFetch('/me/player/previous', { method: 'POST' })).then(() => setTimeout(loadSpotifyDashboard, 350)).catch(e => { spNotice = e.message; renderSpotify(); }));
-      bindClick('sp-toggle', () => (spPlayer && spDeviceId ? spPlayer.togglePlay() : spFetch('/me/player/' + (playing ? 'pause' : 'play'), { method: 'PUT' })).then(() => setTimeout(loadSpotifyDashboard, 300)).catch(e => { spNotice = e.message; renderSpotify(); }));
-      bindClick('sp-next', () => (spPlayer && spDeviceId ? spPlayer.nextTrack() : spFetch('/me/player/next', { method: 'POST' })).then(() => setTimeout(loadSpotifyDashboard, 350)).catch(e => { spNotice = e.message; renderSpotify(); }));
+      bindClick('sp-like-now', () => it && it.uri && toggleLikeTrack(it.uri));
+      bindClick('sp-prev', () => (isLocalActive ? spPlayer.previousTrack() : spFetch('/me/player/previous', { method: 'POST' })).then(() => setTimeout(loadSpotifyDashboard, 350)).catch(e => { spNotice = e.message; renderSpotify(); }));
+      bindClick('sp-toggle', () => (isLocalActive ? spPlayer.togglePlay() : spFetch('/me/player/' + (playing ? 'pause' : 'play'), { method: 'PUT' })).then(() => setTimeout(loadSpotifyDashboard, 300)).catch(e => { spNotice = e.message; renderSpotify(); }));
+      bindClick('sp-next', () => (isLocalActive ? spPlayer.nextTrack() : spFetch('/me/player/next', { method: 'POST' })).then(() => setTimeout(loadSpotifyDashboard, 350)).catch(e => { spNotice = e.message; renderSpotify(); }));
       bindClick('sp-shuffle', () => spFetch('/me/player/shuffle?state=' + !(spNowPlaying && spNowPlaying.shuffle_state), { method: 'PUT' }).then(loadSpotifyDashboard).catch(e => { spNotice = e.message; renderSpotify(); }));
       bindClick('sp-transfer', () => spFetch('/me/player', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ device_ids: [spDeviceId], play: true }) }).then(() => setTimeout(loadSpotifyDashboard, 400)).catch(e => { spNotice = e.message; renderSpotify(); }));
+      playerEl.querySelectorAll('[data-sp-dev]').forEach(b => b.onclick = () => {
+        spFetch('/me/player', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ device_ids: [b.dataset.spDev], play: true }) })
+          .then(() => setTimeout(loadSpotifyDashboard, 450))
+          .catch(e => { spNotice = 'Could not switch device: ' + e.message; renderSpotify(); });
+      });
       const seekEl = document.getElementById('sp-seek');
-      if (seekEl) seekEl.onchange = () => (spPlayer && spDeviceId ? spPlayer.seek(+seekEl.value) : spFetch('/me/player/seek?position_ms=' + seekEl.value, { method: 'PUT' })).catch(() => {});
+      if (seekEl) seekEl.onchange = () => (isLocalActive ? spPlayer.seek(+seekEl.value) : spFetch('/me/player/seek?position_ms=' + seekEl.value, { method: 'PUT' })).catch(() => {});
       const volEl = document.getElementById('sp-vol');
-      if (volEl) volEl.onchange = () => (spPlayer && spDeviceId ? spPlayer.setVolume(+volEl.value / 100) : spFetch('/me/player/volume?volume_percent=' + volEl.value, { method: 'PUT' })).catch(() => {});
+      if (volEl) volEl.onchange = () => (isLocalActive ? spPlayer.setVolume(+volEl.value / 100) : spFetch('/me/player/volume?volume_percent=' + volEl.value, { method: 'PUT' })).catch(() => {});
       const sForm = document.getElementById('sp-search-form');
       if (sForm) sForm.onsubmit = e => { e.preventDefault(); searchSpotify(document.getElementById('sp-search-q').value.trim()); };
+      tracksEl.querySelectorAll('[data-sp-like]').forEach(b => b.onclick = () => {
+        const t = spTracks[+b.dataset.spLike];
+        if (t && t.uri) toggleLikeTrack(t.uri);
+      });
       tracksEl.querySelectorAll('[data-sp-play]').forEach(b => b.onclick = () => {
-        const t = spTracks[+b.dataset.spPlay];
-        if (t) playSpotifyItem({ uri: t.uri, embedType: 'track', embedId: t.id });
+        const idx = +b.dataset.spPlay, t = spTracks[idx];
+        const queueUris = spTracks.map(x => x.uri).filter(Boolean);
+        if (t) playSpotifyItem({ uri: t.uri, uris: queueUris, offset: { position: idx }, embedType: 'track', embedId: t.id });
       });
       plsEl.querySelectorAll('[data-sp-pl-open]').forEach(b => b.onclick = () => {
         const p = spPlaylists[+b.dataset.spPlOpen];
@@ -2230,6 +2432,7 @@
       if (!spBound) {
         spBound = true;
         document.getElementById('sp-connect').onclick = startSpotifyAuth;
+        document.getElementById('sp-liked-btn').onclick = loadLikedSongs;
         document.getElementById('sp-refresh').onclick = loadSpotifyDashboard;
         document.getElementById('sp-disconnect').onclick = () => {
           spTokensSet(null); spProfile = null; spNowPlaying = null; spPlaylists = []; spTracks = []; spEmbed = null;
@@ -2239,10 +2442,18 @@
           renderSpotify();
         };
         if (!spPollTimer) spPollTimer = setInterval(() => {
-          if (currentTab() === 'spotify' && spTokensGet() && spTokensGet().access_token) {
+          if (currentTab() === 'spotify' && spNowPlaying && spNowPlaying.is_playing && spNowPlaying.item) {
+            spNowPlaying.progress_ms = Math.min(spNowPlaying.item.duration_ms || 0, (spNowPlaying.progress_ms || 0) + 1000);
+            const sk = document.getElementById('sp-seek');
+            if (sk && document.activeElement !== sk) {
+              sk.value = spNowPlaying.progress_ms;
+              if (sk.nextElementSibling) sk.nextElementSibling.textContent = fmtMs(spNowPlaying.progress_ms) + ' / ' + fmtMs(spNowPlaying.item.duration_ms || 0);
+            }
+          }
+          if (currentTab() === 'spotify' && spTokensGet() && spTokensGet().access_token && (Date.now() % 6000 < 1000)) {
             spFetch('/me/player').then(p => { if (p) { spNowPlaying = p; renderSpotify(); } }).catch(() => {});
           }
-        }, 6000);
+        }, 1000);
       }
       renderSpotify();
       loadSpotifyDashboard();
