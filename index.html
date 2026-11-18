@@ -240,10 +240,10 @@
     .sq.sel.last { box-shadow: inset 0 0 0 3px var(--focus), inset 0 0 0 999px rgba(31, 79, 224, 0.28); }
     .sq.hint-sq { box-shadow: inset 0 0 0 3px var(--w-good), inset 0 0 0 999px rgba(46, 125, 50, 0.24); }
     .sq.wrong { box-shadow: inset 0 0 0 3px var(--danger), inset 0 0 0 999px rgba(179, 38, 30, 0.32); }
-    .sq .dot { position: absolute; width: 26%; height: 26%; border-radius: 50%; background: rgba(20, 32, 42, 0.42); pointer-events: none; z-index: 2; }
-    .sq.cap .dot { width: 82%; height: 82%; background: transparent; border: 3px solid rgba(255, 255, 255, 0.46); }
-    .sq img.pc { width: 100%; height: 100%; position: relative; z-index: 1; object-fit: contain; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.32)); pointer-events: none; user-select: none; -webkit-user-drag: none; }
-    .sq svg.pc { width: 82%; height: 82%; position: relative; z-index: 1; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.45)); pointer-events: none; }
+    .sq .dot { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: 26%; height: 26%; border-radius: 50%; background: rgba(20, 32, 42, 0.44); pointer-events: none; z-index: 2; }
+    .sq.cap .dot { width: 84%; height: 84%; background: transparent; border: 3px solid rgba(255, 255, 255, 0.56); box-sizing: border-box; }
+    .sq img.pc { grid-area: 1 / 1; width: 92%; height: 92%; position: relative; z-index: 1; object-fit: contain; filter: drop-shadow(0 2px 3px rgba(0,0,0,0.42)); pointer-events: none; user-select: none; -webkit-user-drag: none; }
+    .sq svg.pc { grid-area: 1 / 1; width: 82%; height: 82%; position: relative; z-index: 1; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.45)); pointer-events: none; }
     .sq .coord-r { position: absolute; top: 2px; left: 3px; font-size: 10px; font-weight: 700; opacity: .75; pointer-events: none; line-height: 1; }
     .sq .coord-f { position: absolute; bottom: 2px; right: 3px; font-size: 10px; font-weight: 700; opacity: .75; pointer-events: none; line-height: 1; }
     .chess-top-bar { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; }
@@ -1613,8 +1613,9 @@
       } catch (e) {}
     }
 
-    const CHESS_PIECE_SETS = { glass: 'Glass', neo: 'Neo', classic: 'Classic', wood: 'Wood', space: 'Space', gothic: 'Gothic' };
+    const CHESS_PIECE_SETS = { glass: 'Glass', '3d_staunton': '3D Staunton', '3d_wood': '3D Wood', icy_sea: 'Icy Sea', neo: 'Neo', classic: 'Classic', wood: 'Wood', space: 'Space', gothic: 'Gothic' };
     let chessPieces = store.get('chess_pieces'); if (!CHESS_PIECE_SETS[chessPieces]) chessPieces = 'glass';
+    let chessBoardBg = store.get('chess_board_bg') || '';
     // Pieces are Chess.com's own artwork, loaded from their public image host. If one fails to load, the drawn piece below stands in.
     function pieceSvg(p) {
       const set = chessPieces, side = p === p.toUpperCase() ? 'w' : 'b';
@@ -1855,7 +1856,7 @@
           cells.push(`<button type="button" class="${cls.join(' ')}" data-r="${r}" data-c="${c}" aria-label="${sq}${p ? ' ' + p : ''}">${rLbl}${fLbl}${p ? pieceSvg(p) : ''}${tgt ? '<span class="dot"></span>' : ''}</button>`);
         }
       }
-      return `<div class="board ${themeCls}" role="group" aria-label="Interactive chess puzzle board">${cells.join('')}</div>`;
+      return `<div class="board ${themeCls}" role="group" aria-label="Interactive chess puzzle board"${chessBoardBg ? ` style="background-image:url('${esc(chessBoardBg)}');background-size:cover;background-position:center"` : ''}>${cells.join('')}</div>`;
     }
     function renderPuzzleBox() {
       const box = document.getElementById('chess-puzzle');
@@ -1885,6 +1886,9 @@
           <button type="button" class="btn" id="chess-reset">Reset</button>
           <button type="button" class="btn" id="chess-theme-btn">Board: ${CHESS_THEMES[chessTheme]}</button>
           <button type="button" class="btn" id="chess-pieces-btn">Pieces: ${CHESS_PIECE_SETS[chessPieces]}</button>
+          <button type="button" class="btn" id="chess-bg-btn">Board BG</button>
+          ${chessBoardBg ? '<button type="button" class="btn" id="chess-bg-clear">Clear BG</button>' : ''}
+          <input type="file" id="chess-bg-file" accept="image/*" hidden>
           <button type="button" class="btn" id="chess-sound-btn">Sound: ${chessSound ? 'On' : 'Off'}</button>
           <a class="btn" style="text-decoration:none" href="${esc(pz.url)}" target="_blank" rel="noopener">Open on Chess.com</a>
         </div>`;
@@ -1917,6 +1921,20 @@
         store.set('chess_pieces', chessPieces);
         renderPuzzleBox();
       };
+      const bgFile = document.getElementById('chess-bg-file');
+      document.getElementById('chess-bg-btn').onclick = () => bgFile && bgFile.click();
+      if (bgFile) bgFile.onchange = e => {
+        const f = e.target.files && e.target.files[0]; if (!f) return;
+        const r = new FileReader();
+        r.onload = () => {
+          chessBoardBg = String(r.result || '');
+          store.set('chess_board_bg', chessBoardBg);
+          renderPuzzleBox();
+        };
+        r.readAsDataURL(f);
+      };
+      const bgClr = document.getElementById('chess-bg-clear');
+      if (bgClr) bgClr.onclick = () => { chessBoardBg = ''; store.set('chess_board_bg', ''); renderPuzzleBox(); };
       document.getElementById('chess-sound-btn').onclick = () => {
         chessSound = !chessSound;
         store.set('chess_sound', chessSound ? 'on' : 'off');
@@ -2167,7 +2185,7 @@
     let spPlayer = null, spDeviceId = '', spSdkLoaded = false, spProfile = null, spDevices = [], spLiked = new Set();
     let spNowPlaying = null, spTracks = [], spTracksHeading = 'Recently played', spPlaylists = [], spEmbed = null, spNotice = '', spPollTimer = null;
     let spLikedTotal = 0, spLikedLoading = false, spScrollTop = 0, spPlHidden = store.get('sp_pl_hidden') === '1';
-    let spSrcKey = '', spBarSig = '', spDevOpen = false, spLastOptimistic = 0, spSeeking = false, spVolume = 80, spTick = 0, spToastTimer = null;
+    let spSrcKey = '', spBarSig = '', spDevOpen = false, spLastOptimistic = 0, spSeeking = false, spVolume = 80, spTick = 0, spToastTimer = null, spSearchExtras = null;
     const SPI = {
       play: 'M8 5v14l11-7z', pause: 'M6 5h4v14H6zM14 5h4v14h-4z', next: 'M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z', prev: 'M6 6h2v12H6zM9.5 12l8.5 6V6l-8.5 6z',
       shuffle: 'M10.59 9.17L5.41 4 4 5.41l5.17 5.17 1.42-1.41zM14.5 4l2.04 2.04L4 18.59 5.41 20 17.96 7.46 20 9.5V4h-5.5zm.33 9.41l-1.41 1.41 3.13 3.13L14.5 20H20v-5.5l-2.04 2.04-3.13-3.13z',
@@ -2620,10 +2638,14 @@
     }
     async function searchSpotify(q) {
       if (!q) return;
-      spTracksHeading = 'Search: ' + q; spSrcKey = '';
+      spTracksHeading = 'Search: ' + q; spSrcKey = ''; spSearchExtras = null;
       try {
-        const res = await spFetch('/search?q=' + encodeURIComponent(q) + '&type=track,playlist&limit=10');
+        const res = await spFetch('/search?q=' + encodeURIComponent(q) + '&type=track,album,artist,playlist&limit=10');
         spTracks = (res && res.tracks && res.tracks.items) || [];
+        spSearchExtras = {
+          albums: (res && res.albums && res.albums.items || []).filter(Boolean).slice(0, 6),
+          artists: (res && res.artists && res.artists.items || []).filter(Boolean).slice(0, 6)
+        };
         if (res && res.playlists && Array.isArray(res.playlists.items) && res.playlists.items.length) {
           spPlaylists = res.playlists.items.filter(Boolean);
         }
@@ -2655,7 +2677,7 @@
           <div class="sp-idx"><span class="sp-num">${isCur && curPlaying ? spIcon('bars', 16) : idx + 1}</span><button type="button" class="sp-rowplay" data-sp-play="${idx}" aria-label="${isCur && curPlaying ? 'Pause' : 'Play'} ${nm}">${spIcon(isCur && curPlaying ? 'pause' : 'play', 20)}</button></div>
           <div class="sp-tleft">
             ${alb.id ? `<button type="button" class="sp-thumb-btn" ${spAlbAttrs(alb)} aria-label="Show artwork for ${esc(stripEmojis(alb.name))}">${thumb ? `<img class="sp-thumb" src="${esc(thumb)}" alt="" loading="lazy">` : '<span class="sp-thumb"></span>'}</button>` : (thumb ? `<img class="sp-thumb" src="${esc(thumb)}" alt="" loading="lazy">` : '<span class="sp-thumb"></span>')}
-            <div class="sp-ttxt"><strong class="sp-name">${nm}</strong><span class="note">${spArtistLinks(t.artists)}</span></div>
+            <div class="sp-ttxt">${alb.id ? `<button type="button" class="sp-link sp-name" ${spAlbAttrs(alb)} title="Open album ${esc(stripEmojis(alb.name))}">${nm}</button>` : `<strong class="sp-name">${nm}</strong>`}<span class="note">${spArtistLinks(t.artists)}</span></div>
           </div>
           <div class="sp-albcol note">${albBtn}</div>
           <button type="button" class="sp-heart" data-sp-queue="${idx}" aria-label="Add ${nm} to queue" title="Add to queue">${spIcon('queue', 18)}</button>
@@ -2709,8 +2731,12 @@
       tracksEl.innerHTML = `
         <div class="ann-head" style="margin-bottom:10px">
           <h2>${esc(spTracksHeading + countNote)}</h2>
-          <form class="form" id="sp-search-form"><label class="sr" for="sp-search-q">Search tracks or artists</label><input id="sp-search-q" placeholder="What do you want to play?" autocomplete="off"><button type="submit" class="btn">Search</button></form>
+          <form class="form" id="sp-search-form"><label class="sr" for="sp-search-q">Search tracks, albums, artists or playlists</label><input id="sp-search-q" placeholder="Search all of Spotify…" autocomplete="off"><button type="submit" class="btn">Search</button></form>
         </div>
+        ${spSearchExtras && (spSearchExtras.albums.length || spSearchExtras.artists.length) ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px">
+          ${spSearchExtras.albums.map(a => `<button type="button" class="mini-btn" data-sp-alb-id="${esc(a.id)}" data-sp-alb-name="${esc(stripEmojis(a.name))}">Album: ${esc(stripEmojis(a.name))}</button>`).join('')}
+          ${spSearchExtras.artists.map(a => `<button type="button" class="mini-btn" data-sp-art-id="${esc(a.id)}" data-sp-art-name="${esc(stripEmojis(a.name))}">Artist: ${esc(stripEmojis(a.name))}</button>`).join('')}
+        </div>` : ''}
         ${spTracks.length
           ? `<div class="sp-row sp-thead"><span style="text-align:center">#</span><span>Title</span><span class="sp-albcol">Album</span><span></span><span></span><span>Time</span></div>
              <div class="sp-scroll" id="sp-scroll"><div class="sp-vwrap" id="sp-vwrap" style="height:${spTracks.length * 58}px"><div class="sp-vitems" id="sp-vitems"></div></div></div>
