@@ -1,388 +1,956 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Centennial College Fall 2026 — Course Outlines & Deliverables</title>
-  <script src="https://cdn.tailwindcss.com"></script>
+  <title>Fall 2026 Dashboard</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Inter', 'ui-sans-serif', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
-            mono: ['"JetBrains Mono"', 'monospace'],
-          },
-          colors: {
-            notion: {
-              canvas: '#0A0D14',
-              sidebar: '#0E131F',
-              hover: '#131929',
-              border: '#1E293B',
-              card: '#121826',
-              subtle: '#222F45',
-              text: '#E2E8F0',
-              muted: '#7E8B9F',
-            },
-            accent: {
-              cyan: '#38BDF8',
-              indigo: '#6366F1',
-              emerald: '#10B981',
-              amber: '#F59E0B',
-              rose: '#F43F5E'
-            }
-          }
-        }
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #E8EDF0; --surface: #F7F9FA; --raised: #FFFFFF;
+      --ink: #12202B; --ink2: #4F606C; --line: #CBD5DB; --track: #D5DDE2;
+      --focus: #1F4FE0; --danger: #B3261E; --danger-bg: #FBE6E4; --on: #FFFFFF;
+      --comp303: #2457D6; --comp307: #7B3FC4; --comp306: #0B8574;
+      --comp309: #A25F00; --comp231: #3F8A1E; --comp255: #B8307F;
+      color-scheme: light;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0F161B; --surface: #151E25; --raised: #1B2630;
+        --ink: #E6EEF2; --ink2: #9AAAB5; --line: #26343E; --track: #2A3843;
+        --focus: #7AA2FF; --danger: #FF8A80; --danger-bg: #3A1816; --on: #0F161B;
+        --comp303: #7AA2FF; --comp307: #B794F0; --comp306: #4FD1BD;
+        --comp309: #F0B04A; --comp231: #8FD468; --comp255: #F08CC4;
+        color-scheme: dark;
       }
     }
-  </script>
-  <style>
-    body {
-      background-color: #0A0D14;
-      color: #E2E8F0;
-      font-family: 'Inter', sans-serif;
+    :root[data-theme="dark"] {
+      --bg: #0F161B; --surface: #151E25; --raised: #1B2630;
+      --ink: #E6EEF2; --ink2: #9AAAB5; --line: #26343E; --track: #2A3843;
+      --focus: #7AA2FF; --danger: #FF8A80; --danger-bg: #3A1816; --on: #0F161B;
+      --comp303: #7AA2FF; --comp307: #B794F0; --comp306: #4FD1BD;
+      --comp309: #F0B04A; --comp231: #8FD468; --comp255: #F08CC4;
+      color-scheme: dark;
     }
-    .custom-scrollbar::-webkit-scrollbar { width: 5px; height: 5px; }
-    .custom-scrollbar::-webkit-scrollbar-thumb { background: #1E293B; border-radius: 9999px; }
-    .hairline-b { border-bottom: 1px solid #1E293B; }
-    .hairline-r { border-right: 1px solid #1E293B; }
+
+    * { box-sizing: border-box; }
+    html { -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; background: var(--bg); color: var(--ink);
+      font: 400 15px/1.5 'Instrument Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+      font-variant-numeric: tabular-nums;
+    }
+    button, input { font: inherit; color: inherit; }
+    :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+    .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+    .shell { max-width: 1180px; margin: 0 auto; padding: 32px 16px 64px; }
+
+    /* ── Header ───────────────────────────────────────── */
+    .top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px 32px; }
+    h1 { margin: 0; font-size: clamp(34px, 5vw, 52px); line-height: 1.02; font-weight: 650; letter-spacing: -0.035em; }
+    .summary { margin: 10px 0 0; max-width: 56ch; color: var(--ink2); font-size: 17px; line-height: 1.45; }
+    .summary strong { color: var(--ink); font-weight: 600; }
+    .summary .late { color: var(--danger); font-weight: 600; }
+    .tools { display: flex; gap: 8px; align-items: center; }
+    .search {
+      width: 230px; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line);
+      background: var(--surface);
+    }
+    .search::placeholder { color: var(--ink2); }
+    .iconbtn {
+      flex: none; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line);
+      background: var(--surface); cursor: pointer;
+    }
+    .iconbtn:hover { background: var(--raised); }
+
+    /* ── Runway ───────────────────────────────────────── */
+    .runway { margin-top: 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px 16px 12px; }
+    .runway-head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; align-items: baseline; }
+    h2 { margin: 0; font-size: 17px; font-weight: 600; letter-spacing: -0.01em; }
+    .hint { margin: 0; color: var(--ink2); font-size: 13px; }
+    .runway-scroll { overflow-x: auto; margin-top: 8px; padding-bottom: 4px; }
+    .track { position: relative; min-width: 880px; }
+    .past { position: absolute; top: 0; bottom: 30px; left: 0;
+      background: repeating-linear-gradient(135deg, transparent 0 6px, color-mix(in srgb, var(--ink) 6%, transparent) 6px 7px); }
+    .axis { position: absolute; left: 0; right: 0; bottom: 30px; height: 1px; background: var(--ink2); opacity: .6; }
+    .tick { position: absolute; bottom: 26px; width: 1px; height: 9px; background: var(--ink2); opacity: .5; }
+    .tick.week { height: 14px; bottom: 23px; opacity: .9; }
+    .tick-label { position: absolute; bottom: 4px; transform: translateX(-50%); font-size: 12px; color: var(--ink2); white-space: nowrap; }
+    .nowline { position: absolute; top: 0; bottom: 30px; width: 0; border-left: 2px dashed var(--focus); }
+    .nowtag { position: absolute; top: 0; transform: translateX(-50%); background: var(--focus); color: var(--on);
+      font-size: 12px; font-weight: 600; padding: 1px 8px; border-radius: 999px; }
+    .dot {
+      position: absolute; transform: translateX(-50%); display: grid; place-items: center; padding: 0;
+      border-radius: 50%; border: 0; background: var(--c); color: var(--on);
+      font-size: 11px; font-weight: 700; cursor: pointer; transition: transform .15s;
+    }
+    .dot:hover { transform: translateX(-50%) scale(1.12); }
+    .dot.late { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--danger); }
+    .dot.is-done { opacity: .4; }
+
+    .tip {
+      position: fixed; z-index: 20; pointer-events: none; max-width: 260px;
+      background: var(--ink); color: var(--bg); padding: 8px 10px; border-radius: 8px;
+      font-size: 13px; line-height: 1.35; box-shadow: 0 6px 24px rgba(0,0,0,.25);
+    }
+    .tip[hidden] { display: none; }
+    .tip b { font-weight: 600; }
+
+    /* ── Columns ──────────────────────────────────────── */
+    .cols { display: grid; grid-template-columns: 340px minmax(0, 1fr); gap: 24px; margin-top: 24px; align-items: start; }
+    .next { position: sticky; top: 16px; max-height: calc(100vh - 32px); overflow: auto; }
+    .group { margin-top: 18px; }
+    .group:first-of-type { margin-top: 12px; }
+    .group h3 { margin: 0 0 6px; font-size: 13px; font-weight: 600; color: var(--ink2); }
+    .group.overdue h3 { color: var(--danger); }
+    .empty { color: var(--ink2); margin: 12px 0 0; }
+
+    .row {
+      display: grid; grid-template-columns: 20px minmax(0, 1fr) auto; gap: 4px 12px; align-items: start;
+      padding: 10px 12px; border-radius: 10px; background: var(--surface); border: 1px solid transparent;
+      margin-bottom: 6px;
+    }
+    .row:hover { border-color: var(--line); }
+    .row input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--c); cursor: pointer; }
+    .row .name { font-weight: 500; line-height: 1.3; overflow-wrap: anywhere; }
+    .row.is-done .name { text-decoration: line-through; color: var(--ink2); font-weight: 400; }
+    .row .meta { grid-column: 2; font-size: 13px; color: var(--ink2); display: flex; flex-wrap: wrap; gap: 0 10px; align-items: center; }
+    .row .meta .code { display: inline-flex; align-items: center; gap: 6px; }
+    .row .meta .code::before { content: ''; width: 8px; height: 8px; border-radius: 2px; background: var(--c); }
+    .row .w { grid-row: 1; grid-column: 3; font-weight: 600; font-size: 14px; }
+    .row.late { background: var(--danger-bg); }
+    .row.late .when { color: var(--danger); font-weight: 600; }
+    .row.flash { animation: flash 1.4s ease-out; }
+    @keyframes flash { 0% { box-shadow: 0 0 0 3px var(--focus); } 100% { box-shadow: 0 0 0 3px transparent; } }
+
+    .courses-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 16px; }
+    .seg { display: inline-flex; padding: 3px; border-radius: 9px; background: var(--track); }
+    .seg button { border: 0; background: transparent; padding: 4px 12px; border-radius: 7px; cursor: pointer; color: var(--ink2); }
+    .seg button[aria-pressed="true"] { background: var(--raised); color: var(--ink); font-weight: 600; box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+
+    details.course { margin-top: 12px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; }
+    details.course > summary { list-style: none; cursor: pointer; padding: 16px; display: grid; grid-template-columns: minmax(0, 1fr); gap: 10px; border-radius: 14px; }
+    details.course > summary::-webkit-details-marker { display: none; }
+    .c-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; }
+    .c-title { display: flex; gap: 10px; align-items: baseline; min-width: 0; }
+    .c-title .swatch { width: 10px; height: 10px; border-radius: 3px; background: var(--c); flex: none; align-self: center; }
+    .c-title .code { font-weight: 650; font-size: 17px; letter-spacing: -0.01em; }
+    .c-title .cname { color: var(--ink2); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .c-pct { font-weight: 650; font-size: 17px; display: flex; align-items: center; gap: 8px; flex: none; }
+    .chev { width: 8px; height: 8px; border-right: 2px solid var(--ink2); border-bottom: 2px solid var(--ink2); transform: rotate(45deg); transition: transform .15s; margin-bottom: 3px; }
+    details[open] .chev { transform: rotate(-135deg); margin-bottom: -3px; }
+    .bar { display: flex; gap: 2px; height: 8px; }
+    .bar i { display: block; flex-grow: var(--w); flex-basis: 0; background: var(--track); border-radius: 2px; }
+    .bar i.on { background: var(--c); }
+    .bar i.late { background: var(--danger); }
+    .c-meta { font-size: 13px; color: var(--ink2); }
+    .c-meta .late { color: var(--danger); font-weight: 600; }
+    .c-body { padding: 0 8px 8px; }
+    .c-body .row { background: transparent; margin-bottom: 2px; }
+    .c-body .row:hover { background: var(--raised); }
+    .c-body .row.late { background: var(--danger-bg); }
+    .c-body .row .meta { grid-column: 2; }
+
+    /* ── Tab bar ──────────────────────────────────────── */
+    .appbar { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line);
+      display: flex; align-items: center; gap: 16px; padding: 0 16px; }
+    .bar-in { max-width: 1180px; margin: 0 auto; width: 100%; display: flex; align-items: center; gap: 16px; }
+    .tabs { display: flex; gap: 4px; overflow-x: auto; flex: 1; scrollbar-width: none; }
+    .tab { border: 0; background: transparent; cursor: pointer; padding: 16px 14px 13px; color: var(--ink2);
+      font-weight: 500; border-bottom: 3px solid transparent; white-space: nowrap; display: inline-flex; gap: 8px; align-items: center; }
+    .tab:hover { color: var(--ink); }
+    .tab[aria-selected="true"] { color: var(--ink); font-weight: 650; border-bottom-color: var(--focus); }
+    .badge { background: var(--danger); color: #fff; border-radius: 999px; font-size: 12px; font-weight: 700; padding: 0 7px; line-height: 18px; }
+    .badge[hidden] { display: none; }
+    .shell { padding-top: 28px; }
+    [role="tabpanel"][hidden] { display: none; }
+    .page-h { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; margin-bottom: 20px; }
+    .page-h h1 { font-size: clamp(28px, 4vw, 40px); }
+    .page-h p { margin: 6px 0 0; color: var(--ink2); max-width: 60ch; }
+    .form { display: flex; gap: 8px; }
+    .form input { padding: 8px 12px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); width: 190px; }
+    .btn { padding: 8px 14px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-weight: 500; }
+    .btn:hover { background: var(--raised); }
+    .btn.primary { background: var(--focus); border-color: var(--focus); color: var(--on); font-weight: 600; }
+    .two { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 24px; align-items: start; }
+    .card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+    .card + .card { margin-top: 16px; }
+    .card h2 { margin-bottom: 8px; }
+    .li { display: grid; gap: 2px; padding: 10px 0; border-top: 1px solid var(--line); }
+    .li:first-of-type { border-top: 0; }
+    .li a { color: var(--ink); font-weight: 600; text-decoration: none; overflow-wrap: anywhere; }
+    .li a:hover { text-decoration: underline; text-decoration-color: var(--focus); text-underline-offset: 3px; }
+    .li .sub { color: var(--ink2); font-size: 13.5px; display: flex; flex-wrap: wrap; gap: 0 14px; }
+    .li .tag { color: var(--ink2); font-size: 13px; }
+    .note { color: var(--ink2); font-size: 14px; margin: 0; }
+    .err { background: var(--danger-bg); color: var(--ink); border-radius: 10px; padding: 12px 14px; display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap; }
+    .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(88px, 1fr)); gap: 8px; margin-bottom: 20px; }
+    .stat { background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+    .stat b { display: block; font-size: 24px; font-weight: 650; letter-spacing: -0.02em; line-height: 1.1; }
+    .stat span { color: var(--ink2); font-size: 13px; }
+
+    /* ── Wordle ───────────────────────────────────────── */
+    :root { --w-good: #2E7D32; --w-near: #9A6B00; --w-miss: #5E6E79; --sq-l: #E6EBEE; --sq-d: #8DA2B0; }
+    @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --w-good: #3F8A3A; --w-near: #A07A12; --w-miss: #3A4954; --sq-l: #5E7180; --sq-d: #2C3C48; } }
+    :root[data-theme="dark"] { --w-good: #3F8A3A; --w-near: #A07A12; --w-miss: #3A4954; --sq-l: #5E7180; --sq-d: #2C3C48; }
+    .game { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 32px; align-items: start; }
+    .wgrid { display: grid; grid-template-rows: repeat(6, 1fr); gap: 6px; width: min(340px, 100%); }
+    .wrow { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .tile { aspect-ratio: 1; display: grid; place-items: center; border: 2px solid var(--line); border-radius: 8px;
+      font-size: 28px; font-weight: 700; text-transform: uppercase; background: var(--surface); }
+    .tile.fill { border-color: var(--ink2); }
+    .tile.good, .tile.near, .tile.miss { color: #fff; border-color: transparent; }
+    .tile.good, .key.good { background: var(--w-good); }
+    .tile.near, .key.near { background: var(--w-near); }
+    .tile.miss, .key.miss { background: var(--w-miss); }
+    .msg { min-height: 24px; margin: 14px 0 6px; font-weight: 600; }
+    .kb { display: grid; gap: 6px; width: min(420px, 100%); margin-top: 8px; }
+    .kb div { display: flex; gap: 5px; justify-content: center; }
+    .key { flex: 1; min-width: 0; height: 48px; border: 0; border-radius: 7px; background: var(--track); color: var(--ink);
+      font-weight: 650; font-size: 14px; text-transform: uppercase; cursor: pointer; }
+    .key.wide { flex: 1.6; font-size: 12px; }
+    .key.good, .key.near, .key.miss { color: #fff; }
+    .dist { display: grid; gap: 4px; margin-top: 8px; }
+    .dist div { display: grid; grid-template-columns: 14px 1fr; gap: 8px; align-items: center; font-size: 13px; }
+    .dist i { display: block; background: var(--w-miss); color: #fff; font-style: normal; padding: 0 6px; min-width: 20px; border-radius: 3px; text-align: right; font-size: 12px; }
+    .dist i.hit { background: var(--w-good); }
+
+    /* ── Chess ────────────────────────────────────────── */
+    .board { display: grid; grid-template-columns: repeat(8, 1fr); width: min(400px, 100%); aspect-ratio: 1; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
+    .sq { aspect-ratio: 1; display: grid; place-items: center; font-size: clamp(24px, 6.4vw, 40px); line-height: 1; background: var(--sq-l); }
+    .sq.d { background: var(--sq-d); }
+    .pc-w { color: #fff; text-shadow: 0 0 2px #000, 0 0 2px #000, 0 1px 1px #000; }
+    .pc-b { color: #101820; text-shadow: 0 0 1px rgba(255,255,255,.6); }
+    .ratings { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
+
+    @media (max-width: 880px) {
+      .two, .game, .cols { grid-template-columns: minmax(0, 1fr); }
+      .next { position: static; max-height: none; }
+      .search { width: 100%; }
+      .tools { width: 100%; }
+    }
+    @media (max-width: 560px) {
+      .appbar { padding: 0 8px; } .bar-in { gap: 4px; }
+      .tab { padding: 16px 7px 13px; font-size: 14px; gap: 5px; } .iconbtn { padding: 6px 10px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      * { transition: none !important; animation: none !important; }
+    }
   </style>
 </head>
-<body class="h-screen w-screen overflow-hidden flex antialiased select-none text-[13px]">
+<body>
+  <header class="appbar">
+    <div class="bar-in">
+      <div class="tabs" role="tablist" aria-label="Dashboard sections">
+        <button class="tab" role="tab" id="tab-school" data-tab="school" aria-controls="panel-school">Schoolwork <span class="badge" id="late-badge" hidden></span></button>
+        <button class="tab" role="tab" id="tab-github" data-tab="github" aria-controls="panel-github">GitHub</button>
+        <button class="tab" role="tab" id="tab-wordle" data-tab="wordle" aria-controls="panel-wordle">Wordle</button>
+        <button class="tab" role="tab" id="tab-chess" data-tab="chess" aria-controls="panel-chess">Chess.com</button>
+      </div>
+      <button id="theme" class="iconbtn" type="button" aria-label="Switch color theme" title="Switch color theme">◐</button>
+    </div>
+  </header>
 
-  <!-- ─── NOTION TREE SIDEBAR ───────────────────────────────────────────── -->
-  <aside class="w-64 h-full bg-notion-sidebar hairline-r flex flex-col justify-between p-3 select-none">
-    <div class="space-y-4">
-      
-      <!-- Workspace Switcher -->
-      <div class="flex items-center justify-between px-2 py-1.5 rounded-lg hover:bg-notion-hover cursor-pointer transition">
-        <div class="flex items-center space-x-2.5">
-          <div class="w-5 h-5 rounded bg-indigo-600/30 border border-indigo-500/50 flex items-center justify-center font-bold text-indigo-400 text-[11px]">
-            C
-          </div>
-          <div class="overflow-hidden">
-            <span class="font-semibold text-white text-xs truncate block">Centennial College</span>
-            <span class="text-[10px] text-notion-muted font-mono block">Student: 301390261</span>
+  <main class="shell">
+   <section role="tabpanel" id="panel-school" aria-labelledby="tab-school" hidden>
+    <header class="top">
+      <div>
+        <h1>Fall 2026</h1>
+        <p class="summary" id="summary" aria-live="polite"></p>
+      </div>
+      <div class="tools">
+        <label class="sr" for="search">Search deliverables</label>
+        <input id="search" class="search" type="search" placeholder="Search deliverables" autocomplete="off">
+      </div>
+    </header>
+
+    <section class="runway" aria-labelledby="runway-h">
+      <div class="runway-head">
+        <h2 id="runway-h">Deadlines through the end of term</h2>
+        <p class="hint">Bigger dots weigh more. A red ring means overdue. Select a dot to jump to it.</p>
+      </div>
+      <div class="runway-scroll"><div class="track" id="runway"></div></div>
+    </section>
+
+    <div class="cols">
+      <section class="next" aria-labelledby="next-h">
+        <h2 id="next-h">Up next</h2>
+        <div id="next"></div>
+      </section>
+
+      <section aria-labelledby="courses-h">
+        <div class="courses-head">
+          <h2 id="courses-h">Courses</h2>
+          <div class="seg" role="group" aria-label="Filter deliverables">
+            <button type="button" data-filter="all" aria-pressed="true">All</button>
+            <button type="button" data-filter="todo" aria-pressed="false">To do</button>
+            <button type="button" data-filter="done" aria-pressed="false">Done</button>
           </div>
         </div>
-        <span class="text-xs text-notion-muted">▾</span>
-      </div>
-
-      <!-- Quick Jump Links -->
-      <div class="space-y-1 pt-1">
-        <div class="px-2 text-[11px] font-semibold uppercase tracking-wider text-notion-muted/80 font-mono">
-          Course Outlines (6)
-        </div>
-        <nav id="course-sidebar-list" class="space-y-0.5 text-xs">
-          <!-- Dynamically populated -->
-        </nav>
-      </div>
-
+        <div id="courses"></div>
+      </section>
     </div>
+   </section>
 
-    <!-- Sidebar Footer -->
-    <div class="space-y-1 text-xs text-notion-muted pt-3 hairline-t">
-      <div class="flex items-center justify-between px-2 py-1 text-[11px]">
-        <span class="flex items-center space-x-1.5">
-          <span class="w-2 h-2 rounded-full bg-accent-emerald animate-pulse"></span>
-          <span class="text-gray-300">Outlines Synced</span>
-        </span>
-        <span id="active-count-badge" class="font-mono text-accent-cyan text-[10px]">600% Total</span>
-      </div>
+   <!-- GitHub -->
+   <section role="tabpanel" id="panel-github" aria-labelledby="tab-github" hidden>
+    <div class="page-h">
+      <div><h1 id="gh-title">GitHub</h1><p id="gh-bio">Open pull requests, recently pushed repositories and your latest commits. Private repositories are not shown.</p></div>
+      <form class="form" id="gh-form"><label class="sr" for="gh-user">GitHub username</label><input id="gh-user" autocomplete="off" spellcheck="false"><button class="btn" type="submit">Load</button></form>
     </div>
-  </aside>
+    <div id="gh-body" aria-live="polite"></div>
+   </section>
 
-  <!-- ─── NOTION MAIN DOCUMENT CANVAS ──────────────────────────────────────── -->
-  <main class="flex-1 h-full overflow-y-auto custom-scrollbar bg-notion-canvas">
-    
-    <!-- Top Breadcrumb Bar -->
-    <div class="h-11 px-8 hairline-b flex items-center justify-between text-xs text-notion-muted bg-notion-canvas/80 backdrop-blur sticky top-0 z-10">
-      <div class="flex items-center space-x-2">
-        <span>Centennial Luminate</span>
-        <span class="text-notion-border">/</span>
-        <span class="text-white font-medium">Fall 2026 Course Outlines & Grading Schemes</span>
+   <!-- Wordle -->
+   <section role="tabpanel" id="panel-wordle" aria-labelledby="tab-wordle" hidden>
+    <div class="page-h"><div><h1>Wordle</h1><p>One new word every day. You get six guesses, and any five letters are accepted.</p></div></div>
+    <div class="game">
+      <div>
+        <div class="wgrid" id="wgrid" role="grid" aria-label="Wordle board"></div>
+        <div class="msg" id="wmsg" role="status" aria-live="polite"></div>
+        <div class="kb" id="wkb"></div>
       </div>
-      <div class="flex items-center space-x-3">
-        <span id="overall-grade-pill" class="text-accent-cyan font-mono text-[11px] px-2.5 py-0.5 rounded bg-indigo-950/60 border border-indigo-800/40">
-          Evaluations: 6 Courses Synced
-        </span>
-      </div>
+      <div class="card" id="wstats" style="max-width:380px"></div>
     </div>
+   </section>
 
-    <!-- Centered Notion Page Container (max-w-4xl) -->
-    <div class="max-w-4xl mx-auto px-8 py-7 space-y-7">
-      
-      <!-- PAGE COVER & TITLE BLOCK -->
-      <div class="space-y-4">
-        <div class="text-4xl select-none">📋</div>
-
-        <div>
-          <h1 class="text-3xl font-bold text-white tracking-tight">Complete Course Outlines & Grading Weights</h1>
-          <p class="text-notion-muted text-sm mt-1">
-            Complete evaluation schemes, assignments, labs, term projects, practical tests, and grade weightings extracted from official Centennial syllabi.
-          </p>
-        </div>
-
-        <!-- Notion Summary Stats Bar -->
-        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 p-3.5 rounded-lg bg-notion-card border border-notion-border text-xs">
-          <div>
-            <span class="text-notion-muted block text-[11px]">Total Deliverables</span>
-            <span id="stat-total" class="text-white font-bold text-sm">57 Items</span>
-          </div>
-          <div>
-            <span class="text-notion-muted block text-[11px]">Completed Weight</span>
-            <span id="stat-weight" class="text-accent-emerald font-bold text-sm">0% / 600%</span>
-          </div>
-          <div>
-            <span class="text-notion-muted block text-[11px]">Urgent Due Tomorrow</span>
-            <span class="text-accent-rose font-bold text-sm">COMP307 Lab 6 & Proj</span>
-          </div>
-          <div>
-            <span class="text-notion-muted block text-[11px]">Format</span>
-            <span class="text-accent-cyan font-bold text-sm">Practical / Open Book</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- ════════════════════════════════════════════════════════════════════
-           COURSE CARDS ACCORDIONS (All 6 Courses with exact weights & timelines)
-           ════════════════════════════════════════════════════════════════════ -->
-      <div id="courses-outline-container" class="space-y-5">
-        <!-- Rendered dynamically -->
-      </div>
-
+   <!-- Chess.com -->
+   <section role="tabpanel" id="panel-chess" aria-labelledby="tab-chess" hidden>
+    <div class="page-h">
+      <div><h1>Chess.com</h1><p>Today's puzzle, your ratings and your daily games.</p></div>
+      <form class="form" id="chess-form"><label class="sr" for="chess-user">Chess.com username</label><input id="chess-user" placeholder="Chess.com username" autocomplete="off" spellcheck="false"><button class="btn" type="submit">Save</button></form>
     </div>
+    <div class="two">
+      <div class="card" id="chess-puzzle"></div>
+      <div><div class="card" id="chess-stats"></div><div class="card" id="chess-games"></div></div>
+    </div>
+   </section>
   </main>
+  <div class="tip" id="tip" hidden></div>
 
   <script>
+    // Items with a fixed `due` get placed on the timeline. Items with only `time` are week-based.
     const courseOutlines = [
       {
-        id: "comp303",
-        code: "COMP303",
-        name: "Enterprise Application Development",
-        instructor: "Dr. Vinay Vaithilingam",
-        crn: "COMP303002.91940.2026F",
+        id: "comp303", code: "COMP303", name: "Enterprise Application Development",
+        instructor: "Dr. Vinay Vaithilingam", crn: "COMP303002.91940.2026F",
         items: [
-          { name: "Lab Exercise 1", weight: 5, time: "Week 2 - Week 4 (Friday midnight)", done: true },
-          { name: "Lab Exercise 2", weight: 5, time: "Week 4 - Week 6 (Friday midnight)", done: true },
-          { name: "Midterm Test 1 (Practical Open-Book)", weight: 20, time: "Week 7 or 8", done: true },
-          { name: "Lab Exercise 3", weight: 5, time: "Week 8 - Week 9 (Friday midnight)", done: true },
-          { name: "Term Project: Part 1 - Design", weight: 10, time: "Week 6 - Week 8 (Friday midnight)", done: true },
-          { name: "Assignment 3: Spring Boot REST App", weight: 10, time: "Due Tuesday, Nov 17 • 11:59 PM", done: false },
-          { name: "Lab Exercise 4", weight: 5, time: "Week 10 - Week 11 (Friday midnight)", done: false },
-          { name: "Term Project: Part 2 - Implementation", weight: 20, time: "Week 8 - Week 12 (Friday midnight)", done: false },
-          { name: "Final Test 2 (Practical Open-Book)", weight: 20, time: "Week 13", done: false },
-          { name: "Term Project: Part 3 - Presentation", weight: 5, time: "Week 13 - Week 14", done: false },
-          { name: "Cloud Services Usage (Responsible Use)", weight: 5, time: "All Semester - Week 14", done: false }
+          { name: "Lab Exercise 1", weight: 5, time: "Week 2 to 4", done: true },
+          { name: "Lab Exercise 2", weight: 5, time: "Week 4 to 6", done: true },
+          { name: "Midterm Test 1 (practical, open book)", weight: 20, time: "Week 7 or 8", done: true },
+          { name: "Lab Exercise 3", weight: 5, time: "Week 8 to 9", done: true },
+          { name: "Term Project: Part 1, Design", weight: 10, time: "Week 6 to 8", done: true },
+          { name: "Assignment 3: Spring Boot REST app", weight: 10, due: "2026-11-17T23:59", done: false },
+          { name: "Lab Exercise 4", weight: 5, time: "Week 10 to 11", done: false },
+          { name: "Term Project: Part 2, Implementation", weight: 20, time: "Week 8 to 12", done: false },
+          { name: "Final Test 2 (practical, open book)", weight: 20, time: "Week 13", done: false },
+          { name: "Term Project: Part 3, Presentation", weight: 5, time: "Week 13 to 14", done: false },
+          { name: "Cloud services usage (responsible use)", weight: 5, time: "All semester, by week 14", done: false }
         ]
       },
       {
-        id: "comp307",
-        code: "COMP307",
-        name: "Software Security",
-        instructor: "Bindu Goel",
-        crn: "COMP307002.91943.2026F",
+        id: "comp307", code: "COMP307", name: "Software Security",
+        instructor: "Bindu Goel", crn: "COMP307002.91943.2026F",
         items: [
-          { name: "Lab 1: Linux Command-Line & Scripting", weight: 4, time: "Week 1 - Week 2", done: true },
-          { name: "Lab 2: Cross-Site Scripting (XSS)", weight: 4, time: "Week 2 - Week 3", done: true },
-          { name: "Lab 3: SQL Injection", weight: 4, time: "Week 3 - Week 4", done: true },
-          { name: "Lab 4: Insecure Direct Object References (IDOR)", weight: 4, time: "Week 4 - Week 5", done: true },
-          { name: "Lab 5: Command Injection", weight: 4, time: "Week 5 - Week 6", done: false },
-          { name: "Lab 6: Local & Remote File Inclusion (LFI/RFI)", weight: 4, time: "Due Tomorrow (Nov 15 • 11:59 PM)", done: false },
-          { name: "Security Project: Proposal", weight: 5, time: "Week 7 - Week 8", done: true },
-          { name: "Research Project Submission", weight: 20, time: "Due Tomorrow (Nov 15 • 11:59 PM)", done: false },
-          { name: "Lab 7: Web Authentication Vulnerabilities", weight: 4, time: "Week 7 - Week 8", done: false },
-          { name: "Test 1 (Practical Exam)", weight: 15, time: "Week 8 or 9", done: true },
-          { name: "Lab 8: Broken Object-Level Authorization (BOLA)", weight: 4, time: "Week 8 - Week 9", done: false },
-          { name: "Lab 9: SSRF & CSRF Vulnerabilities", weight: 4, time: "Week 9 - Week 11", done: false },
-          { name: "Lab 10: Security Auditing & Reporting", weight: 4, time: "Week 11 - Week 13", done: false },
-          { name: "Test 2 (Practical Exam)", weight: 15, time: "Week 14", done: false },
-          { name: "Security Project: Presentation", weight: 5, time: "Week 14", done: false }
+          { name: "Lab 1: Linux command line and scripting", weight: 4, time: "Week 1 to 2", done: true },
+          { name: "Lab 2: Cross-site scripting (XSS)", weight: 4, time: "Week 2 to 3", done: true },
+          { name: "Lab 3: SQL injection", weight: 4, time: "Week 3 to 4", done: true },
+          { name: "Lab 4: Insecure direct object references (IDOR)", weight: 4, time: "Week 4 to 5", done: true },
+          { name: "Lab 5: Command injection", weight: 4, time: "Week 5 to 6", done: false },
+          { name: "Lab 6: Local and remote file inclusion", weight: 4, due: "2026-11-15T23:59", done: false },
+          { name: "Security project: Proposal", weight: 5, time: "Week 7 to 8", done: true },
+          { name: "Research project submission", weight: 20, due: "2026-11-15T23:59", done: false },
+          { name: "Lab 7: Web authentication vulnerabilities", weight: 4, time: "Week 7 to 8", done: false },
+          { name: "Test 1 (practical exam)", weight: 15, time: "Week 8 or 9", done: true },
+          { name: "Lab 8: Broken object-level authorization (BOLA)", weight: 4, time: "Week 8 to 9", done: false },
+          { name: "Lab 9: SSRF and CSRF vulnerabilities", weight: 4, time: "Week 9 to 11", done: false },
+          { name: "Lab 10: Security auditing and reporting", weight: 4, time: "Week 11 to 13", done: false },
+          { name: "Test 2 (practical exam)", weight: 15, time: "Week 14", done: false },
+          { name: "Security project: Presentation", weight: 5, time: "Week 14", done: false }
         ]
       },
       {
-        id: "comp306",
-        code: "COMP306",
-        name: "API Engineering & Cloud Computing",
-        instructor: "Multiple Instructors",
-        crn: "COMP306002.91939.2026F",
+        id: "comp306", code: "COMP306", name: "API Engineering and Cloud Computing",
+        instructor: "Multiple instructors", crn: "COMP306002.91939.2026F",
         items: [
-          { name: "Lab 1: AWS S3", weight: 10, time: "Week 2 - Week 3", done: true },
-          { name: "Lab 2: AWS DynamoDB", weight: 10, time: "Week 3 - Week 5", done: true },
-          { name: "Lab 3: Data-driven Web App", weight: 15, time: "Week 5 - Week 7", done: true },
-          { name: "Test 1: Weeks 1-6 Materials (Open Book)", weight: 20, time: "Week 8 or 9", done: true },
-          { name: "Group Project: Proposal", weight: 5, time: "Week 8", done: true },
-          { name: "Group Project: Implementation & Doc", weight: 15, time: "Due Friday, Nov 27 • 11:59 PM", done: false },
-          { name: "Group Project: Presentation & Report", weight: 5, time: "Due Friday, Dec 4 • 11:59 PM", done: false },
-          { name: "Lab 4: Serverless Apps with AWS Step Functions", weight: 15, time: "Week 12 - Week 14", done: false },
-          { name: "Cloud Services Responsible Usage", weight: 5, time: "Week 14", done: false }
+          { name: "Lab 1: AWS S3", weight: 10, time: "Week 2 to 3", done: true },
+          { name: "Lab 2: AWS DynamoDB", weight: 10, time: "Week 3 to 5", done: true },
+          { name: "Lab 3: Data-driven web app", weight: 15, time: "Week 5 to 7", done: true },
+          { name: "Test 1: weeks 1 to 6 (open book)", weight: 20, time: "Week 8 or 9", done: true },
+          { name: "Group project: Proposal", weight: 5, time: "Week 8", done: true },
+          { name: "Group project: Implementation and documentation", weight: 15, due: "2026-11-27T23:59", done: false },
+          { name: "Group project: Presentation and report", weight: 5, due: "2026-12-04T23:59", done: false },
+          { name: "Lab 4: Serverless apps with AWS Step Functions", weight: 15, time: "Week 12 to 14", done: false },
+          { name: "Cloud services responsible usage", weight: 5, time: "Week 14", done: false }
         ]
       },
       {
-        id: "comp309",
-        code: "COMP309",
-        name: "Data Warehousing & Predictive Analytics / AI",
-        instructor: "Vijayalakshmi Tiruchengode Angamuthu",
-        crn: "COMP309002.91946.2026F",
+        id: "comp309", code: "COMP309", name: "Data Warehousing and Predictive Analytics",
+        instructor: "Vijayalakshmi Tiruchengode Angamuthu", crn: "COMP309002.91946.2026F",
         items: [
-          { name: "Lab Assignment 1", weight: 5, time: "Week 2 - Week 3", done: true },
-          { name: "Term Project: Proposal (Groups of 2-3)", weight: 5, time: "Week 3 - Week 5", done: true },
-          { name: "Lab Assignment 2", weight: 5, time: "Week 4 - Week 6", done: true },
-          { name: "Midterm Exam (Theory & Coding)", weight: 20, time: "Week 7 or 8", done: true },
-          { name: "Term Project: Midterm Progress Report", weight: 10, time: "Week 7 - Week 9", done: true },
-          { name: "COMP 309 Analytics Project (10%)", weight: 10, time: "Due Wednesday, Nov 18 • 8:30 AM", done: false },
-          { name: "Lab Assignment 3", weight: 5, time: "Week 8 - Week 10", done: false },
-          { name: "Lab Assignment 4", weight: 5, time: "Week 11 - Week 13", done: false },
-          { name: "Term Project: Final Report & Code", weight: 15, time: "Week 10 - Week 13", done: false },
-          { name: "Final Exam / Project Presentation", weight: 30, time: "Week 13 - Week 14", done: false }
+          { name: "Lab assignment 1", weight: 5, time: "Week 2 to 3", done: true },
+          { name: "Term project: Proposal (groups of 2 to 3)", weight: 5, time: "Week 3 to 5", done: true },
+          { name: "Lab assignment 2", weight: 5, time: "Week 4 to 6", done: true },
+          { name: "Midterm exam (theory and coding)", weight: 20, time: "Week 7 or 8", done: true },
+          { name: "Term project: Midterm progress report", weight: 10, time: "Week 7 to 9", done: true },
+          { name: "Analytics project", weight: 10, due: "2026-11-18T08:30", done: false },
+          { name: "Lab assignment 3", weight: 5, time: "Week 8 to 10", done: false },
+          { name: "Lab assignment 4", weight: 5, time: "Week 11 to 13", done: false },
+          { name: "Term project: Final report and code", weight: 15, time: "Week 10 to 13", done: false },
+          { name: "Final exam / project presentation", weight: 30, time: "Week 13 to 14", done: false }
         ]
       },
       {
-        id: "comp231",
-        code: "COMP231",
-        name: "Software Development Project 1",
-        instructor: "Jin Li",
-        crn: "COMP231002.91942.2026F",
+        id: "comp231", code: "COMP231", name: "Software Development Project 1",
+        instructor: "Jin Li", crn: "COMP231002.91942.2026F",
         items: [
-          { name: "Project Charter & Proposal (Group)", weight: 10, time: "Week 1 - Week 3", done: true },
-          { name: "Requirements Specification Document (SRS)", weight: 15, time: "Week 3 - Week 5", done: true },
-          { name: "System Design & Architecture Document (SDD)", weight: 15, time: "Week 6 - Week 8", done: true },
-          { name: "Progress Monitoring (Iteration 1)", weight: 15, time: "Due Sunday, Nov 22 • 11:59 PM", done: false },
-          { name: "Iteration 2 Planning", weight: 5, time: "Due Sunday, Nov 29 • 11:59 PM", done: false },
-          { name: "Progress Monitoring (Iteration 2)", weight: 15, time: "Due Sunday, Dec 6 • 11:59 PM", done: false },
-          { name: "Software Release 1.0", weight: 15, time: "Due Sunday, Dec 13 • 11:59 PM", done: false },
-          { name: "Final Presentation & Demo", weight: 10, time: "Week 13 - Week 14", done: false },
-          { name: "TAC Technical Report & Peer Evaluation", weight: 5, time: "Due Friday, Dec 18 • 11:59 PM", done: false }
+          { name: "Project charter and proposal (group)", weight: 10, time: "Week 1 to 3", done: true },
+          { name: "Requirements specification (SRS)", weight: 15, time: "Week 3 to 5", done: true },
+          { name: "System design and architecture (SDD)", weight: 15, time: "Week 6 to 8", done: true },
+          { name: "Progress monitoring, iteration 1", weight: 15, due: "2026-11-22T23:59", done: false },
+          { name: "Iteration 2 planning", weight: 5, due: "2026-11-29T23:59", done: false },
+          { name: "Progress monitoring, iteration 2", weight: 15, due: "2026-12-06T23:59", done: false },
+          { name: "Software release 1.0", weight: 15, due: "2026-12-13T23:59", done: false },
+          { name: "Final presentation and demo", weight: 10, time: "Week 13 to 14", done: false },
+          { name: "TAC technical report and peer evaluation", weight: 5, due: "2026-12-18T23:59", done: false }
         ]
       },
       {
-        id: "comp255",
-        code: "COMP255",
-        name: "Business & Entrepreneurship - SET",
-        instructor: "Jean-Luc David",
-        crn: "COMP255003.91896.2026F",
+        id: "comp255", code: "COMP255", name: "Business and Entrepreneurship",
+        instructor: "Jean-Luc David", crn: "COMP255003.91896.2026F",
         items: [
-          { name: "Discussion 1", weight: 5, time: "Week 2 - Week 4", done: true },
-          { name: "Group Assignment 1: Business Model Canvas", weight: 10, time: "Week 2 - Week 4", done: true },
-          { name: "Group Assignment 2: Marketing & Customer Analysis", weight: 10, time: "Week 5 - Week 7", done: true },
-          { name: "Midterm Test (Weeks 1-6)", weight: 15, time: "Week 7", done: true },
-          { name: "Discussion 2", weight: 5, time: "Week 7 - Week 9", done: false },
-          { name: "Group Assignment 3: Operations & Legal Structure", weight: 10, time: "Week 9 - Week 11", done: false },
-          { name: "Discussion 3", weight: 5, time: "Week 10 - Week 12", done: false },
-          { name: "Group Assignment 4: Finance & Funding Plan", weight: 10, time: "Week 11 - Week 13", done: false },
-          { name: "Group Assignment 5: Pitch Presentation", weight: 10, time: "Week 12 - Week 14", done: false },
-          { name: "Final Test (Weeks 7-13)", weight: 20, time: "Week 14", done: false }
+          { name: "Discussion 1", weight: 5, time: "Week 2 to 4", done: true },
+          { name: "Group assignment 1: Business model canvas", weight: 10, time: "Week 2 to 4", done: true },
+          { name: "Group assignment 2: Marketing and customer analysis", weight: 10, time: "Week 5 to 7", done: true },
+          { name: "Midterm test (weeks 1 to 6)", weight: 15, time: "Week 7", done: true },
+          { name: "Discussion 2", weight: 5, time: "Week 7 to 9", done: false },
+          { name: "Group assignment 3: Operations and legal structure", weight: 10, time: "Week 9 to 11", done: false },
+          { name: "Discussion 3", weight: 5, time: "Week 10 to 12", done: false },
+          { name: "Group assignment 4: Finance and funding plan", weight: 10, time: "Week 11 to 13", done: false },
+          { name: "Group assignment 5: Pitch presentation", weight: 10, time: "Week 12 to 14", done: false },
+          { name: "Final test (weeks 7 to 13)", weight: 20, time: "Week 14", done: false }
         ]
       }
     ];
 
-    let outlines = JSON.parse(localStorage.getItem('centennial_outlines_v1') || 'null') || courseOutlines;
+    /* ── State ─────────────────────────────────────────── */
+    const DAY = 864e5;
+    const params = new URLSearchParams(location.search);
+    const now = params.get('today') ? new Date(params.get('today') + 'T07:00:00') : new Date();
+    const STORE = 'dashboard_done_v2', LEGACY = 'centennial_outlines_v1', THEME = 'dashboard_theme';
+    const key = (c, it) => c.id + '|' + it.name;
+    const store = {
+      get(k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
+      set(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+    };
 
-    function saveOutlineState() {
-      localStorage.setItem('centennial_outlines_v1', JSON.stringify(outlines));
-      renderOutlines();
+    // Completion lives in one map. Older saves (the previous layout) are migrated by item position.
+    let done = {};
+    try { done = JSON.parse(store.get(STORE) || 'null') || {}; } catch (e) { done = {}; }
+    if (!Object.keys(done).length) {
+      try {
+        const old = JSON.parse(store.get(LEGACY) || 'null');
+        if (Array.isArray(old)) old.forEach(oc => {
+          const c = courseOutlines.find(x => x.id === oc.id);
+          if (c) oc.items.forEach((oi, i) => { if (c.items[i]) done[key(c, c.items[i])] = !!oi.done; });
+        });
+      } catch (e) {}
+    }
+    courseOutlines.forEach(c => c.items.forEach(it => { if (key(c, it) in done) it.done = done[key(c, it)]; }));
+
+    let filter = 'all', query = '', lastFocus = null;
+    const openIds = new Set();
+    let firstRender = true;
+
+    /* ── Helpers ───────────────────────────────────────── */
+    const esc = s => String(s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+    const sod = d => { const x = new Date(d); x.setHours(0, 0, 0, 0); return x; };
+    const dayDiff = (a, b) => Math.round((sod(a) - sod(b)) / DAY);
+    const plural = (n, w) => n + ' ' + w + (n === 1 ? '' : 's');
+    const fmtDay = d => d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+    const fmtTime = d => d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+
+    function status(it) {
+      if (it.done) return 'done';
+      if (!it.due) return 'undated';
+      const d = new Date(it.due);
+      if (d < now) return 'overdue';
+      const n = dayDiff(d, now);
+      return n === 0 ? 'today' : n <= 7 ? 'week' : 'later';
     }
 
-    function toggleItem(cIdx, iIdx) {
-      outlines[cIdx].items[iIdx].done = !outlines[cIdx].items[iIdx].done;
-      saveOutlineState();
+    function whenText(it) {
+      if (!it.due) return it.time;
+      const d = new Date(it.due), st = status(it);
+      if (st === 'overdue') {
+        const n = dayDiff(now, d);
+        return n === 0 ? 'Overdue since ' + fmtTime(d) : plural(n, 'day') + ' overdue (' + fmtDay(d) + ')';
+      }
+      if (st === 'today') return 'Today, ' + fmtTime(d);
+      const n = dayDiff(d, now);
+      return (n === 1 ? 'Tomorrow' : fmtDay(d)) + ', ' + fmtTime(d) + (n > 1 ? ' · in ' + n + ' days' : '');
     }
 
-    function renderOutlines() {
-      const container = document.getElementById('courses-outline-container');
-      const sidebarNav = document.getElementById('course-sidebar-list');
-      container.innerHTML = '';
-      sidebarNav.innerHTML = '';
+    const all = () => courseOutlines.flatMap(c => c.items.map((it, i) => ({ c, it, i })));
+    const matches = ({ c, it }) => {
+      if (filter === 'todo' && it.done) return false;
+      if (filter === 'done' && !it.done) return false;
+      if (!query) return true;
+      return (c.code + ' ' + c.name + ' ' + it.name).toLowerCase().includes(query);
+    };
 
-      let grandTotalWeight = 0;
-      let grandCompletedWeight = 0;
-      let totalDeliverables = 0;
+    function rowHtml(x, list) {
+      const { c, it } = x, st = status(it), k = key(c, it);
+      const late = st === 'overdue';
+      const meta = list === 'next'
+        ? `<span class="code">${esc(c.code)}</span><span class="when">${esc(whenText(it))}</span>`
+        : `<span class="when">${esc(whenText(it))}</span>`;
+      return `
+        <div class="row${it.done ? ' is-done' : ''}${late ? ' late' : ''}" style="--c:var(--${c.id})" data-row="${esc(k)}">
+          <input type="checkbox" ${it.done ? 'checked' : ''} data-key="${esc(k)}" data-list="${list}" aria-label="Mark ${esc(it.name)} as ${it.done ? 'not done' : 'done'}">
+          <span class="name">${esc(it.name)}</span>
+          <span class="w">${it.weight}%</span>
+          <span class="meta">${meta}</span>
+        </div>`;
+    }
 
-      outlines.forEach((c, cIdx) => {
-        let courseWeight = 0;
-        let courseDoneWeight = 0;
+    /* ── Render ────────────────────────────────────────── */
+    function renderSummary() {
+      const items = all().map(x => status(x.it));
+      const n = s => items.filter(i => i === s).length;
+      const parts = [];
+      if (n('overdue')) parts.push(`<span class="late">${n('overdue')} overdue</span>`);
+      if (n('today')) parts.push(`<strong>${n('today')} due today</strong>`);
+      if (n('week')) parts.push(`${n('week')} more in the next 7 days`);
+      const total = all().reduce((s, x) => s + x.it.weight, 0);
+      const got = all().reduce((s, x) => s + (x.it.done ? x.it.weight : 0), 0);
+      const badge = document.getElementById('late-badge');
+      badge.hidden = !n('overdue'); badge.textContent = n('overdue');
+      const lead = parts.length ? parts.join(', ') + '.' : 'Nothing is due in the next 7 days.';
+      document.getElementById('summary').innerHTML =
+        `${lead} You have finished ${Math.round(got / total * 100)}% of the term's graded work.`;
+    }
 
-        c.items.forEach(item => {
-          courseWeight += item.weight;
-          if (item.done) courseDoneWeight += item.weight;
-          totalDeliverables++;
-        });
+    function renderNext() {
+      const el = document.getElementById('next');
+      const pending = all().filter(x => x.it.due && !x.it.done && matches(x))
+        .sort((a, b) => new Date(a.it.due) - new Date(b.it.due));
+      const groups = [
+        ['overdue', 'Overdue', x => status(x.it) === 'overdue'],
+        ['today', 'Today', x => status(x.it) === 'today'],
+        ['week', 'Next 7 days', x => status(x.it) === 'week'],
+        ['later', 'Later', x => status(x.it) === 'later']
+      ];
+      let html = '';
+      groups.forEach(([cls, label, test]) => {
+        const rows = pending.filter(test);
+        if (rows.length) html += `<div class="group ${cls}"><h3>${label}</h3>${rows.map(x => rowHtml(x, 'next')).join('')}</div>`;
+      });
+      if (!html) html = `<p class="empty">${filter === 'done' ? 'Switch the filter to see upcoming work.' : 'No dated deliverables left. Nice.'}</p>`;
+      const undated = all().filter(x => !x.it.due && !x.it.done).length;
+      if (undated && !query) html += `<p class="hint" style="margin-top:16px">${plural(undated, 'more deliverable')} only have a week range. Find them in each course.</p>`;
+      el.innerHTML = html;
+    }
 
-        grandTotalWeight += courseWeight;
-        grandCompletedWeight += courseDoneWeight;
-
-        const cPct = Math.round((courseDoneWeight / courseWeight) * 100);
-
-        // Sidebar link
-        const sb = document.createElement('a');
-        sb.href = `#${c.id}`;
-        sb.className = 'flex items-center justify-between px-2 py-1.5 rounded-md text-notion-muted hover:bg-notion-hover hover:text-gray-200 transition';
-        sb.innerHTML = `
-          <span class="truncate font-medium">• ${c.code}</span>
-          <span class="font-mono text-[10px] text-indigo-400 font-semibold">${courseDoneWeight}%</span>
-        `;
-        sidebarNav.appendChild(sb);
-
-        // Course Card
-        const card = document.createElement('div');
-        card.id = c.id;
-        card.className = 'p-4 rounded-xl bg-notion-card border border-notion-border space-y-3 shadow-md';
-
-        let rows = '';
-        c.items.forEach((item, iIdx) => {
-          rows += `
-            <div class="p-2.5 rounded-lg bg-notion-canvas border border-notion-border flex items-center justify-between gap-3 hover:border-notion-subtle transition">
-              <label class="flex items-center space-x-3 overflow-hidden cursor-pointer">
-                <input type="checkbox" ${item.done ? 'checked' : ''} 
-                       onchange="toggleItem(${cIdx}, ${iIdx})"
-                       class="w-4 h-4 rounded bg-notion-canvas border-notion-border text-indigo-600 focus:ring-0 cursor-pointer">
-                <span class="text-xs ${item.done ? 'line-through text-gray-500' : 'text-gray-200 font-medium'} truncate">
-                  ${item.name}
-                </span>
-              </label>
-              <div class="flex items-center space-x-3 shrink-0">
-                <span class="text-[11px] font-mono text-notion-muted">${item.time}</span>
-                <span class="text-[10px] font-mono px-2 py-0.5 rounded font-bold ${item.done ? 'bg-emerald-950 text-emerald-300 border border-emerald-800/40' : 'bg-indigo-950 text-indigo-300 border border-indigo-800/40'}">
-                  ${item.weight}%
-                </span>
+    function renderCourses() {
+      const el = document.getElementById('courses');
+      let html = '';
+      courseOutlines.forEach(c => {
+        const total = c.items.reduce((s, it) => s + it.weight, 0);
+        const got = c.items.reduce((s, it) => s + (it.done ? it.weight : 0), 0);
+        const pct = Math.round(got / total * 100);
+        const rows = c.items.map((it, i) => ({ c, it, i })).filter(matches);
+        if (!rows.length) return;
+        const upcoming = c.items.filter(it => it.due && !it.done).sort((a, b) => new Date(a.due) - new Date(b.due));
+        const lateCount = c.items.filter(it => status(it) === 'overdue').length;
+        const nextBit = lateCount
+          ? `<span class="late">${lateCount} overdue</span>`
+          : upcoming.length ? 'Next: ' + esc(upcoming[0].name) + ', ' + esc(fmtDay(new Date(upcoming[0].due))) : (pct === 100 ? 'All done' : 'No dated deliverables left');
+        const bar = c.items.map(it => `<i class="${it.done ? 'on' : status(it) === 'overdue' ? 'late' : ''}" style="--w:${it.weight}" title="${esc(it.name)} (${it.weight}%)"></i>`).join('');
+        const open = (openIds.has(c.id) || query) ? ' open' : '';
+        html += `
+          <details class="course" id="course-${c.id}" data-id="${c.id}" style="--c:var(--${c.id})"${open}>
+            <summary>
+              <div class="c-head">
+                <div class="c-title"><span class="swatch"></span><span class="code">${esc(c.code)}</span><span class="cname">${esc(c.name)}</span></div>
+                <div class="c-pct">${pct}%<span class="chev" aria-hidden="true"></span></div>
               </div>
-            </div>
-          `;
-        });
+              <div class="bar" role="img" aria-label="${got} of ${total} percent of ${esc(c.code)} complete">${bar}</div>
+              <div class="c-meta">${nextBit} · ${esc(c.instructor)}</div>
+            </summary>
+            <div class="c-body">${rows.map(x => rowHtml(x, 'course')).join('')}</div>
+          </details>`;
+      });
+      el.innerHTML = html || `<p class="empty">No deliverables match${query ? ' “' + esc(query) + '”' : ' this filter'}. Clear the search or switch the filter.</p>`;
+      firstRender = false;
+    }
 
-        card.innerHTML = `
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 pb-2 hairline-b">
-            <div>
-              <div class="flex items-center space-x-2">
-                <span class="font-bold text-white text-sm">${c.code} — ${c.name}</span>
-                <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-indigo-950 text-indigo-300 border border-indigo-800/40">${courseDoneWeight}% / 100%</span>
-              </div>
-              <p class="text-[11px] text-notion-muted mt-0.5">Instructor: ${c.instructor} • CRN: ${c.crn}</p>
-            </div>
-            <div class="flex items-center space-x-2">
-              <span class="font-mono text-xs text-indigo-400 font-bold">${cPct}%</span>
-              <div class="w-24 bg-notion-canvas h-2 rounded-full overflow-hidden border border-notion-border">
-                <div class="bg-indigo-500 h-full rounded-full transition-all duration-500" style="width: ${cPct}%"></div>
-              </div>
-            </div>
-          </div>
-          <div class="space-y-1.5">
-            ${rows}
-          </div>
-        `;
-        container.appendChild(card);
+    // Timeline: one dot per dated deliverable, sized by grade weight, stacked when they share a day.
+    function renderRunway() {
+      const el = document.getElementById('runway');
+      const dated = all().filter(x => x.it.due);
+      if (!dated.length) { el.innerHTML = ''; return; }
+      const days = dated.map(x => +sod(new Date(x.it.due)));
+      const start = sod(new Date(Math.min(+sod(now), ...days))); start.setDate(start.getDate() - 1);
+      const end = sod(new Date(Math.max(...days))); end.setDate(end.getDate() + 2);
+      const pos = d => (d - start) / (end - start) * 100;
+      const size = w => Math.round(18 + w * 0.9);
+
+      const stacks = {};
+      dated.sort((a, b) => new Date(a.it.due) - new Date(b.it.due));
+      let maxH = 0, dots = '';
+      dated.forEach(x => {
+        const d = new Date(x.it.due), dk = +sod(d), s = size(x.it.weight);
+        const used = stacks[dk] || 0;
+        stacks[dk] = used + s + 4;
+        maxH = Math.max(maxH, stacks[dk]);
+        const st = status(x.it);
+        const col = new Date(dk); col.setHours(12); // one column per day, so same-day and neighbouring dots never collide
+        dots += `<button class="dot${st === 'overdue' ? ' late' : ''}${x.it.done ? ' is-done' : ''}" type="button"
+          style="--c:var(--${x.c.id});left:${pos(col)}%;bottom:${42 + used}px;width:${s}px;height:${s}px"
+          data-key="${esc(key(x.c, x.it))}" data-course="${x.c.id}"
+          data-tip="<b>${esc(x.c.code)}</b> ${esc(x.it.name)}<br>${esc(whenText(x.it))} · ${x.it.weight}%"
+          aria-label="${esc(x.c.code + ' ' + x.it.name + ', ' + whenText(x.it) + ', ' + x.it.weight + ' percent')}">${x.it.done ? '✓' : x.it.weight}</button>`;
       });
 
-      document.getElementById('stat-total').innerText = `${totalDeliverables} Items`;
-      document.getElementById('stat-weight').innerText = `${grandCompletedWeight}% / ${grandTotalWeight}%`;
-      document.getElementById('active-count-badge').innerText = `${grandCompletedWeight}% Done`;
+      let ticks = '';
+      for (let d = new Date(start), i = 0; d < end; d.setDate(d.getDate() + 1), i++) {
+        const wk = d.getDay() === 1;
+        ticks += `<span class="tick${wk ? ' week' : ''}" style="left:${pos(d)}%"></span>`;
+        if (wk) ticks += `<span class="tick-label" style="left:${pos(d)}%">${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>`;
+      }
+      const nowX = pos(now);
+      el.style.height = (42 + maxH + 34) + 'px';
+      el.innerHTML = `
+        <div class="past" style="width:${nowX}%"></div>
+        <div class="axis"></div>${ticks}
+        <div class="nowline" style="left:${nowX}%"></div>
+        <span class="nowtag" style="left:${nowX}%">Today</span>${dots}`;
     }
 
-    renderOutlines();
+    function render() {
+      const a = document.activeElement;
+      lastFocus = a && a.dataset && a.dataset.key && a.matches('input') ? a.dataset.list + '::' + a.dataset.key : null;
+      renderSummary(); renderRunway(); renderNext(); renderCourses();
+      if (lastFocus) {
+        const [list, k] = lastFocus.split('::');
+        const t = [...document.querySelectorAll('input[data-key]')].find(i => i.dataset.list === list && i.dataset.key === k)
+          || [...document.querySelectorAll('input[data-key]')].find(i => i.dataset.key === k);
+        if (t) t.focus({ preventScroll: true });
+      }
+    }
+
+    /* ── Events ────────────────────────────────────────── */
+    document.addEventListener('change', e => {
+      const t = e.target;
+      if (!t.matches('input[data-key]')) return;
+      const x = all().find(x => key(x.c, x.it) === t.dataset.key);
+      if (!x) return;
+      x.it.done = t.checked; done[t.dataset.key] = t.checked;
+      store.set(STORE, JSON.stringify(done));
+      render();
+    });
+
+    document.getElementById('courses').addEventListener('toggle', e => {
+      const d = e.target; if (!d.dataset || !d.dataset.id) return;
+      d.open ? openIds.add(d.dataset.id) : openIds.delete(d.dataset.id);
+    }, true);
+
+    document.querySelectorAll('[data-filter]').forEach(b => b.addEventListener('click', () => {
+      filter = b.dataset.filter;
+      document.querySelectorAll('[data-filter]').forEach(o => o.setAttribute('aria-pressed', o === b));
+      render();
+    }));
+
+    const search = document.getElementById('search');
+    search.addEventListener('input', () => { query = search.value.trim().toLowerCase(); render(); });
+    document.addEventListener('keydown', e => {
+      if (e.key === '/' && !/input|textarea/i.test(document.activeElement.tagName)) { e.preventDefault(); search.focus(); }
+      if (e.key === 'Escape' && document.activeElement === search) { search.value = ''; query = ''; search.blur(); render(); }
+    });
+
+    // Timeline dots: tooltip + jump to the deliverable in its course.
+    const tip = document.getElementById('tip');
+    const runway = document.getElementById('runway');
+    const showTip = e => {
+      const d = e.target.closest('.dot'); if (!d) return;
+      tip.innerHTML = d.dataset.tip; tip.hidden = false;
+      const r = d.getBoundingClientRect(), tw = tip.offsetWidth;
+      tip.style.left = Math.max(8, Math.min(innerWidth - tw - 8, r.left + r.width / 2 - tw / 2)) + 'px';
+      tip.style.top = Math.max(8, r.top - tip.offsetHeight - 8) + 'px';
+    };
+    runway.addEventListener('mouseover', showTip);
+    runway.addEventListener('focusin', showTip);
+    runway.addEventListener('mouseout', () => { tip.hidden = true; });
+    runway.addEventListener('focusout', () => { tip.hidden = true; });
+    runway.addEventListener('click', e => {
+      const d = e.target.closest('.dot'); if (!d) return;
+      openIds.add(d.dataset.course); filter = 'all'; query = ''; search.value = '';
+      document.querySelectorAll('[data-filter]').forEach(o => o.setAttribute('aria-pressed', o.dataset.filter === 'all'));
+      render();
+      const row = [...document.querySelectorAll('#courses .row')].find(r => r.dataset.row === d.dataset.key);
+      if (row) {
+        row.scrollIntoView({ block: 'center', behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+        row.classList.add('flash');
+      }
+    });
+
+    // Theme: follows the system until you pick one.
+    const root = document.documentElement;
+    const savedTheme = store.get(THEME);
+    if (savedTheme) root.dataset.theme = savedTheme;
+    document.getElementById('theme').addEventListener('click', () => {
+      const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+      root.dataset.theme = dark ? 'light' : 'dark';
+      store.set(THEME, root.dataset.theme);
+    });
+
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) { now.setTime(params.get('today') ? now.getTime() : Date.now()); render(); } });
+    render();
+
+    /* ══ Tabs ═══════════════════════════════════════════ */
+    const TABS = ['school', 'github', 'wordle', 'chess'];
+    const TITLES = { school: 'Schoolwork', github: 'GitHub', wordle: 'Wordle', chess: 'Chess.com' };
+    const loaded = {};
+    function showTab(id, focus) {
+      if (!TABS.includes(id)) id = 'school';
+      TABS.forEach(t => {
+        const on = t === id, tab = document.getElementById('tab-' + t);
+        document.getElementById('panel-' + t).hidden = !on;
+        tab.setAttribute('aria-selected', on); tab.tabIndex = on ? 0 : -1;
+        if (on && focus) tab.focus();
+      });
+      document.title = TITLES[id] + ' · Dashboard';
+      if (location.hash !== '#' + id) history.replaceState(null, '', '#' + id);
+      if (!loaded[id]) { loaded[id] = true; ({ github: loadGithub, wordle: initWordle, chess: loadChess }[id] || (() => {}))(); }
+    }
+    document.querySelector('.tabs').addEventListener('click', e => { const t = e.target.closest('.tab'); if (t) showTab(t.dataset.tab); });
+    document.querySelector('.tabs').addEventListener('keydown', e => {
+      const i = TABS.indexOf(document.activeElement.dataset.tab);
+      if (i < 0 || !['ArrowRight', 'ArrowLeft', 'Home', 'End'].includes(e.key)) return;
+      e.preventDefault();
+      const n = e.key === 'Home' ? 0 : e.key === 'End' ? TABS.length - 1 : (i + (e.key === 'ArrowRight' ? 1 : -1) + TABS.length) % TABS.length;
+      showTab(TABS[n], true);
+    });
+    const typing = () => /input|textarea/i.test(document.activeElement.tagName);
+    const currentTab = () => TABS.find(t => !document.getElementById('panel-' + t).hidden);
+    document.addEventListener('keydown', e => {
+      if (typing() || e.ctrlKey || e.metaKey || e.altKey) return;
+      if (/^[1-4]$/.test(e.key)) showTab(TABS[+e.key - 1]);
+    });
+    window.addEventListener('hashchange', () => showTab(location.hash.slice(1)));
+    // The "/" shortcut only makes sense on the Schoolwork tab.
+    document.addEventListener('keydown', e => { if (e.key === '/' && currentTab() !== 'school') e.stopImmediatePropagation(); }, true);
+
+    const timeAgo = d => {
+      const s = Math.max(0, (Date.now() - new Date(d)) / 1000);
+      if (s < 3600) return Math.max(1, Math.round(s / 60)) + ' min ago';
+      if (s < 86400) return Math.round(s / 3600) + ' h ago';
+      const n = Math.round(s / 86400); return n < 45 ? plural(n, 'day') + ' ago' : new Date(d).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+    };
+    async function getJson(url, ttlMin) {
+      const ck = 'cache:' + url;
+      try { const c = JSON.parse(sessionStorage.getItem(ck) || 'null'); if (c && Date.now() - c.t < ttlMin * 60000) return c.d; } catch (e) {}
+      const r = await fetch(url, { headers: { Accept: 'application/json' } });
+      if (!r.ok) { const err = new Error('HTTP ' + r.status); err.status = r.status; throw err; }
+      const d = await r.json();
+      try { sessionStorage.setItem(ck, JSON.stringify({ t: Date.now(), d })); } catch (e) {}
+      return d;
+    }
+
+    /* ══ GitHub ═════════════════════════════════════════ */
+    let ghUser = store.get('gh_user') || 'DeathSurvivor02';
+    const ghInput = document.getElementById('gh-user'); ghInput.value = ghUser;
+    document.getElementById('gh-form').addEventListener('submit', e => {
+      e.preventDefault(); ghUser = ghInput.value.trim() || ghUser; store.set('gh_user', ghUser); loadGithub();
+    });
+    async function loadGithub() {
+      const body = document.getElementById('gh-body');
+      body.innerHTML = '<p class="note">Loading GitHub activity…</p>';
+      const u = encodeURIComponent(ghUser), api = 'https://api.github.com';
+      try {
+        const [user, repos, prs, events] = await Promise.all([
+          getJson(`${api}/users/${u}`, 10),
+          getJson(`${api}/users/${u}/repos?sort=pushed&per_page=12`, 10),
+          getJson(`${api}/search/issues?q=${encodeURIComponent('author:' + ghUser + ' type:pr state:open')}&per_page=10`, 10),
+          getJson(`${api}/users/${u}/events/public?per_page=40`, 10)
+        ]);
+        document.getElementById('gh-title').textContent = user.name || user.login;
+        document.getElementById('gh-bio').textContent = user.bio || 'Open pull requests, recently pushed repositories and your latest commits. Private repositories are not shown.';
+        const commits = events.filter(ev => ev.type === 'PushEvent').flatMap(ev =>
+          (ev.payload.commits || []).slice(-3).reverse().map(c => ({ repo: ev.repo.name, msg: c.message.split('\n')[0], sha: c.sha, at: ev.created_at }))).slice(0, 8);
+        const openPrs = prs.items || [];
+        body.innerHTML = `
+          <div class="stats">
+            <div class="stat"><b>${user.public_repos}</b><span>Public repos</span></div>
+            <div class="stat"><b>${openPrs.length}</b><span>Open pull requests</span></div>
+            <div class="stat"><b>${user.followers}</b><span>Followers</span></div>
+          </div>
+          <div class="two">
+            <div class="card"><h2>Recently pushed</h2>${repos.length ? repos.map(r => `
+              <div class="li"><a href="${esc(r.html_url)}" target="_blank" rel="noopener">${esc(r.name)}</a>
+                ${r.description ? `<span class="note">${esc(r.description)}</span>` : ''}
+                <span class="sub"><span>Pushed ${timeAgo(r.pushed_at)}</span>${r.language ? `<span>${esc(r.language)}</span>` : ''}<span>${r.stargazers_count} stars</span><span>${r.open_issues_count} open issues</span></span></div>`).join('') : '<p class="note">No public repositories yet.</p>'}</div>
+            <div>
+              <div class="card"><h2>Open pull requests</h2>${openPrs.length ? openPrs.map(p => `
+                <div class="li"><a href="${esc(p.html_url)}" target="_blank" rel="noopener">${esc(p.title)}</a>
+                  <span class="sub"><span>${esc(p.repository_url.split('/').slice(-2).join('/'))}</span><span>Opened ${timeAgo(p.created_at)}</span></span></div>`).join('') : '<p class="note">No open pull requests.</p>'}</div>
+              <div class="card"><h2>Latest commits</h2>${commits.length ? commits.map(c => `
+                <div class="li"><a href="https://github.com/${esc(c.repo)}/commit/${esc(c.sha)}" target="_blank" rel="noopener">${esc(c.msg)}</a>
+                  <span class="sub"><span>${esc(c.repo.split('/')[1])}</span><span>${timeAgo(c.at)}</span></span></div>`).join('') : '<p class="note">No recent public pushes.</p>'}</div>
+            </div>
+          </div>`;
+      } catch (e) {
+        const limited = e.status === 403 || e.status === 429;
+        body.innerHTML = `<div class="err"><span>${e.status === 404 ? `No GitHub user named “${esc(ghUser)}”. Check the spelling and load again.`
+          : limited ? 'GitHub has limited anonymous requests from this network. Try again in a few minutes.'
+          : 'Could not reach GitHub. Check your connection and try again.'}</span><button class="btn" type="button" id="gh-retry">Try again</button></div>`;
+        document.getElementById('gh-retry').onclick = () => { try { Object.keys(sessionStorage).filter(k => k.startsWith('cache:https://api.github.com')).forEach(k => sessionStorage.removeItem(k)); } catch (_) {} loadGithub(); };
+      }
+    }
+
+    /* ══ Wordle ═════════════════════════════════════════ */
+    const ANSWERS = ('about above actor adapt admit adopt adult after again agent agree ahead alarm album alert alike alive allow alone along alter among angle angry apart apple apply arena argue arise armor array aside asset avoid awake award aware badge baker basic basis beach begin being below bench birth black blame blank blast blend bless blind block blood board boost bound brain brand bread break brick brief bring broad brown brush build bunch burst buyer cabin cable candy carry catch cause chain chair chalk chart chase cheap check chess chest chief child china chose civil claim class clean clear click climb clock close cloud coach coast could count court cover craft crash crazy cream crime cross crowd crown curve cycle daily dance death delay depth doubt dozen draft drama dream dress drink drive eager early earth eight elite empty enemy enjoy enter entry equal error event every exact exist extra faith false fault fiber field fifth fifty fight final first flame flash fleet floor focus force frame frank fresh front fruit fully giant given glass globe glory grace grade grain grand grant grass great green gross group grown guard guess guest guide happy heart heavy hence horse hotel house human ideal image index inner input issue joint judge juice knife known label large laser later laugh layer learn least leave legal level light limit local logic loose lower lucky lunch magic major maker march match maybe mayor media metal might minor minus mixed model money month moral motor mount mouse mouth movie music needs never newly night noise north noted novel nurse ocean offer often onion order other ought outer owner paint panel paper party peace phase phone photo piece pilot pitch place plain plane plant plate point pound power press price pride prime print prior prize proof proud prove queen quick quiet quite radio raise range rapid ratio reach ready realm refer relax reply right rival river robot rough round route royal rural scale scene scope score sense serve seven shade shape share sharp sheet shelf shell shift shine shirt shock shoot short shown sight silly since sixth skill sleep slide small smart smile smoke solid solve sorry sound south space spare speak speed spend split sport staff stage stand start state steam steel stick still stock stone store storm story strip stuck study stuff style sugar suite super sweet table taken taste teach thank theme there thick thing think third those three throw tight title today token total touch tough tower track trade trail train treat trend trial tribe trick truck truly trust truth twice under union unity until upper upset urban usage usual valid value video virus visit vital voice waste watch water wheel where which while white whole whose woman world worry worse worst worth would write wrong young youth').split(' ');
+    const KEYS = ['qwertyuiop', 'asdfghjkl', '↵zxcvbnm⌫'];
+    const W_STORE = 'wordle_v1';
+    const wDay = () => { const d = sod(now); return Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(2026, 0, 1)) / DAY); };
+    let W = null, wCur = '', wBusy = false;
+    const wAnswer = () => ANSWERS[((wDay() % ANSWERS.length) + ANSWERS.length) % ANSWERS.length];
+    function wLoad() {
+      let s = null; try { s = JSON.parse(store.get(W_STORE) || 'null'); } catch (e) {}
+      s = s || { stats: { played: 0, wins: 0, streak: 0, max: 0, last: -9, dist: [0, 0, 0, 0, 0, 0] } };
+      if (!s.game || s.game.day !== wDay()) s.game = { day: wDay(), guesses: [], status: 'playing' };
+      return s;
+    }
+    const wSave = () => store.set(W_STORE, JSON.stringify(W));
+    function wScore(guess, answer) {
+      const res = Array(5).fill('miss'), left = {};
+      for (let i = 0; i < 5; i++) { if (guess[i] === answer[i]) res[i] = 'good'; else left[answer[i]] = (left[answer[i]] || 0) + 1; }
+      for (let i = 0; i < 5; i++) if (res[i] !== 'good' && left[guess[i]]) { res[i] = 'near'; left[guess[i]]--; }
+      return res;
+    }
+    function initWordle() {
+      W = wLoad();
+      document.getElementById('wkb').innerHTML = KEYS.map(r => `<div>${[...r].map(k =>
+        `<button class="key${k === '↵' || k === '⌫' ? ' wide' : ''}" type="button" data-k="${k}" aria-label="${k === '↵' ? 'Enter' : k === '⌫' ? 'Backspace' : k}">${k}</button>`).join('')}</div>`).join('');
+      document.getElementById('wkb').addEventListener('click', e => { const b = e.target.closest('.key'); if (b) wInput(b.dataset.k); });
+      document.addEventListener('keydown', e => {
+        if (currentTab() !== 'wordle' || typing() || e.ctrlKey || e.metaKey || e.altKey) return;
+        if (e.key === 'Enter') wInput('↵'); else if (e.key === 'Backspace') wInput('⌫'); else if (/^[a-z]$/i.test(e.key)) wInput(e.key.toLowerCase());
+      });
+      wRender();
+    }
+    function wInput(k) {
+      if (W.game.status !== 'playing' || wBusy) return;
+      wMsg('');
+      if (k === '⌫') wCur = wCur.slice(0, -1);
+      else if (k === '↵') {
+        if (wCur.length < 5) { wMsg('Type five letters first.'); return; }
+        W.game.guesses.push(wCur);
+        const won = wCur === wAnswer(); wCur = '';
+        if (won || W.game.guesses.length === 6) wFinish(won);
+        wSave();
+      } else if (wCur.length < 5) wCur += k;
+      wRender();
+    }
+    function wFinish(won) {
+      const s = W.stats; W.game.status = won ? 'won' : 'lost';
+      s.played++;
+      if (won) { s.wins++; s.streak = s.last === wDay() - 1 ? s.streak + 1 : 1; s.max = Math.max(s.max, s.streak); s.dist[W.game.guesses.length - 1]++; s.last = wDay(); }
+      else s.streak = 0;
+    }
+    function wMsg(t) { document.getElementById('wmsg').textContent = t; }
+    function wRender() {
+      const g = W.game, ans = wAnswer();
+      const rows = [];
+      for (let r = 0; r < 6; r++) {
+        const guess = g.guesses[r], typed = r === g.guesses.length && g.status === 'playing' ? wCur : '';
+        const sc = guess ? wScore(guess, ans) : null;
+        rows.push(`<div class="wrow" role="row">${[0, 1, 2, 3, 4].map(i => {
+          const ch = guess ? guess[i] : typed[i] || '';
+          return `<div class="tile ${sc ? sc[i] : ch ? 'fill' : ''}" role="gridcell" aria-label="${ch ? ch + (sc ? ', ' + sc[i] : '') : 'empty'}">${ch}</div>`;
+        }).join('')}</div>`);
+      }
+      document.getElementById('wgrid').innerHTML = rows.join('');
+      const best = {};
+      g.guesses.forEach(w => wScore(w, ans).forEach((s, i) => { const c = w[i], rank = { miss: 0, near: 1, good: 2 }; if (!(c in best) || rank[s] > rank[best[c]]) best[c] = s; }));
+      document.querySelectorAll('#wkb .key').forEach(b => { b.classList.remove('good', 'near', 'miss'); if (best[b.dataset.k]) b.classList.add(best[b.dataset.k]); });
+      if (g.status === 'won') wMsg(['Genius!', 'Magnificent!', 'Impressive!', 'Splendid!', 'Great!', 'Phew!'][g.guesses.length - 1] + ' Come back tomorrow for a new word.');
+      else if (g.status === 'lost') wMsg('The word was ' + ans.toUpperCase() + '. A new one arrives tomorrow.');
+      const s = W.stats, max = Math.max(1, ...s.dist);
+      document.getElementById('wstats').innerHTML = `
+        <h2>Your stats</h2>
+        <div class="stats" style="margin:12px 0 0;grid-template-columns:repeat(4,1fr)">
+          <div class="stat"><b>${s.played}</b><span>Played</span></div>
+          <div class="stat"><b>${s.played ? Math.round(s.wins / s.played * 100) : 0}%</b><span>Won</span></div>
+          <div class="stat"><b>${s.streak}</b><span>Streak</span></div>
+          <div class="stat"><b>${s.max}</b><span>Best streak</span></div>
+        </div>
+        <h2 style="margin-top:16px;font-size:15px">Wins by guess</h2>
+        <div class="dist">${s.dist.map((n, i) => `<div><span>${i + 1}</span><i class="${g.status === 'won' && g.guesses.length === i + 1 ? 'hit' : ''}" style="width:${Math.max(8, n / max * 100)}%">${n}</i></div>`).join('')}</div>`;
+    }
+
+    /* ══ Chess.com ══════════════════════════════════════ */
+    let chessUser = store.get('chess_user') || '';
+    const chessInput = document.getElementById('chess-user'); chessInput.value = chessUser;
+    document.getElementById('chess-form').addEventListener('submit', e => {
+      e.preventDefault(); chessUser = chessInput.value.trim().toLowerCase(); store.set('chess_user', chessUser); loadChessPlayer();
+    });
+    const GLYPH = { k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟︎' };
+    function boardHtml(fen) {
+      const [place, side] = fen.split(' ');
+      const grid = place.split('/').map(r => [...r].flatMap(ch => /\d/.test(ch) ? Array(+ch).fill('') : [ch]));
+      const flip = side === 'b';
+      const rows = flip ? grid.map(r => [...r].reverse()).reverse() : grid;
+      return `<div class="board" role="img" aria-label="Chess puzzle position, ${side === 'b' ? 'Black' : 'White'} to move">${rows.map((r, y) => r.map((p, x) =>
+        `<div class="sq${(x + y) % 2 ? ' d' : ''}">${p ? `<span class="${p === p.toUpperCase() ? 'pc-w' : 'pc-b'}">${GLYPH[p.toLowerCase()]}</span>` : ''}</div>`).join('')).join('')}</div>`;
+    }
+    async function loadChess() {
+      const box = document.getElementById('chess-puzzle');
+      box.innerHTML = '<h2>Daily puzzle</h2><p class="note">Loading today\'s puzzle…</p>';
+      try {
+        const p = await getJson('https://api.chess.com/pub/puzzle', 30);
+        const side = p.fen.split(' ')[1] === 'b' ? 'Black' : 'White';
+        box.innerHTML = `<h2>${esc(p.title)}</h2><p class="note" style="margin-bottom:12px">${side} to move. Find the best line, then check it on Chess.com.</p>
+          ${boardHtml(p.fen)}<p style="margin:14px 0 0"><a class="btn primary" style="display:inline-block;text-decoration:none" href="${esc(p.url)}" target="_blank" rel="noopener">Solve on Chess.com</a></p>`;
+      } catch (e) {
+        box.innerHTML = '<h2>Daily puzzle</h2><div class="err"><span>Could not load the puzzle. Check your connection and try again.</span><button class="btn" type="button" id="chess-retry">Try again</button></div>';
+        document.getElementById('chess-retry').onclick = loadChess;
+      }
+      loadChessPlayer();
+    }
+    async function loadChessPlayer() {
+      const stats = document.getElementById('chess-stats'), games = document.getElementById('chess-games');
+      if (!chessUser) {
+        stats.innerHTML = '<h2>Ratings</h2><p class="note">Enter your Chess.com username above to see your ratings and daily games.</p>';
+        games.innerHTML = ''; games.hidden = true; return;
+      }
+      games.hidden = false;
+      stats.innerHTML = '<h2>Ratings</h2><p class="note">Loading…</p>'; games.innerHTML = '';
+      const u = encodeURIComponent(chessUser), base = 'https://api.chess.com/pub/player/' + u;
+      try {
+        const [s, g] = await Promise.all([getJson(base + '/stats', 5), getJson(base + '/games', 2)]);
+        const modes = [['chess_rapid', 'Rapid'], ['chess_blitz', 'Blitz'], ['chess_bullet', 'Bullet'], ['chess_daily', 'Daily']];
+        stats.innerHTML = `<h2>${esc(chessUser)}</h2><div class="ratings" style="margin-top:12px">${modes.map(([k, n]) =>
+          `<div class="stat"><b>${s[k] && s[k].last ? s[k].last.rating : '–'}</b><span>${n}</span></div>`).join('')}</div>
+          ${s.tactics && s.tactics.highest ? `<p class="note" style="margin-top:12px">Best puzzle rating: ${s.tactics.highest.rating}</p>` : ''}`;
+        const list = g.games || [];
+        games.innerHTML = `<h2>Daily games</h2>${list.length ? list.map(m => {
+          const white = m.white.split('/').pop().toLowerCase() === chessUser, opp = (white ? m.black : m.white).split('/').pop();
+          const mine = (m.turn === 'white') === white;
+          const days = Math.round(parseInt(m.time_control.split('/')[1] || '0', 10) / 86400);
+          return `<div class="li"><a href="${esc(m.url)}" target="_blank" rel="noopener">vs ${esc(opp)}</a><span class="sub"><span style="${mine ? 'color:var(--ink);font-weight:600' : ''}">${mine ? 'Your move' : 'Their move'}</span><span>${days ? days + (days === 1 ? ' day' : ' days') + ' per move' : ''}</span></span></div>`;
+        }).join('') : '<p class="note">No daily games in progress.</p>'}`;
+      } catch (e) {
+        stats.innerHTML = `<h2>Ratings</h2><div class="err"><span>${e.status === 404 ? `No Chess.com player named “${esc(chessUser)}”. Check the spelling and save again.` : 'Could not load your Chess.com data. Try again in a moment.'}</span></div>`;
+        games.innerHTML = ''; games.hidden = true;
+      }
+    }
+
+    showTab(location.hash.slice(1) || 'school');
   </script>
 </body>
 </html>
