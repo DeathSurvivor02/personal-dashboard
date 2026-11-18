@@ -88,7 +88,7 @@
       font-size: 11px; font-weight: 700; cursor: pointer; transition: transform .15s;
     }
     .dot:hover { transform: translateX(-50%) scale(1.12); }
-    .dot.late { box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--danger); }
+    .dot.late { outline: 2px solid var(--danger); outline-offset: 2px; }
     .dot.is-done { opacity: .4; }
 
     .tip {
@@ -219,11 +219,29 @@
     .dist i.hit { background: var(--w-good); }
 
     /* ── Chess ────────────────────────────────────────── */
-    .board { display: grid; grid-template-columns: repeat(8, 1fr); width: min(400px, 100%); aspect-ratio: 1; border-radius: 8px; overflow: hidden; border: 1px solid var(--line); }
-    .sq { aspect-ratio: 1; display: grid; place-items: center; font-size: clamp(24px, 6.4vw, 40px); line-height: 1; background: var(--sq-l); }
-    .sq.d { background: var(--sq-d); }
-    .pc-w { color: #fff; text-shadow: 0 0 2px #000, 0 0 2px #000, 0 1px 1px #000; }
-    .pc-b { color: #101820; text-shadow: 0 0 1px rgba(255,255,255,.6); }
+    .stage { width: min(580px, 100%); border-radius: 8px; background: linear-gradient(135deg, #0d2a31, #1d4d56 55%, #0d1f2b); box-shadow: 0 2px 10px rgba(0,0,0,.18); }
+    .has-bg .stage { background: transparent; box-shadow: none; }
+    .board { --l: rgba(236,241,244,.56); --d: rgba(112,126,138,.58); --co: #8190BC; display: grid; grid-template-columns: repeat(8, 1fr); width: 100%; aspect-ratio: 1; border-radius: 6px; overflow: hidden; }
+    .board.green { --l: #EEEED2; --d: #769656; }
+    .board.green .sq { color: #769656; } .board.green .sq.d { color: #EEEED2; }
+    .sq { position: relative; aspect-ratio: 1; background: var(--l); color: var(--co); font-size: clamp(10px, 1.9vw, 15px); font-weight: 700; }
+    .sq.d { background: var(--d); color: var(--co); }
+    .sq img, .sq .g { position: absolute; inset: 0; width: 100%; height: 100%; }
+    .sq .g { display: grid; place-items: center; font-size: clamp(28px, 8vw, 54px); line-height: 1; }
+    .sq .g.w { color: #fff; text-shadow: 0 0 2px #000, 0 0 2px #000; } .sq .g.b { color: #101820; }
+    .sq .rk, .sq .fl { position: absolute; line-height: 1; pointer-events: none; z-index: 1; }
+    .sq .rk { top: 4px; left: 5px; } .sq .fl { bottom: 4px; right: 5px; }
+    .pickers { display: flex; flex-wrap: wrap; gap: 8px 14px; }
+    .pickers select { padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); }
+    /* Optional page background: drop background.jpg (or .png / .webp) next to index.html */
+    :root.has-bg { --surface: rgba(16,24,30,.74); --raised: rgba(27,38,48,.82); --ink: #E6EEF2; --ink2: #AEBBC5; --line: rgba(255,255,255,.14); --track: rgba(255,255,255,.16);
+      --focus: #7AA2FF; --danger: #FF8A80; --danger-bg: rgba(120,30,26,.6); --on: #0F161B;
+      --comp303: #7AA2FF; --comp307: #B794F0; --comp306: #4FD1BD; --comp309: #F0B04A; --comp231: #8FD468; --comp255: #F08CC4; color-scheme: dark; }
+    :root.has-bg body { background: linear-gradient(rgba(8,14,18,.5), rgba(8,14,18,.62)), var(--page-bg) center / cover fixed no-repeat; }
+    :root.has-bg .appbar { background: rgba(8,14,18,.55); backdrop-filter: blur(10px); }
+    :root.has-bg .card, :root.has-bg .runway, :root.has-bg details.course, :root.has-bg .stat { backdrop-filter: blur(8px); }
+    .puzzle-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 16px; margin-bottom: 12px; }
+    .puzzle-head select { padding: 6px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--surface); }
     .ratings { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 
     @media (max-width: 880px) {
@@ -617,10 +635,10 @@
       });
 
       let ticks = '';
-      for (let d = new Date(start), i = 0; d < end; d.setDate(d.getDate() + 1), i++) {
-        const wk = d.getDay() === 1;
-        ticks += `<span class="tick${wk ? ' week' : ''}" style="left:${pos(d)}%"></span>`;
-        if (wk) ticks += `<span class="tick-label" style="left:${pos(d)}%">${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>`;
+      for (let d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+        const wk = d.getDay() === 1, mid = new Date(d); mid.setHours(12); // same x as that day's dots
+        ticks += `<span class="tick${wk ? ' week' : ''}" style="left:${pos(mid)}%"></span>`;
+        if (wk) ticks += `<span class="tick-label" style="left:${pos(mid)}%">${d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>`;
       }
       const nowX = pos(now);
       el.style.height = (42 + maxH + 34) + 'px';
@@ -899,14 +917,25 @@
     document.getElementById('chess-form').addEventListener('submit', e => {
       e.preventDefault(); chessUser = chessInput.value.trim().toLowerCase(); store.set('chess_user', chessUser); loadChessPlayer();
     });
-    const GLYPH = { k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟︎' };
+    const GLYPH = { k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟\uFE0E' };
+    const PIECE_SETS = { glass: 'Glass', neo: 'Neo', classic: 'Classic', space: 'Space', gothic: 'Gothic', metal: 'Metal', wood: 'Wood', alpha: 'Alpha', neo_wood: 'Neo Wood', ocean: 'Ocean', '3d_plastic': '3D Plastic', '3d_staunton': '3D Staunton' };
+    const BOARDS = { glass: 'Glass', green: 'Green' };
+    let boardTheme = store.get('chess_board'); if (!BOARDS[boardTheme]) boardTheme = 'glass';
+    let pieceSet = store.get('chess_pieces'); if (!PIECE_SETS[pieceSet]) pieceSet = 'glass';
+    let puzzleFen = '';
+    // Pieces come from Chess.com's public image host. If an image fails to load, a text piece stands in.
+    function pieceHtml(p) {
+      const white = p === p.toUpperCase(), t = p.toLowerCase();
+      const src = `https://images.chesscomfiles.com/chess-themes/pieces/${pieceSet}/150/${white ? 'w' : 'b'}${t}.png`;
+      return `<img src="${src}" alt="" draggable="false" onerror="this.outerHTML='<span class=&quot;g ${white ? 'w' : 'b'}&quot;>${GLYPH[t]}</span>'">`;
+    }
     function boardHtml(fen) {
       const [place, side] = fen.split(' ');
       const grid = place.split('/').map(r => [...r].flatMap(ch => /\d/.test(ch) ? Array(+ch).fill('') : [ch]));
       const flip = side === 'b';
       const rows = flip ? grid.map(r => [...r].reverse()).reverse() : grid;
-      return `<div class="board" role="img" aria-label="Chess puzzle position, ${side === 'b' ? 'Black' : 'White'} to move">${rows.map((r, y) => r.map((p, x) =>
-        `<div class="sq${(x + y) % 2 ? ' d' : ''}">${p ? `<span class="${p === p.toUpperCase() ? 'pc-w' : 'pc-b'}">${GLYPH[p.toLowerCase()]}</span>` : ''}</div>`).join('')).join('')}</div>`;
+      return `<div class="stage"><div class="board ${boardTheme}" role="img" aria-label="Chess puzzle position, ${side === 'b' ? 'Black' : 'White'} to move">${rows.map((r, y) => r.map((p, x) =>
+        `<div class="sq${(x + y) % 2 ? ' d' : ''}">${x === 0 ? `<span class="rk">${flip ? y + 1 : 8 - y}</span>` : ''}${y === 7 ? `<span class="fl">${'abcdefgh'[flip ? 7 - x : x]}</span>` : ''}${p ? pieceHtml(p) : ''}</div>`).join('')).join('')}</div></div>`;
     }
     async function loadChess() {
       const box = document.getElementById('chess-puzzle');
@@ -914,8 +943,11 @@
       try {
         const p = await getJson('https://api.chess.com/pub/puzzle', 30);
         const side = p.fen.split(' ')[1] === 'b' ? 'Black' : 'White';
-        box.innerHTML = `<h2>${esc(p.title)}</h2><p class="note" style="margin-bottom:12px">${side} to move. Find the best line, then check it on Chess.com.</p>
-          ${boardHtml(p.fen)}<p style="margin:14px 0 0"><a class="btn primary" style="display:inline-block;text-decoration:none" href="${esc(p.url)}" target="_blank" rel="noopener">Solve on Chess.com</a></p>`;
+        puzzleFen = p.fen;
+        box.innerHTML = `<div class="puzzle-head"><div><h2 style="margin:0">${esc(p.title)}</h2><p class="note">${side} to move. Find the best line, then check it on Chess.com.</p></div>
+          <div class="pickers"><label class="note">Board <select id="board-theme">${Object.entries(BOARDS).map(([k, n]) => `<option value="${k}"${k === boardTheme ? ' selected' : ''}>${n}</option>`).join('')}</select></label>
+          <label class="note">Pieces <select id="piece-set">${Object.entries(PIECE_SETS).map(([k, n]) => `<option value="${k}"${k === pieceSet ? ' selected' : ''}>${n}</option>`).join('')}</select></label></div></div>
+          <div id="board-wrap">${boardHtml(p.fen)}</div><p style="margin:14px 0 0"><a class="btn primary" style="display:inline-block;text-decoration:none" href="${esc(p.url)}" target="_blank" rel="noopener">Solve on Chess.com</a></p>`;
       } catch (e) {
         box.innerHTML = '<h2>Daily puzzle</h2><div class="err"><span>Could not load the puzzle. Check your connection and try again.</span><button class="btn" type="button" id="chess-retry">Try again</button></div>';
         document.getElementById('chess-retry').onclick = loadChess;
@@ -949,6 +981,22 @@
         games.innerHTML = ''; games.hidden = true;
       }
     }
+
+    document.getElementById('chess-puzzle').addEventListener('change', e => {
+      if (e.target.id === 'board-theme') { boardTheme = e.target.value; store.set('chess_board', boardTheme); }
+      else if (e.target.id === 'piece-set') { pieceSet = e.target.value; store.set('chess_pieces', pieceSet); }
+      else return;
+      document.getElementById('board-wrap').innerHTML = boardHtml(puzzleFen);
+    });
+
+    // Optional background art: put background.jpg (or .png / .webp) beside index.html.
+    (function probeBackground(list) {
+      const f = list.shift(); if (!f) return;
+      const im = new Image();
+      im.onload = () => { root.style.setProperty('--page-bg', `url("${f}")`); root.classList.add('has-bg'); };
+      im.onerror = () => probeBackground(list);
+      im.src = f;
+    })(['background.jpg', 'background.png', 'background.webp']);
 
     showTab(location.hash.slice(1) || 'school');
   </script>
