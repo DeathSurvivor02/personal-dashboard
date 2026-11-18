@@ -1058,6 +1058,9 @@ def sync():
         f"{ics_status}{rss_part} | {detected_artifacts} local deliverables | "
         f"{gh_summary} | {chess_summary} | {wordle_summary}"
     )
+    latest_on_disk = load_json(STATE_PATH, {})
+    if isinstance(latest_on_disk, dict) and "uiStore" in latest_on_disk:
+        state["uiStore"] = latest_on_disk["uiStore"]
     save_json(STATE_PATH, state)
     print(state["lastSyncSummary"])
 

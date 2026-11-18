@@ -8,5 +8,7 @@
   "rss_feeds": [
     "https://luminate.centennialcollege.ca/ultra/courses/_45231_1/announcements"
   ],
-  "semester5_dir": "C:\\Users\bynoe\\Music\\Personal-Workspace02\\School\\Centennial_College\\Semester 5"
+  "semester5_dir": "C:\\Users\bynoe\\Music\\Personal-Workspace02\\School\\Centennial_College\\Semester 5",
+  "spotify_client_id": "bda745e8b0c1482bbe769748e7e2d02a",
+  "spotify_redirect_uri": "http://127.0.0.1:43821/spotify/callback"
 }

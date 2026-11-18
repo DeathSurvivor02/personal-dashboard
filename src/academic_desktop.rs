@@ -1,11 +1,13 @@
 #![windows_subsystem = "windows"]
 
 use std::fs;
-use std::io::Write;
+use std::io::{Read, Write};
+use std::net::{TcpListener, TcpStream};
 #[cfg(windows)]
 use std::os::windows::process::CommandExt;
 use std::path::{Path, PathBuf};
 use std::process::{Command, Stdio};
+use std::time::Duration;
 use tao::{
     dpi::LogicalSize,
     event::{Event, WindowEvent},
@@ -16,6 +18,7 @@ use wry::WebViewBuilder;
 
 enum UserEvent {
     SyncCompleted(String),
+    SpotifyCallback(String),
 }
 
 fn resolve_dashboard_dir() -> PathBuf {
@@ -198,6 +201,132 @@ fn read_json_or_null(path: &Path) -> String {
         .unwrap_or_else(|| "null".to_string())
 }
 
+fn percent_decode(s: &str) -> String {
+    let bytes = s.as_bytes();
+    let mut out = Vec::with_capacity(bytes.len());
+    let mut i = 0;
+    while i < bytes.len() {
+        match bytes[i] {
+            b'+' => {
+                out.push(b' ');
+                i += 1;
+            }
+            b'%' if i + 2 < bytes.len() => {
+                let hex = std::str::from_utf8(&bytes[i + 1..i + 3]).ok();
+                if let Some(val) = hex.and_then(|h| u8::from_str_radix(h, 16).ok()) {
+                    out.push(val);
+                    i += 3;
+                } else {
+                    out.push(bytes[i]);
+                    i += 1;
+                }
+            }
+            b => {
+                out.push(b);
+                i += 1;
+            }
+        }
+    }
+    String::from_utf8_lossy(&out).to_string()
+}
+
+fn send_http_response(stream: &mut TcpStream, status: &str, content_type: &str, body: &[u8]) {
+    let header = format!(
+        "HTTP/1.1 {}\r\nContent-Type: {}\r\nCache-Control: no-store\r\nContent-Length: {}\r\nConnection: close\r\n\r\n",
+        status,
+        content_type,
+        body.len()
+    );
+    let _ = stream.write_all(header.as_bytes());
+    let _ = stream.write_all(body);
+    let _ = stream.flush();
+}
+
+fn handle_http_client(
+    mut stream: TcpStream,
+    dashboard_dir: &Path,
+    proxy: &tao::event_loop::EventLoopProxy<UserEvent>,
+) {
+    let _ = stream.set_read_timeout(Some(Duration::from_secs(2)));
+    let mut buf = [0u8; 8192];
+    let Ok(n) = stream.read(&mut buf) else {
+        return;
+    };
+    if n == 0 {
+        return;
+    }
+    let req = String::from_utf8_lossy(&buf[..n]);
+    let first_line = req.lines().next().unwrap_or("");
+    let raw_target = first_line.split_whitespace().nth(1).unwrap_or("/");
+    let (path, query) = match raw_target.split_once('?') {
+        Some((p, q)) => (p, q),
+        None => (raw_target, ""),
+    };
+
+    if path == "/favicon.ico" {
+        send_http_response(&mut stream, "204 No Content", "image/x-icon", b"");
+        return;
+    }
+
+    if path.starts_with("/spotify/callback") {
+        let mut code = String::new();
+        let mut state = String::new();
+        let mut error = String::new();
+        for pair in query.split('&') {
+            if pair.is_empty() {
+                continue;
+            }
+            let (k, v) = pair.split_once('=').unwrap_or((pair, ""));
+            match k {
+                "code" => code = percent_decode(v),
+                "state" => state = percent_decode(v),
+                "error" => error = percent_decode(v),
+                _ => {}
+            }
+        }
+        let payload = serde_json::json!({
+            "code": code,
+            "state": state,
+            "error": error,
+        })
+        .to_string();
+        let _ = proxy.send_event(UserEvent::SpotifyCallback(payload.clone()));
+        let safe_payload = payload.replace('<', "\\u003c");
+        let callback_html = format!(
+            "<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>Spotify Authorization Complete</title><style>body{{font-family:system-ui,sans-serif;background:#0F161B;color:#E6EEF2;display:grid;place-items:center;min-height:100vh;margin:0}}.card{{max-width:460px;padding:24px;border-radius:14px;background:#151E25;border:1px solid #26343E}}a{{color:#7AA2FF;font-weight:600}}</style></head><body><div class=\"card\"><h2>Spotify Authorization Complete</h2><p>Fall 2026 Dashboard has received your Spotify login. You can close this browser tab and return to the dashboard.</p><p><a href=\"/#spotify\">Open in browser</a></p></div><script>try{{localStorage.setItem('sp_pending_callback',JSON.stringify({}));}}catch(e){{}}</script></body></html>",
+            safe_payload
+        );
+        send_http_response(
+            &mut stream,
+            "200 OK",
+            "text/html; charset=utf-8",
+            callback_html.as_bytes(),
+        );
+        return;
+    }
+
+    let html = fs::read_to_string(dashboard_dir.join("index.html"))
+        .unwrap_or_else(|_| include_str!("../index.html").to_string());
+    send_http_response(&mut stream, "200 OK", "text/html; charset=utf-8", html.as_bytes());
+}
+
+fn spawn_local_http_server(
+    dashboard_dir: PathBuf,
+    proxy: tao::event_loop::EventLoopProxy<UserEvent>,
+) -> Option<String> {
+    let listener = TcpListener::bind("127.0.0.1:43821").ok()?;
+    std::thread::spawn(move || {
+        for incoming in listener.incoming().flatten() {
+            let dir = dashboard_dir.clone();
+            let prx = proxy.clone();
+            std::thread::spawn(move || {
+                handle_http_client(incoming, &dir, &prx);
+            });
+        }
+    });
+    Some("http://127.0.0.1:43821/".to_string())
+}
+
 fn spawn_background_sync(
     dashboard_dir: PathBuf,
     state_path: PathBuf,
@@ -234,6 +363,7 @@ fn main() -> wry::Result<()> {
 
     let event_loop = EventLoopBuilder::<UserEvent>::with_user_event().build();
     let proxy = event_loop.create_proxy();
+    let server_url = spawn_local_http_server(dashboard_dir.clone(), proxy.clone());
 
     let main_window = WindowBuilder::new()
         .with_title("Fall 2026 Dashboard")
@@ -249,8 +379,9 @@ fn main() -> wry::Result<()> {
     let state_path_for_ipc = state_path.clone();
     let config_path_for_ipc = config_path.clone();
     let proxy_for_startup = proxy.clone();
+    let proxy_for_ipc = proxy.clone();
 
-    let main_webview = WebViewBuilder::new(&main_window)
+    let builder = WebViewBuilder::new(&main_window)
         .with_initialization_script(&init_script)
         .with_ipc_handler(move |req| {
             let body = req.body();
@@ -284,20 +415,23 @@ fn main() -> wry::Result<()> {
                     if let Some(ch) = msg.get("chess_username").and_then(|v| v.as_str()) {
                         cfg["chess_username"] = serde_json::Value::String(ch.to_string());
                     }
+                    if let Some(sp) = msg.get("spotify_client_id").and_then(|v| v.as_str()) {
+                        cfg["spotify_client_id"] = serde_json::Value::String(sp.to_string());
+                    }
                     if let Ok(pretty) = serde_json::to_string_pretty(&cfg) {
                         let _ = fs::write(&config_path_for_ipc, pretty);
                     }
                     spawn_background_sync(
                         dir_for_ipc.clone(),
                         state_path_for_ipc.clone(),
-                        proxy.clone(),
+                        proxy_for_ipc.clone(),
                     );
                 }
                 Some("run_sync") => {
                     spawn_background_sync(
                         dir_for_ipc.clone(),
                         state_path_for_ipc.clone(),
-                        proxy.clone(),
+                        proxy_for_ipc.clone(),
                     );
                 }
                 Some("stage_submission") => {
@@ -338,9 +472,13 @@ fn main() -> wry::Result<()> {
                 open_in_browser(&url, "chrome");
             }
             false
-        })
-        .with_html(html_content)
-        .build()?;
+        });
+
+    let main_webview = if let Some(url) = server_url {
+        builder.with_url(&url).build()?
+    } else {
+        builder.with_html(html_content).build()?
+    };
 
     main_window.set_visible(true);
     main_window.set_focus();
@@ -365,6 +503,15 @@ fn main() -> wry::Result<()> {
                 let js = format!(
                     "window.__applyExternalSyncState && window.__applyExternalSyncState({});",
                     state_json
+                );
+                let _ = main_webview.evaluate_script(&js);
+            }
+            Event::UserEvent(UserEvent::SpotifyCallback(payload_json)) => {
+                main_window.set_visible(true);
+                main_window.set_focus();
+                let js = format!(
+                    "window.__onSpotifyCallback && window.__onSpotifyCallback({});",
+                    payload_json
                 );
                 let _ = main_webview.evaluate_script(&js);
             }

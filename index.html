@@ -239,6 +239,50 @@
     .chess-promo { display: flex; gap: 6px; align-items: center; margin-top: 10px; }
     .ratings { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; }
 
+    /* ── Schoolwork Uploads & Announcements ───────────── */
+    .row-actions { grid-column: 2 / 4; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-top: 6px; }
+    .status-pill { font-size: 11.5px; font-weight: 650; padding: 2px 7px; border-radius: 999px; border: 1px solid var(--line); background: var(--raised); color: var(--ink2); }
+    .status-pill.ready { border-color: var(--focus); color: var(--focus); }
+    .status-pill.submitted, .status-pill.graded { border-color: var(--w-good); color: var(--w-good); }
+    .mini-btn { padding: 3px 9px; font-size: 12.5px; border-radius: 6px; border: 1px solid var(--line); background: var(--surface); cursor: pointer; font-weight: 500; text-decoration: none; display: inline-flex; align-items: center; gap: 4px; }
+    .mini-btn:hover { background: var(--raised); }
+    .mini-btn.primary { background: var(--focus); border-color: var(--focus); color: var(--on); font-weight: 600; }
+    .ann-sec { margin-top: 20px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: 16px; }
+    .ann-head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 8px 14px; }
+    .ann-tools { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .ann-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 10px; margin-top: 12px; }
+    .ann-card { background: var(--raised); border: 1px solid var(--line); border-radius: 10px; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+    .ann-card.urgent { border-left: 3px solid var(--danger); }
+    .ann-card.is-read { opacity: .68; }
+    .ann-top { display: flex; justify-content: space-between; gap: 8px; align-items: center; font-size: 12.5px; color: var(--ink2); }
+    .ann-title { font-weight: 600; font-size: 14px; line-height: 1.3; }
+    .ann-body { font-size: 13px; color: var(--ink2); line-height: 1.4; margin: 0; overflow-wrap: anywhere; }
+    .ann-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: auto; padding-top: 4px; }
+    .note-form { margin-top: 12px; display: grid; grid-template-columns: 120px 1fr 1fr auto; gap: 8px; }
+    .note-form input, .note-form select { padding: 7px 10px; border-radius: 8px; border: 1px solid var(--line); background: var(--raised); font: inherit; color: inherit; }
+
+    /* ── Quordle ──────────────────────────────────────── */
+    .q-grids { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; width: min(460px, 100%); }
+    .q-board { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 8px; display: grid; grid-template-rows: repeat(9, 1fr); gap: 3px; }
+    .q-board.won { border-color: var(--w-good); }
+    .q-row { display: grid; grid-template-columns: repeat(5, 1fr); gap: 3px; }
+    .q-tile { aspect-ratio: 1; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 4px; font-size: 13px; font-weight: 700; text-transform: uppercase; background: var(--raised); }
+    .q-tile.fill { border-color: var(--ink2); }
+    .q-tile.good { background: var(--w-good); border-color: var(--w-good); color: #fff; }
+    .q-tile.near { background: var(--w-near); border-color: var(--w-near); color: #fff; }
+    .q-tile.miss { background: var(--w-miss); border-color: var(--w-miss); color: #fff; }
+
+    /* ── Spotify ──────────────────────────────────────── */
+    .sp-now { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+    .sp-art { width: 84px; height: 84px; border-radius: 10px; background: var(--track); object-fit: cover; border: 1px solid var(--line); flex: none; display: grid; place-items: center; font-weight: 700; color: var(--ink2); }
+    .sp-ctrls { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-top: 12px; }
+    .sp-bars { display: grid; grid-template-columns: minmax(0, 1fr) 140px; gap: 12px; align-items: center; margin-top: 12px; }
+    .sp-range { width: 100%; accent-color: var(--focus); }
+    .sp-track { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 9px 0; border-top: 1px solid var(--line); }
+    .sp-track:first-of-type { border-top: 0; }
+    .sp-embed { margin-top: 14px; }
+    .sp-embed iframe { width: 100%; height: 152px; border: 0; border-radius: 12px; }
+
     @media (max-width: 880px) {
       .two, .game, .cols { grid-template-columns: minmax(0, 1fr); }
       .next { position: static; max-height: none; }
@@ -262,6 +306,7 @@
         <button class="tab" role="tab" id="tab-github" data-tab="github" aria-controls="panel-github">GitHub</button>
         <button class="tab" role="tab" id="tab-wordle" data-tab="wordle" aria-controls="panel-wordle">Wordle</button>
         <button class="tab" role="tab" id="tab-chess" data-tab="chess" aria-controls="panel-chess">Chess.com</button>
+        <button class="tab" role="tab" id="tab-spotify" data-tab="spotify" aria-controls="panel-spotify">Spotify</button>
       </div>
       <button id="theme" class="iconbtn" type="button" aria-label="Switch color theme" title="Switch color theme">Theme</button>
     </div>
@@ -277,16 +322,19 @@
       <div class="tools">
         <label class="sr" for="search">Search deliverables</label>
         <input id="search" class="search" type="search" placeholder="Search deliverables" autocomplete="off">
+        <button type="button" class="btn" id="sync-school-btn">Sync Schoolwork</button>
       </div>
     </header>
 
     <section class="runway" aria-labelledby="runway-h">
       <div class="runway-head">
         <h2 id="runway-h">Deadlines through the end of term</h2>
-        <p class="hint">Bigger dots weigh more. A red ring means overdue. Select a dot to jump to it.</p>
+        <p class="hint" id="sync-status">Bigger dots weigh more. A red ring means overdue. Select a dot to jump to it.</p>
       </div>
       <div class="runway-scroll"><div class="track" id="runway"></div></div>
     </section>
+
+    <section class="ann-sec" id="ann-sec" aria-labelledby="ann-h"></section>
 
     <div class="cols">
       <section class="next" aria-labelledby="next-h">
@@ -317,12 +365,21 @@
     <div id="gh-body" aria-live="polite"></div>
    </section>
 
-   <!-- Wordle -->
+   <!-- Wordle & Quordle -->
    <section role="tabpanel" id="panel-wordle" aria-labelledby="tab-wordle" hidden>
-    <div class="page-h"><div><h1>Wordle</h1><p>One new word every day. You get six guesses, and any five letters are accepted.</p></div></div>
+    <div class="page-h">
+      <div><h1 id="w-heading">Wordle</h1><p id="w-sub">Synced daily NYT Wordle, or switch to Quordle for four 5-letter boards at once.</p></div>
+      <div class="tools">
+        <div class="seg" role="group" aria-label="Word game mode">
+          <button type="button" data-wmode="wordle" aria-pressed="true">Wordle</button>
+          <button type="button" data-wmode="quordle" aria-pressed="false">Quordle</button>
+        </div>
+        <button type="button" class="btn" id="w-practice-btn">Practice</button>
+      </div>
+    </div>
     <div class="game">
       <div>
-        <div class="wgrid" id="wgrid" role="grid" aria-label="Wordle board"></div>
+        <div class="wgrid" id="wgrid" role="grid" aria-label="Word game board"></div>
         <div class="msg" id="wmsg" role="status" aria-live="polite"></div>
         <div class="kb" id="wkb"></div>
       </div>
@@ -339,6 +396,24 @@
     <div class="two">
       <div class="card" id="chess-puzzle"></div>
       <div><div class="card" id="chess-stats"></div><div class="card" id="chess-games"></div></div>
+    </div>
+   </section>
+
+   <!-- Spotify -->
+   <section role="tabpanel" id="panel-spotify" aria-labelledby="tab-spotify" hidden>
+    <div class="page-h">
+      <div><h1>Spotify</h1><p id="sp-subtitle">Web Playback SDK and Web API player for your dashboard.</p></div>
+      <div class="form" id="sp-config-form">
+        <button class="btn primary" type="button" id="sp-connect">Connect Spotify</button>
+        <button class="btn" type="button" id="sp-refresh">Refresh</button>
+        <button class="btn" type="button" id="sp-disconnect" hidden>Disconnect</button>
+      </div>
+    </div>
+    <div class="card" id="sp-auth-bar" style="margin-bottom:16px"></div>
+    <div class="card" id="sp-player-card" style="margin-bottom:16px"></div>
+    <div class="two">
+      <div class="card" id="sp-tracks-card"></div>
+      <div class="card" id="sp-playlists-card"></div>
     </div>
    </section>
   </main>
@@ -455,7 +530,13 @@
     const now = params.get('today') ? new Date(params.get('today') + 'T07:00:00') : new Date();
     const STORE = 'dashboard_done_v2', LEGACY = 'centennial_outlines_v1', THEME = 'dashboard_theme';
     const key = (c, it) => c.id + '|' + it.name;
-    const uiCache = Object.assign({}, (window.__PERSISTED_ACADEMIC_STATE__ && window.__PERSISTED_ACADEMIC_STATE__.uiStore) || {});
+    const extState = Object.assign({ announcements: [], overrides: {} }, window.__PERSISTED_ACADEMIC_STATE__ || {});
+    const uiCache = Object.assign({}, extState.uiStore || {});
+    for (const k in uiCache) {
+      if (uiCache[k] != null) {
+        try { if (localStorage.getItem(k) == null) localStorage.setItem(k, String(uiCache[k])); } catch (e) {}
+      }
+    }
     const store = {
       get(k) {
         if (Object.prototype.hasOwnProperty.call(uiCache, k) && uiCache[k] != null) return String(uiCache[k]);
@@ -473,6 +554,62 @@
         } catch (e) {}
       }
     };
+    function openExternalUrl(url, artifactPath) {
+      if (!url) return;
+      if (window.ipc && typeof window.ipc.postMessage === 'function') {
+        window.ipc.postMessage(JSON.stringify({ type: 'open_browser', url, browser: 'chrome', artifact_path: artifactPath || '' }));
+        return;
+      }
+      if (artifactPath && navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(artifactPath).catch(() => {});
+      }
+      window.open(url, '_blank', 'noopener');
+    }
+    const COURSE_URLS = {
+      comp303: 'https://luminate.centennialcollege.ca/ultra/courses/_42886_1/grades',
+      comp307: 'https://luminate.centennialcollege.ca/ultra/courses/_46514_1/grades',
+      comp306: 'https://luminate.centennialcollege.ca/ultra/courses/_45231_1/grades',
+      comp309: 'https://luminate.centennialcollege.ca/ultra/courses/_43994_1/grades',
+      comp231: 'https://luminate.centennialcollege.ca/ultra/courses/_43982_1/grades',
+      comp255: 'https://luminate.centennialcollege.ca/ultra/course'
+    };
+    const normMatch = s => String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    function findOverride(c, it) {
+      const ovs = extState.overrides || {};
+      const prefix = c.id + '::';
+      const target = normMatch(it.name);
+      let best = null;
+      for (const [ok, val] of Object.entries(ovs)) {
+        if (!ok.toLowerCase().startsWith(prefix)) continue;
+        const oTitle = normMatch(ok.slice(prefix.length));
+        if (oTitle === target) return val;
+        if (oTitle.includes(target) || target.includes(oTitle)) { best = val; continue; }
+        const pairs = [
+          ['lab assignment 6', 'lab 6'], ['lfi', 'local and remote file inclusion'],
+          ['analytics project', 'analytics project'], ['spring boot', 'spring boot'],
+          ['full stack cloud app', 'data driven web app'], ['implementation', 'implementation'],
+          ['presentation', 'presentation'], ['proposal', 'proposal'],
+          ['tac technical report', 'tac technical report']
+        ];
+        if (pairs.some(([a, b]) => (oTitle.includes(a) && target.includes(b)) || (oTitle.includes(b) && target.includes(a)))) best = val;
+      }
+      return best;
+    }
+    function applySyncOverrides() {
+      courseOutlines.forEach(c => c.items.forEach(it => {
+        const ov = findOverride(c, it);
+        if (ov) {
+          it._ov = ov;
+          if (ov.status === 'SUBMITTED' || ov.status === 'GRADED') {
+            if (!(key(c, it) in done)) it.done = true;
+          }
+        }
+      }));
+      const stEl = document.getElementById('sync-status');
+      if (stEl && extState.lastSyncedAt) {
+        stEl.textContent = 'Last synced ' + extState.lastSyncedAt + '. Select any dot or Submit button to open Luminate.';
+      }
+    }
 
     // Completion lives in one map. Older saves (the previous layout) are migrated by item position.
     let done = {};
@@ -487,6 +624,14 @@
       } catch (e) {}
     }
     courseOutlines.forEach(c => c.items.forEach(it => { if (key(c, it) in done) it.done = done[key(c, it)]; }));
+    applySyncOverrides();
+    window.__applyExternalSyncState = s => {
+      if (!s || typeof s !== 'object') return;
+      Object.assign(extState, s);
+      applySyncOverrides();
+      render();
+      if (typeof wLoad === 'function' && currentTab() === 'wordle') wRender();
+    };
 
     let filter = 'all', query = '', lastFocus = null;
     const openIds = new Set();
@@ -531,18 +676,87 @@
     };
 
     function rowHtml(x, list) {
-      const { c, it } = x, st = status(it), k = key(c, it);
+      const { c, it } = x, st = status(it), k = key(c, it), ov = it._ov || null;
       const late = st === 'overdue';
       const meta = list === 'next'
         ? `<span class="code">${esc(c.code)}</span><span class="when">${esc(whenText(it))}</span>`
         : `<span class="when">${esc(whenText(it))}</span>`;
+      const submitUrl = (ov && ov.submissionUrl) || COURSE_URLS[c.id] || 'https://luminate.centennialcollege.ca/ultra/course';
+      const artPath = (ov && ov.localArtifactPath) || '';
+      const artLabel = (ov && ov.localArtifact) || '';
+      const ovStatus = (ov && ov.status) || '';
+      const clsStatus = ovStatus === 'READY' ? 'ready' : (ovStatus === 'SUBMITTED' || ovStatus === 'GRADED' ? 'submitted' : '');
+      const actions = list === 'course' || ov
+        ? `<div class="row-actions">
+            ${ovStatus ? `<span class="status-pill ${clsStatus}">${esc(ovStatus)}</span>` : ''}
+            ${artLabel ? `<span class="status-pill">${esc(stripEmojis(artLabel))}</span>` : ''}
+            <button type="button" class="mini-btn primary" data-submit-url="${esc(submitUrl)}" data-submit-path="${esc(artPath)}">Upload / Submit</button>
+            ${artPath ? `<button type="button" class="mini-btn" data-reveal="${esc(artPath)}">Reveal File</button>` : ''}
+          </div>`
+        : '';
       return `
         <div class="row${it.done ? ' is-done' : ''}${late ? ' late' : ''}" style="--c:var(--${c.id})" data-row="${esc(k)}">
           <input type="checkbox" ${it.done ? 'checked' : ''} data-key="${esc(k)}" data-list="${list}" aria-label="Mark ${esc(it.name)} as ${it.done ? 'not done' : 'done'}">
           <span class="name">${esc(it.name)}</span>
           <span class="w">${it.weight}%</span>
           <span class="meta">${meta}</span>
+          ${actions}
         </div>`;
+    }
+
+    let annFilter = 'active', noteOpen = false;
+    function getAnnState() {
+      try { const s = JSON.parse(store.get('ann_state_v1') || 'null'); if (s) return s; } catch (e) {}
+      return { read: {}, dismissed: {} };
+    }
+    function setAnnState(st) { store.set('ann_state_v1', JSON.stringify(st)); }
+    function getCustomNotes() {
+      try { const a = JSON.parse(store.get('custom_notes_v1') || 'null'); if (Array.isArray(a)) return a; } catch (e) {}
+      return [];
+    }
+    function renderAnnouncements() {
+      const box = document.getElementById('ann-sec');
+      if (!box) return;
+      const ast = getAnnState();
+      const base = Array.isArray(extState.announcements) ? extState.announcements : [];
+      const custom = getCustomNotes();
+      const allAnns = [...custom, ...base].map(a => {
+        const readOverride = ast.read[a.id];
+        return { ...a, isRead: readOverride !== undefined ? !!readOverride : !!a.read, isDismissed: !!ast.dismissed[a.id] };
+      });
+      const visible = allAnns.filter(a => !a.isDismissed && (annFilter === 'all' || !a.isRead));
+      const unreadCount = allAnns.filter(a => !a.isDismissed && !a.isRead).length;
+      box.innerHTML = `
+        <div class="ann-head">
+          <h2 id="ann-h">Announcements & Discussions (${unreadCount} unread)</h2>
+          <div class="ann-tools">
+            <div class="seg" role="group" aria-label="Filter announcements">
+              <button type="button" data-ann-filter="active" aria-pressed="${annFilter === 'active'}">Unread</button>
+              <button type="button" data-ann-filter="all" aria-pressed="${annFilter === 'all'}">All</button>
+            </div>
+            <button type="button" class="mini-btn" id="ann-add-btn">+ Add Note</button>
+          </div>
+        </div>
+        ${noteOpen ? `<form class="note-form" id="note-form">
+          <select id="note-course"><option value="COMP303">COMP303</option><option value="COMP306">COMP306</option><option value="COMP307">COMP307</option><option value="COMP309">COMP309</option><option value="COMP231">COMP231</option><option value="COMP255">COMP255</option></select>
+          <input id="note-title" placeholder="Note or message title" required>
+          <input id="note-body" placeholder="Details or reminder" required>
+          <button type="submit" class="mini-btn primary">Save</button>
+        </form>` : ''}
+        <div class="ann-grid">${visible.length ? visible.slice(0, 12).map(a => `
+          <article class="ann-card${a.urgent ? ' urgent' : ''}${a.isRead ? ' is-read' : ''}">
+            <div class="ann-top">
+              <strong>${esc(a.course || 'COURSE')} · ${esc(stripEmojis(a.kind || 'Update'))}</strong>
+              <span>${esc(stripEmojis(a.timestamp || a.source || ''))}</span>
+            </div>
+            <div class="ann-title">${esc(stripEmojis(a.title))}</div>
+            <p class="ann-body">${esc(stripEmojis(a.body))}</p>
+            <div class="ann-actions">
+              ${a.url ? `<button type="button" class="mini-btn primary" data-open-url="${esc(a.url)}">Open in Luminate</button>` : ''}
+              <button type="button" class="mini-btn" data-ann-read="${esc(a.id)}">${a.isRead ? 'Mark Unread' : 'Mark Read'}</button>
+              <button type="button" class="mini-btn" data-ann-dismiss="${esc(a.id)}">Dismiss</button>
+            </div>
+          </article>`).join('') : '<p class="note">No announcements in this view. Switch to All to review read messages.</p>'}</div>`;
     }
 
     /* ── Render ────────────────────────────────────────── */
@@ -662,7 +876,7 @@
     function render() {
       const a = document.activeElement;
       lastFocus = a && a.dataset && a.dataset.key && a.matches('input') ? a.dataset.list + '::' + a.dataset.key : null;
-      renderSummary(); renderRunway(); renderNext(); renderCourses();
+      renderSummary(); renderRunway(); renderAnnouncements(); renderNext(); renderCourses();
       if (lastFocus) {
         const [list, k] = lastFocus.split('::');
         const t = [...document.querySelectorAll('input[data-key]')].find(i => i.dataset.list === list && i.dataset.key === k)
@@ -686,6 +900,71 @@
       const d = e.target; if (!d.dataset || !d.dataset.id) return;
       d.open ? openIds.add(d.dataset.id) : openIds.delete(d.dataset.id);
     }, true);
+
+    document.addEventListener('click', e => {
+      const subBtn = e.target.closest('[data-submit-url]');
+      if (subBtn) {
+        const url = subBtn.dataset.submitUrl, p = subBtn.dataset.submitPath || '';
+        openExternalUrl(url, p);
+        const stEl = document.getElementById('sync-status');
+        if (stEl) stEl.textContent = p ? 'Copied staged file path and opened Luminate dropbox in Chrome.' : 'Opened Luminate in Chrome.';
+        return;
+      }
+      const revBtn = e.target.closest('[data-reveal]');
+      if (revBtn) {
+        if (window.ipc && typeof window.ipc.postMessage === 'function') {
+          window.ipc.postMessage(JSON.stringify({ type: 'reveal_file', path: revBtn.dataset.reveal }));
+        }
+        return;
+      }
+      const openBtn = e.target.closest('[data-open-url]');
+      if (openBtn) { openExternalUrl(openBtn.dataset.openUrl); return; }
+      const fBtn = e.target.closest('[data-ann-filter]');
+      if (fBtn) { annFilter = fBtn.dataset.annFilter; renderAnnouncements(); return; }
+      if (e.target.id === 'ann-add-btn') { noteOpen = !noteOpen; renderAnnouncements(); return; }
+      const rBtn = e.target.closest('[data-ann-read]');
+      if (rBtn) {
+        const ast = getAnnState(), id = rBtn.dataset.annRead;
+        const baseItem = (extState.announcements || []).concat(getCustomNotes()).find(a => a.id === id);
+        const cur = ast.read[id] !== undefined ? !!ast.read[id] : !!(baseItem && baseItem.read);
+        ast.read[id] = !cur; setAnnState(ast); renderAnnouncements(); return;
+      }
+      const dBtn = e.target.closest('[data-ann-dismiss]');
+      if (dBtn) {
+        const ast = getAnnState(); ast.dismissed[dBtn.dataset.annDismiss] = true;
+        setAnnState(ast); renderAnnouncements(); return;
+      }
+    });
+    document.addEventListener('submit', e => {
+      if (e.target.id !== 'note-form') return;
+      e.preventDefault();
+      const notes = getCustomNotes();
+      notes.unshift({
+        id: 'note_' + Date.now(),
+        course: document.getElementById('note-course').value,
+        kind: 'Personal Note',
+        title: document.getElementById('note-title').value.trim(),
+        body: document.getElementById('note-body').value.trim(),
+        timestamp: 'Just now',
+        read: false,
+        urgent: false
+      });
+      store.set('custom_notes_v1', JSON.stringify(notes.slice(0, 30)));
+      noteOpen = false;
+      renderAnnouncements();
+    });
+    const syncSchoolBtn = document.getElementById('sync-school-btn');
+    if (syncSchoolBtn) {
+      syncSchoolBtn.addEventListener('click', () => {
+        const stEl = document.getElementById('sync-status');
+        if (stEl) stEl.textContent = 'Syncing eCentennial calendar, announcements, and local deliverables…';
+        if (window.ipc && typeof window.ipc.postMessage === 'function') {
+          window.ipc.postMessage(JSON.stringify({ type: 'run_sync' }));
+        } else {
+          render();
+        }
+      });
+    }
 
     document.querySelectorAll('[data-filter]').forEach(b => b.addEventListener('click', () => {
       filter = b.dataset.filter;
@@ -746,8 +1025,8 @@
     render();
 
     /* ══ Tabs ═══════════════════════════════════════════ */
-    const TABS = ['school', 'github', 'wordle', 'chess'];
-    const TITLES = { school: 'Schoolwork', github: 'GitHub', wordle: 'Wordle', chess: 'Chess.com' };
+    const TABS = ['school', 'github', 'wordle', 'chess', 'spotify'];
+    const TITLES = { school: 'Schoolwork', github: 'GitHub', wordle: 'Wordle & Quordle', chess: 'Chess.com', spotify: 'Spotify' };
     const loaded = {};
     function showTab(id, focus) {
       if (!TABS.includes(id)) id = 'school';
@@ -759,7 +1038,7 @@
       });
       document.title = TITLES[id] + ' · Dashboard';
       if (location.hash !== '#' + id) history.replaceState(null, '', '#' + id);
-      if (!loaded[id]) { loaded[id] = true; ({ github: loadGithub, wordle: initWordle, chess: loadChess }[id] || (() => {}))(); }
+      if (!loaded[id]) { loaded[id] = true; ({ github: loadGithub, wordle: initWordle, chess: loadChess, spotify: initSpotify }[id] || (() => {}))(); }
     }
     document.querySelector('.tabs').addEventListener('click', e => { const t = e.target.closest('.tab'); if (t) showTab(t.dataset.tab); });
     document.querySelector('.tabs').addEventListener('keydown', e => {
@@ -769,11 +1048,11 @@
       const n = e.key === 'Home' ? 0 : e.key === 'End' ? TABS.length - 1 : (i + (e.key === 'ArrowRight' ? 1 : -1) + TABS.length) % TABS.length;
       showTab(TABS[n], true);
     });
-    const typing = () => /input|textarea/i.test(document.activeElement.tagName);
+    const typing = () => /input|textarea|select/i.test(document.activeElement.tagName);
     const currentTab = () => TABS.find(t => !document.getElementById('panel-' + t).hidden);
     document.addEventListener('keydown', e => {
       if (typing() || e.ctrlKey || e.metaKey || e.altKey) return;
-      if (/^[1-4]$/.test(e.key)) showTab(TABS[+e.key - 1]);
+      if (/^[1-5]$/.test(e.key)) showTab(TABS[+e.key - 1]);
     });
     window.addEventListener('hashchange', () => showTab(location.hash.slice(1)));
     // The "/" shortcut only makes sense on the Schoolwork tab.
@@ -848,85 +1127,274 @@
       }
     }
 
-    /* ══ Wordle ═════════════════════════════════════════ */
+    /* ══ Wordle & Quordle ═══════════════════════════════ */
     const ANSWERS = ('about above actor adapt admit adopt adult after again agent agree ahead alarm album alert alike alive allow alone along alter among angle angry apart apple apply arena argue arise armor array aside asset avoid awake award aware badge baker basic basis beach begin being below bench birth black blame blank blast blend bless blind block blood board boost bound brain brand bread break brick brief bring broad brown brush build bunch burst buyer cabin cable candy carry catch cause chain chair chalk chart chase cheap check chess chest chief child china chose civil claim class clean clear click climb clock close cloud coach coast could count court cover craft crash crazy cream crime cross crowd crown curve cycle daily dance death delay depth doubt dozen draft drama dream dress drink drive eager early earth eight elite empty enemy enjoy enter entry equal error event every exact exist extra faith false fault fiber field fifth fifty fight final first flame flash fleet floor focus force frame frank fresh front fruit fully giant given glass globe glory grace grade grain grand grant grass great green gross group grown guard guess guest guide happy heart heavy hence horse hotel house human ideal image index inner input issue joint judge juice knife known label large laser later laugh layer learn least leave legal level light limit local logic loose lower lucky lunch magic major maker march match maybe mayor media metal might minor minus mixed model money month moral motor mount mouse mouth movie music needs never newly night noise north noted novel nurse ocean offer often onion order other ought outer owner paint panel paper party peace phase phone photo piece pilot pitch place plain plane plant plate point pound power press price pride prime print prior prize proof proud prove queen quick quiet quite radio raise range rapid ratio reach ready realm refer relax reply right rival river robot rough round route royal rural scale scene scope score sense serve seven shade shape share sharp sheet shelf shell shift shine shirt shock shoot short shown sight silly since sixth skill sleep slide small smart smile smoke solid solve sorry sound south space spare speak speed spend split sport staff stage stand start state steam steel stick still stock stone store storm story strip stuck study stuff style sugar suite super sweet table taken taste teach thank theme there thick thing think third those three throw tight title today token total touch tough tower track trade trail train treat trend trial tribe trick truck truly trust truth twice under union unity until upper upset urban usage usual valid value video virus visit vital voice waste watch water wheel where which while white whole whose woman world worry worse worst worth would write wrong young youth').split(' ');
     const KEYS = ['qwertyuiop', 'asdfghjkl', '↵zxcvbnm⌫'];
-    const W_STORE = 'wordle_v1';
+    const W_STORE = 'wordle_v1', Q_STORE = 'quordle_v1';
     const wDay = () => { const d = sod(now); return Math.floor((Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) - Date.UTC(2026, 0, 1)) / DAY); };
-    let W = null, wCur = '', wBusy = false;
-    const wAnswer = () => ANSWERS[((wDay() % ANSWERS.length) + ANSWERS.length) % ANSWERS.length];
+    const wLocalDate = () => now.getFullYear() + '-' + String(now.getMonth() + 1).padStart(2, '0') + '-' + String(now.getDate()).padStart(2, '0');
+    let gameMode = store.get('wordgame_mode') === 'quordle' ? 'quordle' : 'wordle';
+    let isPractice = false, practiceW = null, practiceQ = null;
+    let W = null, Q = null, wCur = '';
+
+    function dailyWordleAnswer() {
+      const wd = extState.wordleDaily;
+      if (wd && wd.date === wLocalDate() && typeof wd.solution === 'string' && /^[a-z]{5}$/i.test(wd.solution.trim())) {
+        return wd.solution.trim().toLowerCase();
+      }
+      return ANSWERS[((wDay() % ANSWERS.length) + ANSWERS.length) % ANSWERS.length];
+    }
+    function dailyQuordleAnswers() {
+      const picks = [];
+      let seed = Math.abs(wDay() * 37 + 19);
+      while (picks.length < 4) {
+        const w = ANSWERS[seed % ANSWERS.length];
+        if (!picks.includes(w)) picks.push(w);
+        seed = (seed * 73 + 41) % 99991;
+      }
+      return picks;
+    }
+    const activeW = () => isPractice ? practiceW : W;
+    const activeQ = () => isPractice ? practiceQ : Q;
+    const wAnswer = () => isPractice ? practiceW.game.answer : dailyWordleAnswer();
+    const qAnswers = () => activeQ().game.answers;
+
     function wLoad() {
       let s = null; try { s = JSON.parse(store.get(W_STORE) || 'null'); } catch (e) {}
       s = s || { stats: { played: 0, wins: 0, streak: 0, max: 0, last: -9, dist: [0, 0, 0, 0, 0, 0] } };
-      if (!s.game || s.game.day !== wDay()) s.game = { day: wDay(), guesses: [], status: 'playing' };
+      if (!s.stats || !Array.isArray(s.stats.dist) || s.stats.dist.length !== 6) {
+        s.stats = { played: 0, wins: 0, streak: 0, max: 0, last: -9, dist: [0, 0, 0, 0, 0, 0] };
+      }
+      if (!s.game || s.game.day !== wDay()) {
+        const ws = extState.wordleState;
+        if (ws && ws.date === wLocalDate() && Array.isArray(ws.guesses) && ws.guesses.length) {
+          s.game = { day: wDay(), guesses: ws.guesses.map(g => String(g).toLowerCase()), cur: '', status: ws.status || 'playing' };
+          if (typeof ws.gamesPlayed === 'number') s.stats.played = Math.max(s.stats.played, ws.gamesPlayed);
+          if (typeof ws.gamesWon === 'number') s.stats.wins = Math.max(s.stats.wins, ws.gamesWon);
+          if (typeof ws.streak === 'number') s.stats.streak = Math.max(s.stats.streak, ws.streak);
+        } else {
+          s.game = { day: wDay(), guesses: [], cur: '', status: 'playing' };
+        }
+        store.set(W_STORE, JSON.stringify(s));
+      }
+      if (!isPractice && gameMode === 'wordle') wCur = (s.game.cur || '').slice(0, 5);
       return s;
     }
-    const wSave = () => store.set(W_STORE, JSON.stringify(W));
+    function qLoad() {
+      let s = null; try { s = JSON.parse(store.get(Q_STORE) || 'null'); } catch (e) {}
+      s = s || { stats: { played: 0, wins: 0, streak: 0, max: 0, dist: Array(9).fill(0), last: -9 } };
+      if (!s.stats || !Array.isArray(s.stats.dist) || s.stats.dist.length !== 9) {
+        s.stats = { played: 0, wins: 0, streak: 0, max: 0, dist: Array(9).fill(0), last: -9 };
+      }
+      if (!s.game || s.game.day !== wDay() || !Array.isArray(s.game.answers) || s.game.answers.length !== 4) {
+        s.game = { day: wDay(), guesses: [], cur: '', status: 'playing', answers: dailyQuordleAnswers() };
+        store.set(Q_STORE, JSON.stringify(s));
+      }
+      if (!isPractice && gameMode === 'quordle') wCur = (s.game.cur || '').slice(0, 5);
+      return s;
+    }
+    function saveCurrentGame() {
+      if (isPractice) {
+        if (gameMode === 'wordle' && practiceW) practiceW.game.cur = wCur;
+        if (gameMode === 'quordle' && practiceQ) practiceQ.game.cur = wCur;
+        return;
+      }
+      if (gameMode === 'wordle' && W) { W.game.cur = wCur; store.set(W_STORE, JSON.stringify(W)); }
+      if (gameMode === 'quordle' && Q) { Q.game.cur = wCur; store.set(Q_STORE, JSON.stringify(Q)); }
+    }
+    function startPracticeBoard() {
+      isPractice = true;
+      wCur = '';
+      if (gameMode === 'wordle') {
+        const rnd = ANSWERS[Math.floor(Math.random() * ANSWERS.length)];
+        practiceW = { stats: W.stats, game: { day: -1, guesses: [], cur: '', status: 'playing', answer: rnd } };
+      } else {
+        const pool = [];
+        while (pool.length < 4) {
+          const w = ANSWERS[Math.floor(Math.random() * ANSWERS.length)];
+          if (!pool.includes(w)) pool.push(w);
+        }
+        practiceQ = { stats: Q.stats, game: { day: -1, guesses: [], cur: '', status: 'playing', answers: pool } };
+      }
+      wMsg('Practice round — progress will not overwrite today\'s daily board.');
+      wRender();
+    }
     function wScore(guess, answer) {
       const res = Array(5).fill('miss'), left = {};
       for (let i = 0; i < 5; i++) { if (guess[i] === answer[i]) res[i] = 'good'; else left[answer[i]] = (left[answer[i]] || 0) + 1; }
       for (let i = 0; i < 5; i++) if (res[i] !== 'good' && left[guess[i]]) { res[i] = 'near'; left[guess[i]]--; }
       return res;
     }
+    let wordleBound = false;
     function initWordle() {
       W = wLoad();
-      document.getElementById('wkb').innerHTML = KEYS.map(r => `<div>${[...r].map(k =>
-        `<button class="key${k === '↵' || k === '⌫' ? ' wide' : ''}" type="button" data-k="${k}" aria-label="${k === '↵' ? 'Enter' : k === '⌫' ? 'Backspace' : k}">${k}</button>`).join('')}</div>`).join('');
-      document.getElementById('wkb').addEventListener('click', e => { const b = e.target.closest('.key'); if (b) wInput(b.dataset.k); });
-      document.addEventListener('keydown', e => {
-        if (currentTab() !== 'wordle' || typing() || e.ctrlKey || e.metaKey || e.altKey) return;
-        if (e.key === 'Enter') wInput('↵'); else if (e.key === 'Backspace') wInput('⌫'); else if (/^[a-z]$/i.test(e.key)) wInput(e.key.toLowerCase());
-      });
+      Q = qLoad();
+      if (!wordleBound) {
+        wordleBound = true;
+        document.getElementById('wkb').innerHTML = KEYS.map(r => `<div>${[...r].map(k =>
+          `<button class="key${k === '↵' || k === '⌫' ? ' wide' : ''}" type="button" data-k="${k}" aria-label="${k === '↵' ? 'Enter' : k === '⌫' ? 'Backspace' : k}">${k}</button>`).join('')}</div>`).join('');
+        document.getElementById('wkb').addEventListener('click', e => { const b = e.target.closest('.key'); if (b) wInput(b.dataset.k); });
+        document.addEventListener('keydown', e => {
+          if (currentTab() !== 'wordle' || typing() || e.ctrlKey || e.metaKey || e.altKey) return;
+          if (e.key === 'Enter') wInput('↵'); else if (e.key === 'Backspace') wInput('⌫'); else if (/^[a-z]$/i.test(e.key)) wInput(e.key.toLowerCase());
+        });
+        document.querySelectorAll('[data-wmode]').forEach(btn => {
+          btn.addEventListener('click', () => {
+            saveCurrentGame();
+            isPractice = false;
+            gameMode = btn.dataset.wmode;
+            store.set('wordgame_mode', gameMode);
+            W = wLoad();
+            Q = qLoad();
+            wCur = ((gameMode === 'wordle' ? W : Q).game.cur || '').slice(0, 5);
+            wMsg('');
+            wRender();
+          });
+        });
+        const pBtn = document.getElementById('w-practice-btn');
+        if (pBtn) pBtn.addEventListener('click', () => {
+          if (isPractice && pBtn.dataset.inPractice === '1') {
+            startPracticeBoard();
+          } else {
+            startPracticeBoard();
+          }
+        });
+      }
       wRender();
     }
     function wInput(k) {
-      if (W.game.status !== 'playing' || wBusy) return;
+      const curState = gameMode === 'quordle' ? activeQ() : activeW();
+      if (!curState || curState.game.status !== 'playing') return;
       wMsg('');
-      if (k === '⌫') wCur = wCur.slice(0, -1);
-      else if (k === '↵') {
+      if (k === '⌫') {
+        wCur = wCur.slice(0, -1);
+        saveCurrentGame();
+      } else if (k === '↵') {
         if (wCur.length < 5) { wMsg('Type five letters first.'); return; }
-        W.game.guesses.push(wCur);
-        const won = wCur === wAnswer(); wCur = '';
-        if (won || W.game.guesses.length === 6) wFinish(won);
-        wSave();
-      } else if (wCur.length < 5) wCur += k;
+        curState.game.guesses.push(wCur);
+        wCur = '';
+        if (gameMode === 'wordle') {
+          const won = curState.game.guesses[curState.game.guesses.length - 1] === wAnswer();
+          if (won || curState.game.guesses.length === 6) wFinish(won, curState);
+        } else {
+          const answers = qAnswers();
+          const allSolved = answers.every(a => curState.game.guesses.includes(a));
+          if (allSolved || curState.game.guesses.length === 9) qFinish(allSolved, curState);
+        }
+        saveCurrentGame();
+      } else if (wCur.length < 5) {
+        wCur += k;
+        saveCurrentGame();
+      }
       wRender();
     }
-    function wFinish(won) {
-      const s = W.stats; W.game.status = won ? 'won' : 'lost';
+    function wFinish(won, curState) {
+      curState.game.status = won ? 'won' : 'lost';
+      if (isPractice) return;
+      const s = curState.stats;
       s.played++;
-      if (won) { s.wins++; s.streak = s.last === wDay() - 1 ? s.streak + 1 : 1; s.max = Math.max(s.max, s.streak); s.dist[W.game.guesses.length - 1]++; s.last = wDay(); }
+      if (won) { s.wins++; s.streak = s.last === wDay() - 1 ? s.streak + 1 : 1; s.max = Math.max(s.max, s.streak); s.dist[curState.game.guesses.length - 1]++; s.last = wDay(); }
+      else s.streak = 0;
+    }
+    function qFinish(won, curState) {
+      curState.game.status = won ? 'won' : 'lost';
+      if (isPractice) return;
+      const s = curState.stats;
+      s.played++;
+      if (won) { s.wins++; s.streak = s.last === wDay() - 1 ? s.streak + 1 : 1; s.max = Math.max(s.max, s.streak); s.dist[curState.game.guesses.length - 1]++; s.last = wDay(); }
       else s.streak = 0;
     }
     function wMsg(t) { document.getElementById('wmsg').textContent = t; }
     function wRender() {
-      const g = W.game, ans = wAnswer();
-      const rows = [];
-      for (let r = 0; r < 6; r++) {
-        const guess = g.guesses[r], typed = r === g.guesses.length && g.status === 'playing' ? wCur : '';
-        const sc = guess ? wScore(guess, ans) : null;
-        rows.push(`<div class="wrow" role="row">${[0, 1, 2, 3, 4].map(i => {
-          const ch = guess ? guess[i] : typed[i] || '';
-          return `<div class="tile ${sc ? sc[i] : ch ? 'fill' : ''}" role="gridcell" aria-label="${ch ? ch + (sc ? ', ' + sc[i] : '') : 'empty'}">${ch}</div>`;
-        }).join('')}</div>`);
+      document.querySelectorAll('[data-wmode]').forEach(b => b.setAttribute('aria-pressed', b.dataset.wmode === gameMode));
+      const pBtn = document.getElementById('w-practice-btn');
+      if (pBtn) { pBtn.textContent = isPractice ? 'New Practice' : 'Practice'; pBtn.dataset.inPractice = isPractice ? '1' : '0'; }
+      document.getElementById('w-heading').textContent = gameMode === 'quordle' ? (isPractice ? 'Quordle (Practice)' : 'Quordle') : (isPractice ? 'Wordle (Practice)' : 'Wordle');
+      document.getElementById('w-sub').textContent = gameMode === 'quordle'
+        ? 'Solve all 4 five-letter words in 9 guesses. Daily progress saves automatically.'
+        : 'Synced daily NYT Wordle (' + wLocalDate() + '). Progress and streaks save automatically.';
+
+      const gridEl = document.getElementById('wgrid');
+      if (gameMode === 'quordle') {
+        const q = activeQ(), g = q.game, answers = qAnswers();
+        gridEl.className = 'q-grids';
+        const boardsHtml = answers.map(ans => {
+          const solvedAt = g.guesses.indexOf(ans);
+          const rows = [];
+          for (let r = 0; r < 9; r++) {
+            const stopped = solvedAt >= 0 && r > solvedAt;
+            const guess = !stopped ? g.guesses[r] : null;
+            const typed = !stopped && solvedAt < 0 && r === g.guesses.length && g.status === 'playing' ? wCur : '';
+            const sc = guess ? wScore(guess, ans) : null;
+            rows.push(`<div class="q-row">${[0, 1, 2, 3, 4].map(i => {
+              const ch = guess ? guess[i] : typed[i] || '';
+              return `<div class="q-tile ${sc ? sc[i] : ch ? 'fill' : ''}">${ch}</div>`;
+            }).join('')}</div>`);
+          }
+          return `<div class="q-board${solvedAt >= 0 ? ' won' : ''}">${rows.join('')}</div>`;
+        });
+        gridEl.innerHTML = boardsHtml.join('');
+        const best = {}, rank = { miss: 0, near: 1, good: 2 };
+        g.guesses.forEach(w => answers.forEach(ans => {
+          const solvedIdx = g.guesses.indexOf(ans);
+          if (solvedIdx >= 0 && g.guesses.indexOf(w) > solvedIdx) return;
+          wScore(w, ans).forEach((s, i) => { const c = w[i]; if (!(c in best) || rank[s] > rank[best[c]]) best[c] = s; });
+        }));
+        document.querySelectorAll('#wkb .key').forEach(b => { b.classList.remove('good', 'near', 'miss'); if (best[b.dataset.k]) b.classList.add(best[b.dataset.k]); });
+        if (g.status === 'won') wMsg('Quordle solved in ' + g.guesses.length + ' of 9 guesses!');
+        else if (g.status === 'lost') wMsg('Words were: ' + answers.map(x => x.toUpperCase()).join(', ') + '.');
+        const s = q.stats, max = Math.max(1, ...s.dist);
+        document.getElementById('wstats').innerHTML = `
+          <h2>Quordle stats</h2>
+          <div class="stats" style="margin:12px 0 0;grid-template-columns:repeat(4,1fr)">
+            <div class="stat"><b>${s.played}</b><span>Played</span></div>
+            <div class="stat"><b>${s.played ? Math.round(s.wins / s.played * 100) : 0}%</b><span>Won</span></div>
+            <div class="stat"><b>${s.streak}</b><span>Streak</span></div>
+            <div class="stat"><b>${s.max}</b><span>Best streak</span></div>
+          </div>
+          <h2 style="margin-top:16px;font-size:15px">Wins by guess</h2>
+          <div class="dist">${s.dist.map((n, i) => `<div><span>${i + 1}</span><i class="${g.status === 'won' && g.guesses.length === i + 1 ? 'hit' : ''}" style="width:${Math.max(8, n / max * 100)}%">${n}</i></div>`).join('')}</div>
+          ${isPractice ? '<p class="note" style="margin-top:14px"><button type="button" class="mini-btn" id="w-back-daily">Back to Daily Board</button></p>' : ''}`;
+      } else {
+        const w = activeW(), g = w.game, ans = wAnswer();
+        gridEl.className = 'wgrid';
+        const rows = [];
+        for (let r = 0; r < 6; r++) {
+          const guess = g.guesses[r], typed = r === g.guesses.length && g.status === 'playing' ? wCur : '';
+          const sc = guess ? wScore(guess, ans) : null;
+          rows.push(`<div class="wrow" role="row">${[0, 1, 2, 3, 4].map(i => {
+            const ch = guess ? guess[i] : typed[i] || '';
+            return `<div class="tile ${sc ? sc[i] : ch ? 'fill' : ''}" role="gridcell" aria-label="${ch ? ch + (sc ? ', ' + sc[i] : '') : 'empty'}">${ch}</div>`;
+          }).join('')}</div>`);
+        }
+        gridEl.innerHTML = rows.join('');
+        const best = {};
+        g.guesses.forEach(gw => wScore(gw, ans).forEach((s, i) => { const c = gw[i], rank = { miss: 0, near: 1, good: 2 }; if (!(c in best) || rank[s] > rank[best[c]]) best[c] = s; }));
+        document.querySelectorAll('#wkb .key').forEach(b => { b.classList.remove('good', 'near', 'miss'); if (best[b.dataset.k]) b.classList.add(best[b.dataset.k]); });
+        if (g.status === 'won') wMsg(['Genius!', 'Magnificent!', 'Impressive!', 'Splendid!', 'Great!', 'Phew!'][g.guesses.length - 1] + (isPractice ? ' Start another practice round anytime.' : ' Come back tomorrow for a new word.'));
+        else if (g.status === 'lost') wMsg('The word was ' + ans.toUpperCase() + (isPractice ? '.' : '. A new one arrives tomorrow.'));
+        const s = w.stats, max = Math.max(1, ...s.dist);
+        document.getElementById('wstats').innerHTML = `
+          <h2>Wordle stats</h2>
+          <div class="stats" style="margin:12px 0 0;grid-template-columns:repeat(4,1fr)">
+            <div class="stat"><b>${s.played}</b><span>Played</span></div>
+            <div class="stat"><b>${s.played ? Math.round(s.wins / s.played * 100) : 0}%</b><span>Won</span></div>
+            <div class="stat"><b>${s.streak}</b><span>Streak</span></div>
+            <div class="stat"><b>${s.max}</b><span>Best streak</span></div>
+          </div>
+          <h2 style="margin-top:16px;font-size:15px">Wins by guess</h2>
+          <div class="dist">${s.dist.map((n, i) => `<div><span>${i + 1}</span><i class="${g.status === 'won' && g.guesses.length === i + 1 ? 'hit' : ''}" style="width:${Math.max(8, n / max * 100)}%">${n}</i></div>`).join('')}</div>
+          ${isPractice ? '<p class="note" style="margin-top:14px"><button type="button" class="mini-btn" id="w-back-daily">Back to Daily Word</button></p>' : ''}`;
       }
-      document.getElementById('wgrid').innerHTML = rows.join('');
-      const best = {};
-      g.guesses.forEach(w => wScore(w, ans).forEach((s, i) => { const c = w[i], rank = { miss: 0, near: 1, good: 2 }; if (!(c in best) || rank[s] > rank[best[c]]) best[c] = s; }));
-      document.querySelectorAll('#wkb .key').forEach(b => { b.classList.remove('good', 'near', 'miss'); if (best[b.dataset.k]) b.classList.add(best[b.dataset.k]); });
-      if (g.status === 'won') wMsg(['Genius!', 'Magnificent!', 'Impressive!', 'Splendid!', 'Great!', 'Phew!'][g.guesses.length - 1] + ' Come back tomorrow for a new word.');
-      else if (g.status === 'lost') wMsg('The word was ' + ans.toUpperCase() + '. A new one arrives tomorrow.');
-      const s = W.stats, max = Math.max(1, ...s.dist);
-      document.getElementById('wstats').innerHTML = `
-        <h2>Your stats</h2>
-        <div class="stats" style="margin:12px 0 0;grid-template-columns:repeat(4,1fr)">
-          <div class="stat"><b>${s.played}</b><span>Played</span></div>
-          <div class="stat"><b>${s.played ? Math.round(s.wins / s.played * 100) : 0}%</b><span>Won</span></div>
-          <div class="stat"><b>${s.streak}</b><span>Streak</span></div>
-          <div class="stat"><b>${s.max}</b><span>Best streak</span></div>
-        </div>
-        <h2 style="margin-top:16px;font-size:15px">Wins by guess</h2>
-        <div class="dist">${s.dist.map((n, i) => `<div><span>${i + 1}</span><i class="${g.status === 'won' && g.guesses.length === i + 1 ? 'hit' : ''}" style="width:${Math.max(8, n / max * 100)}%">${n}</i></div>`).join('')}</div>`;
+      const backBtn = document.getElementById('w-back-daily');
+      if (backBtn) backBtn.onclick = () => {
+        isPractice = false;
+        W = wLoad();
+        Q = qLoad();
+        wCur = ((gameMode === 'wordle' ? W : Q).game.cur || '').slice(0, 5);
+        wMsg('');
+        wRender();
+      };
     }
 
     /* ══ Chess.com ══════════════════════════════════════ */
@@ -1399,6 +1867,388 @@
       }
     }
 
+    /* ══ Spotify (PKCE + Web API + Web Playback SDK) ════ */
+    const SP_DEFAULT_CID = 'bda745e8b0c1482bbe769748e7e2d02a';
+    const SP_REDIRECT = 'http://127.0.0.1:43821/spotify/callback';
+    const SP_SCOPES = 'streaming user-read-email user-read-private user-read-playback-state user-modify-playback-state user-read-currently-playing user-read-recently-played playlist-read-private playlist-read-collaborative';
+    const cfgSpCid = (window.__SCHOOL_SYNC_CONFIG__ && window.__SCHOOL_SYNC_CONFIG__.spotify_client_id) || SP_DEFAULT_CID;
+    let spClientId = store.get('spotify_client_id') || cfgSpCid;
+    let spPlayer = null, spDeviceId = '', spSdkLoaded = false, spProfile = null;
+    let spNowPlaying = null, spTracks = [], spTracksHeading = 'Recently played', spPlaylists = [], spEmbed = null, spNotice = '', spPollTimer = null;
+    const spCidInput = document.getElementById('sp-client-id');
+    if (spCidInput) spCidInput.value = spClientId;
+
+    const spTokensGet = () => { try { return JSON.parse(store.get('spotify_tokens_v1') || 'null'); } catch (e) { return null; } };
+    const spTokensSet = t => store.set('spotify_tokens_v1', t ? JSON.stringify(t) : '');
+    const fmtMs = ms => {
+      const s = Math.max(0, Math.floor((ms || 0) / 1000));
+      return Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+    };
+    function randStr(len) {
+      const ch = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-._~';
+      const arr = new Uint8Array(len);
+      crypto.getRandomValues(arr);
+      return Array.from(arr, b => ch[b % ch.length]).join('');
+    }
+    async function pkceChallenge(verifier) {
+      const data = new TextEncoder().encode(verifier);
+      const digest = await crypto.subtle.digest('SHA-256', data);
+      return btoa(String.fromCharCode(...new Uint8Array(digest))).replace(/=/g, '').replace(/\+/g, '-').replace(/\//g, '_');
+    }
+    async function startSpotifyAuth() {
+      const cid = (spCidInput && spCidInput.value.trim()) || spClientId || SP_DEFAULT_CID;
+      spClientId = cid;
+      store.set('spotify_client_id', cid);
+      if (window.ipc && typeof window.ipc.postMessage === 'function') {
+        window.ipc.postMessage(JSON.stringify({ type: 'save_sync_config', spotify_client_id: cid }));
+      }
+      if (!window.crypto || !window.crypto.subtle) {
+        spNotice = 'Web Crypto requires launching the app via http://127.0.0.1:43821/.';
+        renderSpotify();
+        return;
+      }
+      const verifier = randStr(64);
+      const state = randStr(24);
+      const challenge = await pkceChallenge(verifier);
+      store.set('sp_pkce_verifier', verifier);
+      store.set('sp_pkce_state', state);
+      const qs = new URLSearchParams({
+        response_type: 'code', client_id: cid, scope: SP_SCOPES,
+        redirect_uri: SP_REDIRECT, state, code_challenge_method: 'S256', code_challenge: challenge
+      });
+      spNotice = 'Opened Spotify login in Chrome — approve access to connect back to http://127.0.0.1:43821/.';
+      renderSpotify();
+      openExternalUrl('https://accounts.spotify.com/authorize?' + qs.toString());
+    }
+    async function handleSpotifyOAuthCallback(payload) {
+      if (!payload || typeof payload !== 'object') return;
+      if (payload.error) { spNotice = 'Spotify login cancelled or denied: ' + payload.error; showTab('spotify'); renderSpotify(); return; }
+      if (!payload.code) return;
+      const expectedState = store.get('sp_pkce_state');
+      if (expectedState && payload.state && expectedState !== payload.state) {
+        spNotice = 'OAuth state mismatch. Click Connect Spotify to retry.'; showTab('spotify'); renderSpotify(); return;
+      }
+      const verifier = store.get('sp_pkce_verifier') || '';
+      const cid = (spCidInput && spCidInput.value.trim()) || spClientId || SP_DEFAULT_CID;
+      try {
+        const res = await fetch('https://accounts.spotify.com/api/token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({
+            client_id: cid, grant_type: 'authorization_code',
+            code: payload.code, redirect_uri: SP_REDIRECT, code_verifier: verifier
+          })
+        });
+        const data = await res.json();
+        if (!res.ok || !data.access_token) throw new Error(data.error_description || data.error || ('HTTP ' + res.status));
+        spTokensSet({
+          access_token: data.access_token,
+          refresh_token: data.refresh_token || '',
+          expires_at: Date.now() + ((data.expires_in || 3600) * 1000)
+        });
+        try { localStorage.removeItem('sp_pending_callback'); } catch (e) {}
+        spNotice = 'Spotify connected.';
+        showTab('spotify');
+        await loadSpotifyDashboard();
+      } catch (err) {
+        spNotice = 'Spotify token exchange failed: ' + err.message;
+        showTab('spotify');
+        renderSpotify();
+      }
+    }
+    window.__onSpotifyCallback = payload => { handleSpotifyOAuthCallback(payload); };
+    function checkPendingSpotifyCallback() {
+      try {
+        const raw = localStorage.getItem('sp_pending_callback');
+        if (!raw) return;
+        localStorage.removeItem('sp_pending_callback');
+        const parsed = JSON.parse(raw);
+        if (parsed && parsed.code) handleSpotifyOAuthCallback(parsed);
+      } catch (e) {}
+    }
+    async function getValidSpotifyToken() {
+      const tok = spTokensGet();
+      if (!tok || !tok.access_token) return null;
+      if (Date.now() < (tok.expires_at || 0) - 60000) return tok.access_token;
+      if (!tok.refresh_token) return null;
+      try {
+        const res = await fetch('https://accounts.spotify.com/api/token', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: new URLSearchParams({ client_id: spClientId || SP_DEFAULT_CID, grant_type: 'refresh_token', refresh_token: tok.refresh_token })
+        });
+        const data = await res.json();
+        if (!res.ok || !data.access_token) return null;
+        spTokensSet({
+          access_token: data.access_token,
+          refresh_token: data.refresh_token || tok.refresh_token,
+          expires_at: Date.now() + ((data.expires_in || 3600) * 1000)
+        });
+        return data.access_token;
+      } catch (e) { return null; }
+    }
+    async function spFetch(path, opts) {
+      const token = await getValidSpotifyToken();
+      if (!token) { const e = new Error('Not signed in'); e.status = 401; throw e; }
+      const headers = Object.assign({ Authorization: 'Bearer ' + token }, (opts && opts.headers) || {});
+      const r = await fetch('https://api.spotify.com/v1' + path, Object.assign({}, opts, { headers }));
+      if (r.status === 204) return null;
+      const text = await r.text();
+      let data = null; try { data = text ? JSON.parse(text) : null; } catch (e) {}
+      if (!r.ok) {
+        const msg = (data && data.error && data.error.message) || ('HTTP ' + r.status);
+        const err = new Error(msg); err.status = r.status; throw err;
+      }
+      return data;
+    }
+    function initSpotifySdk() {
+      if (spSdkLoaded || spPlayer) return;
+      const tok = spTokensGet();
+      if (!tok || !tok.access_token) return;
+      spSdkLoaded = true;
+      window.onSpotifyWebPlaybackSDKReady = () => {
+        if (spPlayer) return;
+        spPlayer = new Spotify.Player({
+          name: 'Fall 2026 Dashboard',
+          getOAuthToken: cb => { getValidSpotifyToken().then(t => cb(t || '')); },
+          volume: 0.8
+        });
+        spPlayer.addListener('ready', ({ device_id }) => {
+          spDeviceId = device_id;
+          spNotice = 'Web Playback SDK ready (Fall 2026 Dashboard).';
+          renderSpotify();
+        });
+        spPlayer.addListener('not_ready', () => { spDeviceId = ''; renderSpotify(); });
+        spPlayer.addListener('player_state_changed', st => {
+          if (!st || !st.track_window || !st.track_window.current_track) return;
+          const tr = st.track_window.current_track;
+          spNowPlaying = {
+            item: {
+              id: tr.id, uri: tr.uri, name: tr.name, duration_ms: st.duration || tr.duration_ms || 0,
+              artists: tr.artists || [], album: tr.album || { images: [] }
+            },
+            progress_ms: st.position || 0,
+            is_playing: !st.paused,
+            shuffle_state: !!st.shuffle,
+            repeat_state: ['off', 'context', 'track'][st.repeat_mode || 0],
+            device: { name: 'Fall 2026 Dashboard', volume_percent: 80 }
+          };
+          renderSpotify();
+        });
+        spPlayer.addListener('account_error', ({ message }) => {
+          spNotice = 'Web Playback SDK requires Spotify Premium (' + message + '). Using embed player fallback for playback.';
+          renderSpotify();
+        });
+        spPlayer.addListener('initialization_error', ({ message }) => { spNotice = 'SDK init note: ' + message; renderSpotify(); });
+        spPlayer.addListener('authentication_error', ({ message }) => { spNotice = 'Spotify auth expired: ' + message; renderSpotify(); });
+        spPlayer.connect();
+      };
+      if (!document.querySelector('script[src="https://sdk.scdn.co/spotify-player.js"]')) {
+        const sc = document.createElement('script');
+        sc.src = 'https://sdk.scdn.co/spotify-player.js';
+        document.head.appendChild(sc);
+      } else if (window.Spotify) {
+        window.onSpotifyWebPlaybackSDKReady();
+      }
+    }
+    async function loadSpotifyDashboard() {
+      const tok = await getValidSpotifyToken();
+      if (!tok) { spProfile = null; renderSpotify(); return; }
+      initSpotifySdk();
+      try {
+        const [me, player, pls, recent] = await Promise.all([
+          spFetch('/me').catch(() => null),
+          spFetch('/me/player').catch(() => null),
+          spFetch('/me/playlists?limit=20').catch(() => ({ items: [] })),
+          spFetch('/me/player/recently-played?limit=12').catch(() => ({ items: [] }))
+        ]);
+        spProfile = me;
+        if (player && player.item) spNowPlaying = player;
+        spPlaylists = (pls && pls.items) || [];
+        if (!spTracks.length || spTracksHeading === 'Recently played') {
+          spTracksHeading = 'Recently played';
+          spTracks = ((recent && recent.items) || []).map(x => x.track).filter(Boolean);
+        }
+      } catch (e) {
+        spNotice = 'Could not load Spotify profile: ' + e.message;
+      }
+      renderSpotify();
+    }
+    async function playSpotifyItem(opts) {
+      spNotice = '';
+      if (spDeviceId && spPlayer && spPlayer.activateElement) {
+        try { await spPlayer.activateElement(); } catch (e) {}
+      }
+      const q = spDeviceId ? '?device_id=' + encodeURIComponent(spDeviceId) : '';
+      const body = opts.contextUri ? { context_uri: opts.contextUri } : { uris: [opts.uri] };
+      try {
+        await spFetch('/me/player/play' + q, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body)
+        });
+        setTimeout(() => spFetch('/me/player').then(p => { if (p) { spNowPlaying = p; renderSpotify(); } }).catch(() => {}), 450);
+      } catch (err) {
+        if (opts.embedType && opts.embedId) {
+          spEmbed = { type: opts.embedType, id: opts.embedId };
+        }
+        spNotice = err.status === 403
+          ? 'Direct API playback requires Spotify Premium — loaded embedded player below.'
+          : 'No active Spotify device ready (' + err.message + ') — loaded embedded player below.';
+        renderSpotify();
+      }
+    }
+    async function loadPlaylistTracks(plId, plName, plUri) {
+      spTracksHeading = stripEmojis(plName) || 'Playlist';
+      spTracks = [];
+      renderSpotify();
+      try {
+        let res = await spFetch(`/playlists/${encodeURIComponent(plId)}/items?limit=25`).catch(() => null);
+        if (!res || !Array.isArray(res.items)) res = await spFetch(`/playlists/${encodeURIComponent(plId)}/tracks?limit=25`);
+        spTracks = ((res && res.items) || []).map(x => x.item || x.track).filter(Boolean);
+        if (!spTracks.length && plUri) spEmbed = { type: 'playlist', id: plId };
+      } catch (e) {
+        spNotice = 'Could not load playlist tracks (' + e.message + '). Opening playlist embed.';
+        spEmbed = { type: 'playlist', id: plId };
+      }
+      renderSpotify();
+    }
+    async function searchSpotify(q) {
+      if (!q) return;
+      spTracksHeading = 'Search: ' + q;
+      try {
+        const res = await spFetch('/search?q=' + encodeURIComponent(q) + '&type=track,playlist&limit=10');
+        spTracks = (res && res.tracks && res.tracks.items) || [];
+        if (res && res.playlists && Array.isArray(res.playlists.items) && res.playlists.items.length) {
+          spPlaylists = res.playlists.items.filter(Boolean);
+        }
+      } catch (e) {
+        spNotice = 'Spotify search error: ' + e.message;
+      }
+      renderSpotify();
+    }
+    function renderSpotify() {
+      const authEl = document.getElementById('sp-auth-bar');
+      const playerEl = document.getElementById('sp-player-card');
+      const tracksEl = document.getElementById('sp-tracks-card');
+      const plsEl = document.getElementById('sp-playlists-card');
+      if (!authEl) return;
+      const connected = !!(spTokensGet() && spTokensGet().access_token);
+      const disBtn = document.getElementById('sp-disconnect');
+      if (disBtn) disBtn.hidden = !connected;
+
+      authEl.innerHTML = `
+        <div class="ann-head">
+          <div>
+            <strong>${connected ? (spProfile ? esc(stripEmojis(spProfile.display_name || spProfile.email || 'Connected')) : 'Connected to Spotify') : 'Not connected'}</strong>
+            <p class="note">${connected && spProfile ? esc((spProfile.email || '') + (spProfile.product ? ' · Plan: ' + spProfile.product : '')) : 'Redirect URI for Spotify Developer Dashboard: ' + esc(SP_REDIRECT)}</p>
+          </div>
+          <span class="status-pill ${spDeviceId ? 'submitted' : ''}">${spDeviceId ? 'Web Playback SDK Ready' : (connected ? 'Connecting SDK / Remote Connect' : 'PKCE OAuth')}</span>
+        </div>
+        ${spNotice ? `<p class="note" style="margin-top:8px;color:var(--focus)">${esc(stripEmojis(spNotice))}</p>` : ''}`;
+
+      const it = spNowPlaying && spNowPlaying.item;
+      const img = it && it.album && it.album.images && it.album.images[0] ? it.album.images[0].url : '';
+      const artists = it && it.artists ? it.artists.map(a => stripEmojis(a.name)).join(', ') : '';
+      const posMs = (spNowPlaying && spNowPlaying.progress_ms) || 0;
+      const durMs = (it && it.duration_ms) || 0;
+      const playing = !!(spNowPlaying && spNowPlaying.is_playing);
+      const volPct = spNowPlaying && spNowPlaying.device && typeof spNowPlaying.device.volume_percent === 'number' ? spNowPlaying.device.volume_percent : 80;
+      playerEl.innerHTML = `
+        <div class="sp-now">
+          ${img ? `<img class="sp-art" src="${esc(img)}" alt="Album art">` : '<div class="sp-art">SP</div>'}
+          <div style="min-width:0;flex:1">
+            <h2 style="margin:0 0 4px">${it ? esc(stripEmojis(it.name)) : 'Nothing playing right now'}</h2>
+            <p class="note">${it ? esc(artists + (it.album && it.album.name ? ' — ' + stripEmojis(it.album.name) : '')) : (connected ? 'Pick any track or playlist below, or click Connect Spotify.' : 'Click Connect Spotify above to authenticate with your Spotify account.')}</p>
+            ${spNowPlaying && spNowPlaying.device ? `<p class="note" style="margin-top:4px">Device: ${esc(stripEmojis(spNowPlaying.device.name))}</p>` : ''}
+          </div>
+        </div>
+        <div class="sp-ctrls">
+          <button type="button" class="btn" id="sp-prev" ${connected ? '' : 'disabled'}>Prev</button>
+          <button type="button" class="btn primary" id="sp-toggle" ${connected ? '' : 'disabled'}>${playing ? 'Pause' : 'Play'}</button>
+          <button type="button" class="btn" id="sp-next" ${connected ? '' : 'disabled'}>Next</button>
+          <button type="button" class="btn" id="sp-shuffle" ${connected ? '' : 'disabled'}>Shuffle: ${spNowPlaying && spNowPlaying.shuffle_state ? 'On' : 'Off'}</button>
+          ${spDeviceId ? `<button type="button" class="btn" id="sp-transfer">Play on Dashboard</button>` : ''}
+        </div>
+        <div class="sp-bars">
+          <div><input type="range" class="sp-range" id="sp-seek" min="0" max="${Math.max(1, durMs)}" value="${posMs}" ${connected && durMs ? '' : 'disabled'}><div class="note">${fmtMs(posMs)} / ${fmtMs(durMs)}</div></div>
+          <div><input type="range" class="sp-range" id="sp-vol" min="0" max="100" value="${volPct}" ${connected ? '' : 'disabled'}><div class="note">Volume: ${volPct}%</div></div>
+        </div>
+        ${spEmbed ? `<div class="sp-embed"><iframe src="https://open.spotify.com/embed/${esc(spEmbed.type)}/${esc(spEmbed.id)}?utm_source=generator" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe></div>` : ''}`;
+
+      tracksEl.innerHTML = `
+        <div class="ann-head" style="margin-bottom:10px">
+          <h2>${esc(spTracksHeading)}</h2>
+          <form class="form" id="sp-search-form"><input id="sp-search-q" placeholder="Search tracks or artists" autocomplete="off"><button type="submit" class="btn">Search</button></form>
+        </div>
+        ${spTracks.length ? spTracks.map((t, idx) => {
+          const arts = (t.artists || []).map(a => stripEmojis(a.name)).join(', ');
+          return `<div class="sp-track">
+            <div style="min-width:0"><strong>${esc(stripEmojis(t.name))}</strong><div class="note">${esc(arts)} · ${fmtMs(t.duration_ms)}</div></div>
+            <button type="button" class="mini-btn primary" data-sp-play="${idx}">Play</button>
+          </div>`;
+        }).join('') : `<p class="note">${connected ? 'Search above or select a playlist on the right.' : 'Connect Spotify to browse and play your tracks.'}</p>`}`;
+
+      plsEl.innerHTML = `<h2>Your playlists</h2>
+        ${spPlaylists.length ? spPlaylists.map((p, idx) => `
+          <div class="sp-track">
+            <div style="min-width:0"><strong>${esc(stripEmojis(p.name))}</strong><div class="note">${p.items ? p.items.total : (p.tracks ? p.tracks.total : '')} tracks</div></div>
+            <div style="display:flex;gap:6px">
+              <button type="button" class="mini-btn" data-sp-pl-open="${idx}">Open</button>
+              <button type="button" class="mini-btn primary" data-sp-pl-play="${idx}">Play</button>
+            </div>
+          </div>`).join('') : `<p class="note">${connected ? 'No playlists loaded yet.' : 'Connect Spotify to load your playlists.'}</p>`}`;
+
+      const bindClick = (id, fn) => { const el = document.getElementById(id); if (el) el.onclick = fn; };
+      bindClick('sp-prev', () => (spPlayer && spDeviceId ? spPlayer.previousTrack() : spFetch('/me/player/previous', { method: 'POST' })).then(() => setTimeout(loadSpotifyDashboard, 350)).catch(e => { spNotice = e.message; renderSpotify(); }));
+      bindClick('sp-toggle', () => (spPlayer && spDeviceId ? spPlayer.togglePlay() : spFetch('/me/player/' + (playing ? 'pause' : 'play'), { method: 'PUT' })).then(() => setTimeout(loadSpotifyDashboard, 300)).catch(e => { spNotice = e.message; renderSpotify(); }));
+      bindClick('sp-next', () => (spPlayer && spDeviceId ? spPlayer.nextTrack() : spFetch('/me/player/next', { method: 'POST' })).then(() => setTimeout(loadSpotifyDashboard, 350)).catch(e => { spNotice = e.message; renderSpotify(); }));
+      bindClick('sp-shuffle', () => spFetch('/me/player/shuffle?state=' + !(spNowPlaying && spNowPlaying.shuffle_state), { method: 'PUT' }).then(loadSpotifyDashboard).catch(e => { spNotice = e.message; renderSpotify(); }));
+      bindClick('sp-transfer', () => spFetch('/me/player', { method: 'PUT', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ device_ids: [spDeviceId], play: true }) }).then(() => setTimeout(loadSpotifyDashboard, 400)).catch(e => { spNotice = e.message; renderSpotify(); }));
+      const seekEl = document.getElementById('sp-seek');
+      if (seekEl) seekEl.onchange = () => (spPlayer && spDeviceId ? spPlayer.seek(+seekEl.value) : spFetch('/me/player/seek?position_ms=' + seekEl.value, { method: 'PUT' })).catch(() => {});
+      const volEl = document.getElementById('sp-vol');
+      if (volEl) volEl.onchange = () => (spPlayer && spDeviceId ? spPlayer.setVolume(+volEl.value / 100) : spFetch('/me/player/volume?volume_percent=' + volEl.value, { method: 'PUT' })).catch(() => {});
+      const sForm = document.getElementById('sp-search-form');
+      if (sForm) sForm.onsubmit = e => { e.preventDefault(); searchSpotify(document.getElementById('sp-search-q').value.trim()); };
+      tracksEl.querySelectorAll('[data-sp-play]').forEach(b => b.onclick = () => {
+        const t = spTracks[+b.dataset.spPlay];
+        if (t) playSpotifyItem({ uri: t.uri, embedType: 'track', embedId: t.id });
+      });
+      plsEl.querySelectorAll('[data-sp-pl-open]').forEach(b => b.onclick = () => {
+        const p = spPlaylists[+b.dataset.spPlOpen];
+        if (p) loadPlaylistTracks(p.id, p.name, p.uri);
+      });
+      plsEl.querySelectorAll('[data-sp-pl-play]').forEach(b => b.onclick = () => {
+        const p = spPlaylists[+b.dataset.spPlPlay];
+        if (p) playSpotifyItem({ contextUri: p.uri, embedType: 'playlist', embedId: p.id });
+      });
+    }
+    let spBound = false;
+    function initSpotify() {
+      checkPendingSpotifyCallback();
+      if (!spBound) {
+        spBound = true;
+        document.getElementById('sp-connect').onclick = startSpotifyAuth;
+        document.getElementById('sp-refresh').onclick = loadSpotifyDashboard;
+        document.getElementById('sp-disconnect').onclick = () => {
+          spTokensSet(null); spProfile = null; spNowPlaying = null; spPlaylists = []; spTracks = []; spEmbed = null;
+          if (spPlayer) try { spPlayer.disconnect(); } catch (e) {}
+          spPlayer = null; spDeviceId = '';
+          spNotice = 'Disconnected Spotify.';
+          renderSpotify();
+        };
+        if (!spPollTimer) spPollTimer = setInterval(() => {
+          if (currentTab() === 'spotify' && spTokensGet() && spTokensGet().access_token) {
+            spFetch('/me/player').then(p => { if (p) { spNowPlaying = p; renderSpotify(); } }).catch(() => {});
+          }
+        }, 6000);
+      }
+      renderSpotify();
+      loadSpotifyDashboard();
+    }
+
+    checkPendingSpotifyCallback();
     showTab(location.hash.slice(1) || 'school');
   </script>
 </body>
