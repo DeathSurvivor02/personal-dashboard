@@ -294,7 +294,20 @@
     .sp-shell .status-pill { background: #1F1F1F; border-color: transparent; color: #B3B3B3; }
     .sp-shell .status-pill.submitted { color: #1ED760; }
     .sp-shell :focus-visible, .sp-bar :focus-visible, .sp-modal :focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+    .sp-head-tools { align-items: center; gap: 8px; }
+    .sp-menu-wrap { position: relative; }
+    .sp-shell .sp-gear { width: 42px; height: 42px; padding: 0; display: grid; place-items: center; color: #B3B3B3; }
+    .sp-shell .sp-gear:hover, .sp-shell .sp-gear[aria-expanded="true"] { color: #fff; }
+    .sp-menu { position: absolute; right: 0; top: calc(100% + 8px); z-index: 20; min-width: 240px; background: #282828; border-radius: 8px; padding: 4px; box-shadow: 0 16px 40px rgba(0,0,0,.6); display: grid; }
+    .sp-menu[hidden] { display: none; }
+    .sp-menu button { background: none; border: 0; color: #fff; text-align: left; padding: 10px 12px; border-radius: 4px; font: inherit; font-size: 14px; cursor: pointer; }
+    .sp-menu button:hover, .sp-menu button:focus-visible { background: #3E3E3E; }
+    .sp-menu button[hidden] { display: none; }
+    .sp-menu .danger { color: #FF8A80; }
+    .sp-menu-acct { padding: 10px 12px 12px; margin-bottom: 4px; border-bottom: 1px solid #3E3E3E; font-size: 13px; color: #B3B3B3; }
+    .sp-menu-acct strong { display: block; color: #fff; font-size: 14px; }
     .sp-shell .form { flex-wrap: wrap; }
+    .sp-shell #sp-search-form { flex-wrap: nowrap; } .sp-shell #sp-search-form input { width: min(260px, 48vw); }
     .sp-shell .form input { width: min(280px, 100%); }
     .sp-grid { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 8px; align-items: start; }
     .sp-grid.pl-hidden { grid-template-columns: minmax(0, 1fr); }
@@ -524,12 +537,19 @@
     <div class="sp-shell">
       <div class="page-h">
         <div><h1>Spotify</h1><p id="sp-subtitle">Web Playback SDK and Web API player for your dashboard.</p></div>
-        <div class="form" id="sp-config-form">
+        <div class="form sp-head-tools" id="sp-config-form">
           <button class="btn primary" type="button" id="sp-connect">Connect Spotify</button>
-          <button class="btn" type="button" id="sp-liked-btn">Liked Songs</button>
-          <button class="btn" type="button" id="sp-pl-toggle">Hide Playlists</button>
-          <button class="btn" type="button" id="sp-refresh">Refresh</button>
-          <button class="btn" type="button" id="sp-disconnect" hidden>Disconnect</button>
+          <div class="sp-menu-wrap">
+            <button class="btn sp-gear" type="button" id="sp-settings" aria-haspopup="menu" aria-expanded="false" aria-controls="sp-menu" aria-label="Spotify settings" title="Settings"></button>
+            <div class="sp-menu" id="sp-menu" role="menu" aria-label="Spotify settings" hidden>
+              <div class="sp-menu-acct" id="sp-menu-acct"></div>
+              <button type="button" role="menuitem" id="sp-liked-btn">Liked Songs</button>
+              <button type="button" role="menuitem" id="sp-pl-toggle">Hide playlists</button>
+              <button type="button" role="menuitem" id="sp-refresh">Refresh</button>
+              <button type="button" role="menuitem" id="sp-reconnect">Reconnect</button>
+              <button type="button" role="menuitem" id="sp-disconnect" class="danger">Disconnect</button>
+            </div>
+          </div>
         </div>
       </div>
       <div class="card" id="sp-auth-bar" style="margin-bottom:16px"></div>
@@ -2124,6 +2144,7 @@
       repeat: 'M7 7h10v3l4-4-4-4v3H5v6h2V7zm10 10H7v-3l-4 4 4 4v-3h12v-6h-2v4z',
       heartOn: 'M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z',
       heart: 'M16.5 3c-1.74 0-3.41.81-4.5 2.09C10.91 3.81 9.24 3 7.5 3 4.42 3 2 5.42 2 8.5c0 3.78 3.4 6.86 8.55 11.54L12 21.35l1.45-1.32C18.6 15.36 22 12.28 22 8.5 22 5.42 19.58 3 16.5 3zm-4.4 15.55l-.1.1-.1-.1C7.14 14.24 4 11.39 4 8.5 4 6.5 5.5 5 7.5 5c1.54 0 3.04.99 3.57 2.36h1.87C13.46 5.99 14.96 5 16.5 5c2 0 3.5 1.5 3.5 3.5 0 2.89-3.14 5.74-7.9 10.05z',
+      gear: 'M19.14 12.94c.04-.3.06-.61.06-.94 0-.32-.02-.64-.07-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.05.3-.09.63-.09.94s.02.64.07.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z',
       volume: 'M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z',
       devices: 'M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z',
       bars: 'M5 9h3v10H5zM10.5 5h3v14h-3zM16 12h3v7h-3z', close: 'M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z'
@@ -2278,7 +2299,7 @@
         });
         spPlayer.addListener('ready', ({ device_id }) => {
           spDeviceId = device_id;
-          spNotice = 'Web Playback SDK ready (Fall 2026 Dashboard).';
+          spNotice = '';
           try { spPlayer.getVolume().then(v => { if (typeof v === 'number') spVolume = Math.round(v * 100); }); } catch (e) {}
           renderSpotify();
         });
@@ -2602,17 +2623,18 @@
       const disBtn = document.getElementById('sp-disconnect');
       if (disBtn) disBtn.hidden = !connected;
       const conBtn = document.getElementById('sp-connect');
-      if (conBtn) { conBtn.textContent = connected ? 'Reconnect' : 'Connect Spotify'; conBtn.classList.toggle('primary', !connected); }
+      if (conBtn) conBtn.hidden = connected;
+      ['sp-liked-btn', 'sp-refresh', 'sp-reconnect'].forEach(id => { const el = document.getElementById(id); if (el) el.hidden = !connected; });
+      const acct = document.getElementById('sp-menu-acct');
+      if (acct) acct.innerHTML = connected
+        ? `<strong>${esc(stripEmojis((spProfile && (spProfile.display_name || spProfile.email)) || 'Connected'))}</strong>${spProfile && spProfile.product ? esc('Plan: ' + spProfile.product) + '<br>' : ''}${spDeviceId ? 'Dashboard player ready' : 'Connecting player…'}`
+        : `<strong>Not connected</strong>Redirect URI for the Spotify Developer Dashboard:<br>${esc(SP_REDIRECT)}`;
 
-      authEl.innerHTML = `
-        <div class="ann-head">
-          <div>
-            <strong>${connected ? (spProfile ? esc(stripEmojis(spProfile.display_name || spProfile.email || 'Connected')) : 'Connected to Spotify') : 'Not connected'}</strong>
-            <p class="note">${connected && spProfile ? esc((spProfile.email || '') + (spProfile.product ? ' · Plan: ' + spProfile.product : '')) : 'Redirect URI for Spotify Developer Dashboard: ' + esc(SP_REDIRECT)}</p>
-          </div>
-          <span class="status-pill ${spDeviceId ? 'submitted' : ''}">${spDeviceId ? 'Web Playback SDK Ready' : (connected ? 'Connecting SDK / Remote Connect' : 'PKCE OAuth')}</span>
-        </div>
-        ${spNotice ? `<p class="note" style="margin-top:8px;color:#1ED760">${esc(stripEmojis(spNotice))}</p>` : ''}`;
+      // Only show this strip when there is something to say (signed out, or a message).
+      authEl.hidden = connected && !spNotice;
+      authEl.innerHTML = connected
+        ? (spNotice ? `<p class="note" style="margin:0;color:#1ED760">${esc(stripEmojis(spNotice))}</p>` : '')
+        : `<strong>Not connected</strong><p class="note">Connect your Spotify account to browse and play. Redirect URI for the Spotify Developer Dashboard: ${esc(SP_REDIRECT)}</p>${spNotice ? `<p class="note" style="margin-top:8px;color:#1ED760">${esc(stripEmojis(spNotice))}</p>` : ''}`;
 
       // The player itself lives in the bottom bar; this card only appears for the embed fallback.
       playerEl.hidden = !spEmbed;
@@ -2622,7 +2644,7 @@
       const spPlBtn = document.getElementById('sp-pl-toggle');
       if (spGrid) spGrid.classList.toggle('pl-hidden', spPlHidden);
       if (plsEl) plsEl.hidden = spPlHidden;
-      if (spPlBtn) spPlBtn.textContent = spPlHidden ? 'Show Playlists' : 'Hide Playlists';
+      if (spPlBtn) spPlBtn.textContent = spPlHidden ? 'Show playlists' : 'Hide playlists';
 
       const countNote = spTracksHeading === 'Liked Songs' && spLikedTotal
         ? ` (${spTracks.length} / ${spLikedTotal})`
@@ -2792,12 +2814,30 @@
       if (e.key === 'Tab') { const f = [...m.querySelectorAll('button')]; if (!f.length) return; const first = f[0], last = f[f.length - 1];
         if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); } else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); } }
     });
+    function closeSpMenu(refocus) {
+      const menu = document.getElementById('sp-menu'), gear = document.getElementById('sp-settings');
+      if (!menu || menu.hidden) return;
+      menu.hidden = true; gear.setAttribute('aria-expanded', 'false'); if (refocus) gear.focus();
+    }
     let spBound = false;
     function initSpotify() {
       checkPendingSpotifyCallback();
       if (!spBound) {
         spBound = true;
         document.getElementById('sp-connect').onclick = startSpotifyAuth;
+        document.getElementById('sp-reconnect').onclick = () => { closeSpMenu(); startSpotifyAuth(); };
+        const gear = document.getElementById('sp-settings'), menu = document.getElementById('sp-menu');
+        gear.innerHTML = spIcon('gear', 22);
+        gear.onclick = () => { if (menu.hidden) { menu.hidden = false; gear.setAttribute('aria-expanded', 'true'); const f = menu.querySelector('button:not([hidden])'); if (f) f.focus(); } else closeSpMenu(); };
+        menu.addEventListener('click', e => { if (e.target.closest('button')) setTimeout(closeSpMenu, 0); });
+        menu.addEventListener('keydown', e => {
+          const items = [...menu.querySelectorAll('button:not([hidden])')], i = items.indexOf(document.activeElement);
+          if (e.key === 'ArrowDown') { e.preventDefault(); items[(i + 1) % items.length].focus(); }
+          else if (e.key === 'ArrowUp') { e.preventDefault(); items[(i - 1 + items.length) % items.length].focus(); }
+          else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); closeSpMenu(true); }
+          else if (e.key === 'Tab') closeSpMenu();
+        });
+        document.addEventListener('click', e => { if (!menu.hidden && !e.target.closest('.sp-menu-wrap')) closeSpMenu(); });
         document.getElementById('sp-liked-btn').onclick = loadLikedSongs;
         document.getElementById('sp-pl-toggle').onclick = () => {
           spPlHidden = !spPlHidden;
