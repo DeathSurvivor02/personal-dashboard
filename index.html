@@ -219,12 +219,19 @@
     .dist i.hit { background: var(--w-good); }
 
     /* ── Chess ────────────────────────────────────────── */
-    .board { display: grid; grid-template-columns: repeat(8, 1fr); width: min(420px, 100%); aspect-ratio: 1; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); user-select: none; position: relative; }
+    .board { display: grid; grid-template-columns: repeat(8, 1fr); width: min(600px, 100%); aspect-ratio: 1; border-radius: 10px; overflow: hidden; border: 1px solid var(--line); user-select: none; position: relative; }
     .board.theme-frosted { background: radial-gradient(circle at 82% 28%, #53e3d8 0%, #1d4e58 34%, #10242c 68%, #0a1419 100%); border-color: #2c4a54; }
     .board.theme-frosted .sq { background: rgba(228, 240, 246, 0.24); }
     .board.theme-frosted .sq.d { background: rgba(14, 24, 32, 0.44); }
     .board.theme-frosted .sq.last { box-shadow: inset 0 0 0 999px rgba(96, 190, 245, 0.34); }
     .board.theme-frosted .sq .coord-r, .board.theme-frosted .sq .coord-f { color: rgba(235, 245, 250, 0.78); }
+    /* Glass: translucent gray squares over the art, muted blue coordinates (matches the reference board) */
+    .board.theme-glass { background: radial-gradient(circle at 78% 22%, #5fe6da 0%, #1f5660 30%, #0f2a33 62%, #08141b 100%); border: 0; }
+    .board.theme-glass .sq { background: rgba(238, 243, 246, 0.62); }
+    .board.theme-glass .sq.d { background: rgba(118, 131, 143, 0.62); }
+    .board.theme-glass .sq.last { box-shadow: inset 0 0 0 999px rgba(96, 190, 245, 0.32); }
+    .board.theme-glass .sq .coord-r, .board.theme-glass .sq .coord-f { color: #6B7AAE; opacity: 1; font-size: clamp(11px, 2.2vw, 17px); font-weight: 600; }
+    .has-bg .board.theme-glass { background: transparent; }
     .board.theme-green { --sq-l: #EEEED2; --sq-d: #769656; }
     .sq { aspect-ratio: 1; display: grid; place-items: center; position: relative; border: 0; padding: 0; font-size: clamp(24px, 6.4vw, 40px); line-height: 1; background: var(--sq-l); cursor: pointer; }
     .sq.d { background: var(--sq-d); }
@@ -235,6 +242,7 @@
     .sq.wrong { box-shadow: inset 0 0 0 3px var(--danger), inset 0 0 0 999px rgba(179, 38, 30, 0.32); }
     .sq .dot { position: absolute; width: 26%; height: 26%; border-radius: 50%; background: rgba(20, 32, 42, 0.42); pointer-events: none; z-index: 2; }
     .sq.cap .dot { width: 82%; height: 82%; background: transparent; border: 3px solid rgba(255, 255, 255, 0.46); }
+    .sq img.pc { width: 100%; height: 100%; position: relative; z-index: 1; object-fit: contain; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.32)); pointer-events: none; user-select: none; -webkit-user-drag: none; }
     .sq svg.pc { width: 82%; height: 82%; position: relative; z-index: 1; filter: drop-shadow(0 2px 2px rgba(0,0,0,0.45)); pointer-events: none; }
     .sq .coord-r { position: absolute; top: 2px; left: 3px; font-size: 10px; font-weight: 700; opacity: .75; pointer-events: none; line-height: 1; }
     .sq .coord-f { position: absolute; bottom: 2px; right: 3px; font-size: 10px; font-weight: 700; opacity: .75; pointer-events: none; line-height: 1; }
@@ -426,6 +434,12 @@
       .appbar { padding: 0 8px; } .bar-in { gap: 4px; }
       .tab { padding: 16px 7px 13px; font-size: 14px; gap: 5px; } .iconbtn { padding: 6px 10px; }
     }
+    :root.has-bg { --surface: rgba(16,24,30,.74); --raised: rgba(27,38,48,.82); --ink: #E6EEF2; --ink2: #AEBBC5; --line: rgba(255,255,255,.14); --track: rgba(255,255,255,.16);
+      --focus: #7AA2FF; --danger: #FF8A80; --danger-bg: rgba(120,30,26,.6); --on: #0F161B;
+      --comp303: #7AA2FF; --comp307: #B794F0; --comp306: #4FD1BD; --comp309: #F0B04A; --comp231: #8FD468; --comp255: #F08CC4; color-scheme: dark; }
+    :root.has-bg body { background: linear-gradient(rgba(8,14,18,.5), rgba(8,14,18,.62)), var(--page-bg) center / cover fixed no-repeat; }
+    :root.has-bg .appbar { background: rgba(8,14,18,.55); backdrop-filter: blur(10px); }
+    :root.has-bg .card, :root.has-bg .runway, :root.has-bg details.course, :root.has-bg .stat { backdrop-filter: blur(8px); }
     @media (prefers-reduced-motion: reduce) {
       * { transition: none !important; animation: none !important; }
     }
@@ -1568,7 +1582,8 @@
 
     const GLYPH = { k: '♚', q: '♛', r: '♜', b: '♝', n: '♞', p: '♟︎' };
     const PROMO_NAMES = { q: 'Queen', r: 'Rook', b: 'Bishop', n: 'Knight' };
-    let chessTheme = store.get('chess_theme') || 'frosted';
+    const CHESS_THEMES = { glass: 'Glass', frosted: 'Frosted Teal', green: 'Classic Green', slate: 'Slate' };
+    let chessTheme = store.get('chess_theme_v2'); if (!CHESS_THEMES[chessTheme]) chessTheme = 'glass';
     let chessSound = store.get('chess_sound') !== 'off';
     let dailyPuzzles = [], dailySolved = [false, false, false], dailyIdx = 0;
     let pz = null, puzzleToken = 0, lastChessDateKey = '', lastChessAt = 0, chessCtx = null;
@@ -1598,7 +1613,15 @@
       } catch (e) {}
     }
 
+    const CHESS_PIECE_SETS = { glass: 'Glass', neo: 'Neo', classic: 'Classic', wood: 'Wood', space: 'Space', gothic: 'Gothic' };
+    let chessPieces = store.get('chess_pieces'); if (!CHESS_PIECE_SETS[chessPieces]) chessPieces = 'glass';
+    // Pieces are Chess.com's own artwork, loaded from their public image host. If one fails to load, the drawn piece below stands in.
     function pieceSvg(p) {
+      const set = chessPieces, side = p === p.toUpperCase() ? 'w' : 'b';
+      return `<img class="pc" src="https://images.chesscomfiles.com/chess-themes/pieces/${set}/150/${side}${p.toLowerCase()}.png" alt="" draggable="false" data-p="${p}" onerror="pcFallback(this)">`;
+    }
+    function pcFallback(img) { img.outerHTML = pieceSvgFallback(img.dataset.p); }
+    function pieceSvgFallback(p) {
       const isW = p === p.toUpperCase();
       const fill = isW ? '#E6EBF0' : '#4C545C';
       const shade = isW ? '#BAC4CE' : '#2C3238';
@@ -1812,7 +1835,7 @@
       if (sel && opts.legal) {
         for (const m of opts.legal) if (m.fr === sel[0] && m.fc === sel[1]) targets.set(m.tr + ',' + m.tc, m);
       }
-      const themeCls = chessTheme === 'green' ? 'theme-green' : chessTheme === 'slate' ? '' : 'theme-frosted';
+      const themeCls = chessTheme === 'green' ? 'theme-green' : chessTheme === 'slate' ? '' : chessTheme === 'frosted' ? 'theme-frosted' : 'theme-glass';
       const cells = [];
       for (let vy = 0; vy < 8; vy++) {
         const r = flip ? 7 - vy : vy;
@@ -1860,7 +1883,8 @@
           ${pz.solSan.length && !solved ? '<button type="button" class="btn" id="chess-hint">Hint</button>' : ''}
           ${solved && dailyPuzzles.length > 1 && dailyIdx < dailyPuzzles.length - 1 ? '<button type="button" class="btn primary" id="chess-next-pz">Next Puzzle</button>' : ''}
           <button type="button" class="btn" id="chess-reset">Reset</button>
-          <button type="button" class="btn" id="chess-theme-btn">Theme: ${chessTheme === 'frosted' ? 'Frosted Teal' : chessTheme === 'green' ? 'Classic Green' : 'Slate'}</button>
+          <button type="button" class="btn" id="chess-theme-btn">Board: ${CHESS_THEMES[chessTheme]}</button>
+          <button type="button" class="btn" id="chess-pieces-btn">Pieces: ${CHESS_PIECE_SETS[chessPieces]}</button>
           <button type="button" class="btn" id="chess-sound-btn">Sound: ${chessSound ? 'On' : 'Off'}</button>
           <a class="btn" style="text-decoration:none" href="${esc(pz.url)}" target="_blank" rel="noopener">Open on Chess.com</a>
         </div>`;
@@ -1884,8 +1908,13 @@
       if (nextBtn) nextBtn.onclick = () => selectDailyPuzzle(dailyIdx + 1);
       document.getElementById('chess-reset').onclick = resetPuzzleBoard;
       document.getElementById('chess-theme-btn').onclick = () => {
-        chessTheme = chessTheme === 'frosted' ? 'green' : chessTheme === 'green' ? 'slate' : 'frosted';
-        store.set('chess_theme', chessTheme);
+        const k = Object.keys(CHESS_THEMES); chessTheme = k[(k.indexOf(chessTheme) + 1) % k.length];
+        store.set('chess_theme_v2', chessTheme);
+        renderPuzzleBox();
+      };
+      document.getElementById('chess-pieces-btn').onclick = () => {
+        const k = Object.keys(CHESS_PIECE_SETS); chessPieces = k[(k.indexOf(chessPieces) + 1) % k.length];
+        store.set('chess_pieces', chessPieces);
         renderPuzzleBox();
       };
       document.getElementById('chess-sound-btn').onclick = () => {
@@ -2896,6 +2925,14 @@
       loadSpotifyDashboard();
     }
 
+    // Optional background art: put background.jpg (or .png / .webp) beside index.html.
+    (function probeBackground(list) {
+      const f = list.shift(); if (!f) return;
+      const im = new Image(), r = document.documentElement;
+      im.onload = () => { r.style.setProperty('--page-bg', `url("${f}")`); r.classList.add('has-bg'); };
+      im.onerror = () => probeBackground(list);
+      im.src = f;
+    })(['background.jpg', 'background.png', 'background.webp']);
     checkPendingSpotifyCallback();
     // Already signed in? Start the player now so the bottom bar shows on every tab.
     { const t0 = spTokensGet(); if (t0 && t0.access_token) { loaded.spotify = true; initSpotify(); } }
