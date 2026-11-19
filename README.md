@@ -74,6 +74,10 @@ App Layout Shell
 * **Quick Scratchpad (`Ctrl/Cmd + K`):** Instant modal for fleeting ideas and POS terminal notes.
 * **Weather & Status Indicator:** Current local conditions and user activity status.
 
+### 8. Settings
+* A single Settings button in the top bar opens a modal holding every secondary control: color mode and palette, Schoolwork sync, GitHub / Chess.com usernames, Wordle practice, and the Spotify client ID with reconnect / disconnect.
+* Accounts (GitHub `DeathSurvivor02`, Chess.com `eanbynoe`, Spotify, Wordle, Schoolwork) persist through `localStorage`, `academic_state.json` (`uiStore`) and `school_sync_config.json`, so they are never re-entered.
+
 ---
 
 ## Software Development Life Cycle (SDLC)
