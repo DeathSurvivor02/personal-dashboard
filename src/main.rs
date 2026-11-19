@@ -49,9 +49,8 @@ fn App() -> Element {
             header { class: "h-12 px-5 py-2.5 border-b border-[#1E293B] flex items-center justify-between",
                 style: "background-color: {surface};",
                 div { class: "flex items-center space-x-2.5",
-                    div { class: "w-6 h-6 rounded flex items-center justify-center font-bold text-xs",
-                        style: "background-color: {primary}22; border: 1px solid {primary}66; color: {primary};",
-                        "⌘"
+                    div { class: "w-7 h-7 flex items-center justify-center",
+                        dangerous_inner_html: include_str!("../assets/logo.svg")
                     }
                     span { class: "font-semibold tracking-tight", "Personal Command" }
                     span { class: "text-gray-500 font-mono", "/" }
