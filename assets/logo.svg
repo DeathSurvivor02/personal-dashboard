@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="emeraldCyan" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#06B6D4" />
+    </linearGradient>
+    <linearGradient id="cyanEmerald" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#06B6D4" />
+      <stop offset="100%" stop-color="#10B981" />
+    </linearGradient>
+  </defs>
+  <circle cx="256" cy="256" r="248" fill="#09090B" />
+  <!-- Outer Golden Pentagon (R = 190) -->
+  <polygon points="256,66 436.7,197.3 367.7,409.7 144.3,409.7 75.3,197.3"
+           fill="none" stroke="url(#emeraldCyan)" stroke-width="6" stroke-linejoin="miter" />
+  <!-- Golden Ratio Pentagram / Acute Golden Triangles -->
+  <polygon points="256,66 367.7,409.7 75.3,197.3 436.7,197.3 144.3,409.7"
+           fill="none" stroke="url(#cyanEmerald)" stroke-width="4.5" stroke-linejoin="miter" />
+  <!-- Inner Inverted Golden Pentagon (R / phi^2 = 72.6) -->
+  <polygon points="256,328.6 187.0,278.4 213.3,197.3 298.7,197.3 325.0,278.4"
+           fill="url(#emeraldCyan)" fill-opacity="0.18" stroke="#10B981" stroke-width="4" stroke-linejoin="miter" />
+  <!-- Sharp Center Facet -->
+  <polygon points="256,162 298.7,197.3 256,328.6 213.3,197.3"
+           fill="url(#emeraldCyan)" />
+</svg>
