@@ -661,7 +661,7 @@
   "githubTelemetry": {
     "username": "DeathSurvivor02",
     "profileUrl": "https://github.com/DeathSurvivor02",
-    "publicRepos": 20,
+    "publicRepos": 21,
     "followers": 3,
     "openPrs": 1,
     "openPrItems": [
@@ -675,6 +675,17 @@
     ],
     "repos": [
       {
+        "name": "portfolio",
+        "fullName": "DeathSurvivor02/portfolio",
+        "description": "Personal portfolio website built with React + Vite. Showcasing skills, projects, and experience.",
+        "language": "JavaScript",
+        "stars": 0,
+        "openIssues": 0,
+        "defaultBranch": "main",
+        "pushedAt": "2026-11-19",
+        "url": "https://github.com/DeathSurvivor02/portfolio"
+      },
+      {
         "name": "personal-dashboard",
         "fullName": "DeathSurvivor02/personal-dashboard",
         "description": "",
@@ -682,8 +693,30 @@
         "stars": 0,
         "openIssues": 0,
         "defaultBranch": "main",
-        "pushedAt": "2026-11-18",
+        "pushedAt": "2026-11-19",
         "url": "https://github.com/DeathSurvivor02/personal-dashboard"
+      },
+      {
+        "name": "personal-dashboard-core",
+        "fullName": "DeathSurvivor02/personal-dashboard-core",
+        "description": "",
+        "language": "Rust",
+        "stars": 0,
+        "openIssues": 0,
+        "defaultBranch": "main",
+        "pushedAt": "2026-11-19",
+        "url": "https://github.com/DeathSurvivor02/personal-dashboard-core"
+      },
+      {
+        "name": "DVWA-Centennial",
+        "fullName": "DeathSurvivor02/DVWA-Centennial",
+        "description": "Damn Vulnerable Web Application (DVWA)",
+        "language": "PHP",
+        "stars": 0,
+        "openIssues": 0,
+        "defaultBranch": "master",
+        "pushedAt": "2026-11-18",
+        "url": "https://github.com/DeathSurvivor02/DVWA-Centennial"
       },
       {
         "name": "EanBynoe_COMP303_Assignment3",
@@ -719,17 +752,6 @@
         "url": "https://github.com/DeathSurvivor02/DeathSurvivor02"
       },
       {
-        "name": "portfolio",
-        "fullName": "DeathSurvivor02/portfolio",
-        "description": "Personal portfolio website built with React + Vite. Showcasing skills, projects, and experience.",
-        "language": "JavaScript",
-        "stars": 0,
-        "openIssues": 0,
-        "defaultBranch": "main",
-        "pushedAt": "2026-11-14",
-        "url": "https://github.com/DeathSurvivor02/portfolio"
-      },
-      {
         "name": "Valorant-API",
         "fullName": "DeathSurvivor02/Valorant-API",
         "description": "",
@@ -739,32 +761,10 @@
         "defaultBranch": "main",
         "pushedAt": "2026-11-14",
         "url": "https://github.com/DeathSurvivor02/Valorant-API"
-      },
-      {
-        "name": "COMP231-Software-Project-I",
-        "fullName": "DeathSurvivor02/COMP231-Software-Project-I",
-        "description": "",
-        "language": "JavaScript",
-        "stars": 0,
-        "openIssues": 2,
-        "defaultBranch": "main",
-        "pushedAt": "2026-11-11",
-        "url": "https://github.com/DeathSurvivor02/COMP231-Software-Project-I"
-      },
-      {
-        "name": "EanBynoe_COMP303_Assignment2",
-        "fullName": "DeathSurvivor02/EanBynoe_COMP303_Assignment2",
-        "description": "",
-        "language": "HTML",
-        "stars": 0,
-        "openIssues": 0,
-        "defaultBranch": "master",
-        "pushedAt": "2026-11-04",
-        "url": "https://github.com/DeathSurvivor02/EanBynoe_COMP303_Assignment2"
       }
     ],
     "status": "Live",
-    "fetchedAt": "2026-11-18 01:35:02"
+    "fetchedAt": "2026-11-19 03:25:08"
   },
   "lastSyncSummary": "Synced 17 assessment items & 31 calendar events from eCentennial .ics | 12 announcements & discussions | local deliverables unchanged (cloud) | GitHub unchanged (offline) | Chess.com (2 to move) | Wordle 2026-11-19 (NYT API)",
   "lastSyncedAt": "2026-11-19 08:30:32",
@@ -889,6 +889,23 @@
     }
   },
   "posStatuses": {},
+  "uiStore": {
+    "ann_state_v1": "{\"read\":{},\"dismissed\":{\"lum_comp309_analytics_checkpoint\":true,\"lum_comp255_schedule\":true,\"lum_comp231_disc\":true,\"lum_comp306_disc_general\":true,\"lum_comp309_disc_research\":true,\"lum_comp306_lab3_notes\":true,\"lum_comp306_proposal_grade\":true,\"lum_comp303_a3_demo\":true,\"lum_comp309_quiz2\":true,\"lum_comp303_final_group\":true,\"lum_comp307_ebook\":true,\"lum_comp307_disc4\":true}}",
+    "chess_daily3_v1": "{\"date\":\"2026-11-19\",\"puzzles\":[{\"title\":\"Tilted\",\"url\":\"https://www.chess.com/daily/2026-11-18\",\"publish_time\":1794988800,\"fen\":\"4rr2/p1b2kpp/1pp2p2/3q1N2/1PnP4/2PQ2P1/1P3P1P/R3R1K1 w - - 0 1\",\"pgn\":\"[Result \\\"*\\\"]\\n[FEN \\\"4rr2/p1b2kpp/1pp2p2/3q1N2/1PnP4/2PQ2P1/1P3P1P/R3R1K1 w - - 0 1\\\"]\\n\\n1. Nh6+ gxh6 2. Qxh7# *\",\"image\":\"https://www.chess.com/dynboard?fen=4rr2/p1b2kpp/1pp2p2/3q1N2/1PnP4/2PQ2P1/1P3P1P/R3R1K1%20w%20-%20-%200%201&size=2\"},{\"title\":\"gmjoey1's Bullet Mate\",\"url\":\"https://www.chess.com/daily/2024-05-19\",\"publish_time\":1716102000,\"fen\":\"2rr2k1/p2NRpp1/2p4p/2Pp4/3Q4/2P5/q1b2PPP/4R1K1 w - - 0 19\",\"pgn\":\"[Event \\\"Live Chess\\\"]\\r\\n[Site \\\"Chess.com\\\"]\\r\\n[Date \\\"2013.07.13\\\"]\\r\\n[Round \\\"?\\\"]\\r\\n[White \\\"gmjoey1\\\"]\\r\\n[Black \\\"biostatistician\\\"]\\r\\n[Result \\\"1-0\\\"]\\r\\n[ECO \\\"C13\\\"]\\r\\n[WhiteElo \\\"2377\\\"]\\r\\n[BlackElo \\\"2349\\\"]\\r\\n[FEN \\\"2rr2k1/p2NRpp1/2p4p/2Pp4/3Q4/2P5/q1b2PPP/4R1K1 w - - 0 19\\\"]\\r\\n\\r\\n19. Rxf7 Kxf7 20. Re7+ Kxe7 21. Qxg7+ Ke6 22. Qf6+ Kxd7 23. Qf7# 1-0\",\"image\":\"https://www.chess.com/dynboard?fen=2rr2k1/p2NRpp1/2p4p/2Pp4/3Q4/2P5/q1b2PPP/4R1K1%20w%20-%20-%200%2019&size=2\"},{\"title\":\"Gasperoni, 1763\",\"url\":\"https://www.chess.com/daily/2017-01-06\",\"publish_time\":1483689600,\"fen\":\"2k1B3/p1p5/8/b6R/4P3/3Q4/6PK/2q1r3 w - - 0 1\",\"pgn\":\"[Date \\\"????.??.??\\\"]\\r\\n[Result \\\"*\\\"]\\r\\n[FEN \\\"2k1B3/p1p5/8/b6R/4P3/3Q4/6PK/2q1r3 w - - 0 1\\\"]\\r\\n\\r\\n1. Bd7+ Kb7 2. Qb5+ Bb6 3. Qa6+ Kxa6\\r\\n*\",\"image\":\"https://www.chess.com/dynboard?fen=2k1B3/p1p5/8/b6R/4P3/3Q4/6PK/2q1r3%20w%20-%20-%200%201&size=2\"}],\"solved\":[false,false,false]}",
+    "chess_puzzle_v1": "{\"count\":2,\"urls\":[\"https://www.chess.com/daily/2026-11-17\",\"https://www.chess.com/daily/2014-12-01\"]}",
+    "chess_sound": "on",
+    "chess_theme": "slate",
+    "dashboard_theme": "dark",
+    "gh_user": "DeathSurvivor02",
+    "pd_palette": "obsidian",
+    "quordle_v1": "{\"stats\":{\"played\":1,\"wins\":1,\"streak\":1,\"max\":1,\"dist\":[0,0,0,0,0,0,0,1,0],\"last\":322},\"game\":{\"day\":322,\"guesses\":[\"nymph\",\"draft\",\"clobs\",\"music\",\"sound\",\"study\",\"blind\",\"fleet\"],\"cur\":\"\",\"status\":\"won\",\"answers\":[\"sound\",\"study\",\"fleet\",\"blind\"]}}",
+    "sp_pkce_state": "pBK6pidTOC2ki~JYguX92BPI",
+    "sp_pkce_verifier": "umdDVVeaeygKMYRb5p4XlAXaZKwgGyrWLq213xMEJ1e2jEClc1Cj2n7JD.mRKzS~",
+    "spotify_client_id": "bda745e8b0c1482bbe769748e7e2d02a",
+    "spotify_tokens_v1": "{\"access_token\":\"BQC_4GHjrQr2vog_kjOkOZuItaQXjNkRDjdjuKQ1hQI5-msfjycjdRYDpJ5i6vpOpQrATkBWoPWLZkZriUrHNv84J8fBuebDM1OU4AE2NIZMeqMon4G__tHEjABYwDXzuGZ91AfKuWmDHB_ElHW4xj5MlkfPiwb7Mcbg7t6OOlDB8wkn5bZOHOiXGojZdzsk-MkvBfsYxNakkDH9C2jY_rDr15H3054B0uftreii66zTN8Z1-MzGpJ5UR6fF0Vf2Q2JbHn_wpL2c1dHYgwxh4Id0PF2V63XdHq7yZ15-8AjcD5aWKAmffnhQx6TbhhlEfuAwXNk\",\"refresh_token\":\"AQCftrHL1pVS__fFRBTxf5uMyazVfSeC3O5PXNlMjs-JGVhyy431IjrCSMCryFmTm56Kaik62ND9X7hQ4QE4eJhTycPOGRwPeM9WEuSW886WTkFBdoCIuv51U2TjyK_7Xq4\",\"expires_at\":1795080306092}",
+    "wordgame_mode": "quordle",
+    "wordle_v1": "{\"stats\":{\"played\":1,\"wins\":0,\"streak\":0,\"max\":0,\"last\":-9,\"dist\":[0,0,0,0,0,0]},\"game\":{\"day\":322,\"guesses\":[\"walks\",\"lence\",\"clark\",\"clung\"],\"cur\":\"\",\"status\":\"playing\"}}"
+  },
   "wordleDaily": {
     "date": "2026-11-19",
     "solution": "CLOUT",
