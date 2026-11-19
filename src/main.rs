@@ -43,7 +43,7 @@ fn App() -> Element {
             )}
         }
 
-        div { class: "h-screen w-screen overflow-hidden flex flex-col antialiased text-xs select-none",
+        div { class: "h-screen w-screen overflow-hidden flex flex-col antialiased text-xs",
             style: "background-color: {bg}; color: {text};",
             // ─── MINIMALIST TOP HEADER (Linear Style) ─────────────────────────
             header { class: "h-12 px-5 py-2.5 border-b border-[#1E293B] flex items-center justify-between",
@@ -58,26 +58,28 @@ fn App() -> Element {
                     span { class: "text-gray-400 font-mono", "dashboard.os" }
                 }
 
-                div { class: "flex items-center space-x-3",
-                    select {
-                        class: "px-2 py-1 rounded bg-[#121826] border border-[#1E293B] text-gray-200 text-[11px] font-mono outline-none",
-                        onchange: move |evt| {
-                            let val = evt.value();
-                            theme.set(match val.as_str() {
-                                "midnight" => Theme::MidnightBlue,
-                                "slate" => Theme::MinimalistSlate,
-                                "crimson" => Theme::CarbonCrimson,
-                                "violet" => Theme::DeepViolet,
-                                "teal" => Theme::AbyssalTeal,
-                                _ => Theme::ObsidianEmerald,
-                            });
-                        },
-                        option { value: "obsidian", "Obsidian & Emerald" }
-                        option { value: "midnight", "Midnight & Electric Blue" }
-                        option { value: "slate", "Minimalist Slate" }
-                        option { value: "crimson", "Carbon & Crimson" }
-                        option { value: "violet", "Deep Violet & Rose" }
-                        option { value: "teal", "Abyssal Teal & Gold" }
+                div { class: "flex items-center space-x-2",
+                    div { class: "flex items-center space-x-1",
+                        for (t, label, dot) in [
+                            (Theme::ObsidianEmerald, "Obsidian", "#10B981"),
+                            (Theme::MidnightBlue, "Midnight", "#3B82F6"),
+                            (Theme::MinimalistSlate, "Slate", "#4F46E5"),
+                            (Theme::CarbonCrimson, "Crimson", "#EF4444"),
+                            (Theme::DeepViolet, "Violet", "#8B5CF6"),
+                            (Theme::AbyssalTeal, "Teal", "#14B8A6"),
+                        ] {
+                            button {
+                                class: "px-2 py-0.5 rounded border text-[10px] font-mono flex items-center space-x-1 cursor-pointer",
+                                style: if theme() == t {
+                                    format!("background-color: {dot}22; border-color: {dot}; color: {text};")
+                                } else {
+                                    "background-color: #121826; border-color: #1E293B; color: #94A3B8;".to_string()
+                                },
+                                onclick: move |_| theme.set(t),
+                                span { class: "w-1.5 h-1.5 rounded-full", style: "background-color: {dot};" }
+                                span { "{label}" }
+                            }
+                        }
                     }
                     div { class: "flex items-center space-x-1.5 px-2 py-0.5 rounded bg-[#121826] border border-[#1E293B]",
                         span { class: "w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" }
