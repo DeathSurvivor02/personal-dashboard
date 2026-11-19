@@ -236,20 +236,27 @@ fn App() -> Element {
                             }
                         }
 
-                        // Wordle Card
-                        div { class: "p-3 rounded-xl bg-[#0E131F] border border-[#1E293B] space-y-2",
-                            div { class: "flex justify-between items-center pb-1.5 border-b border-[#1E293B]",
-                                span { class: "font-semibold text-white text-xs", "Daily Wordle" }
-                                span { class: "text-[10px] font-mono text-indigo-400", "Streak: 14 " }
+                        // Wordle / Quordle Card
+                        div { class: "p-3 rounded-xl bg-[#0E131F] border border-[#1E293B] space-y-2.5",
+                            {
+                                let games_played: u32 = 15;
+                                let games_won: u32 = 14;
+                                let win_pct: u32 = if games_played > 0 { (games_won * 100) / games_played } else { 0 };
+                                rsx! {
+                                    div { class: "flex justify-between items-center pb-1.5 border-b border-[#1E293B]",
+                                        span { class: "font-semibold text-white text-xs", "Daily Wordle / Quordle" }
+                                        span { class: "text-[11px] font-mono text-indigo-400", "Streak: {games_won} · Win: {win_pct}%" }
+                                    }
+                                    div { class: "flex justify-center space-x-1.5 pt-1",
+                                        div { class: "w-8 h-8 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-sm", "R" }
+                                        div { class: "w-8 h-8 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-sm", "U" }
+                                        div { class: "w-8 h-8 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-sm", "S" }
+                                        div { class: "w-8 h-8 rounded bg-amber-500 text-white font-bold flex items-center justify-center text-sm", "T" }
+                                        div { class: "w-8 h-8 rounded bg-[#121826] text-gray-300 border border-[#1E293B] flex items-center justify-center text-sm font-mono", "Y" }
+                                    }
+                                    p { class: "text-center text-[11px] text-gray-400 font-mono", "Guess 2 of 6 · {games_won}/{games_played} won" }
+                                }
                             }
-                            div { class: "flex justify-center space-x-1 pt-1",
-                                div { class: "w-6 h-6 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs", "R" }
-                                div { class: "w-6 h-6 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs", "U" }
-                                div { class: "w-6 h-6 rounded bg-emerald-600 text-white font-bold flex items-center justify-center text-xs", "S" }
-                                div { class: "w-6 h-6 rounded bg-amber-500 text-white font-bold flex items-center justify-center text-xs", "T" }
-                                div { class: "w-6 h-6 rounded bg-[#121826] text-gray-400 border border-[#1E293B] flex items-center justify-center text-xs font-mono", "Y" }
-                            }
-                            p { class: "text-center text-[10px] text-gray-400 font-mono", "Guess 2 of 6" }
                         }
                     }
 
