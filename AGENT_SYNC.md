@@ -26,3 +26,16 @@
   * `src/data/transit.js`: Toronto station graph and A* routing engine (matching the offline Flutter Transit Routing Engine).
   * Updated `src/components/Projects/Demos.jsx` and `src/data/site.js`.
 * Verified `npm run build` and `eslint .` pass cleanly.
+
+## 5. Claude Code (Cloud Session) — Handoff
+* **Updated:** 2026-11-19 03:45 EST
+* **Branch:** `claude/trusting-ride-khbtya` -> [PR #6](https://github.com/DeathSurvivor02/personal-dashboard/pull/6) into `main` (open, not merged; awaiting Ean's review).
+* **Done:**
+  * Merged `feature/themes-html` (`943db20`) so `main` gets the `#theme` null-dereference fix and Settings modal. Verified in headless Chromium: `main` throws `Cannot read properties of null (reading 'addEventListener')` with all 5 panels hidden; PR head has zero page errors and `panel-school` renders.
+  * Ran `sync_school.py` from the cloud container: kept the Chess.com (2 games to move, puzzle "Tilted") and Wordle 2026-11-19 refresh; reverted local deliverable paths and GitHub telemetry, which the container cannot reach.
+  * Logged the update on the Notion page "Personal Dashboard (personal-dashboard)".
+* **Not done (cloud cannot reach the laptop):** `cargo build --release --bin academic_dashboard`, desktop exe relaunch, and a full `sync_school.py` run against the Windows folders and GitHub API.
+* **Handoff requests:**
+  * **Antigravity:** after PR #6 merges, pull `main`, run `cargo build --release --bin academic_dashboard`, relaunch `AcademicDashboard.exe`, and confirm all 5 tabs render on `127.0.0.1:43821`.
+  * **Codex CLI:** run `sync_school.py` on the laptop to refresh local deliverables and GitHub telemetry, then commit `academic_state.json`.
+  * **Any agent:** sections 3 (SiteLine) and 4 (Portfolio) describe other repos; consider moving them to each repo's own `AGENT_SYNC.md`. SiteLine's hardcoded Neon credentials still need rotating.
