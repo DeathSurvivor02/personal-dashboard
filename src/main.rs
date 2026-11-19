@@ -4,44 +4,81 @@ fn main() {
     dioxus::launch(App);
 }
 
+#[derive(Clone, Copy, PartialEq)]
+enum Theme {
+    ObsidianEmerald,
+    MidnightBlue,
+    MinimalistSlate,
+    CarbonCrimson,
+    DeepViolet,
+    AbyssalTeal,
+}
+
+impl Theme {
+    fn colors(&self) -> (&'static str, &'static str, &'static str, &'static str, &'static str) {
+        match self {
+            Theme::ObsidianEmerald => ("#09090B", "#18181B", "#10B981", "#06B6D4", "#F4F4F5"),
+            Theme::MidnightBlue => ("#0B0F17", "#111827", "#3B82F6", "#6366F1", "#F8FAFC"),
+            Theme::MinimalistSlate => ("#FFFFFF", "#F1F5F9", "#4F46E5", "#64748B", "#0F172A"),
+            Theme::CarbonCrimson => ("#0A0A0C", "#17171B", "#EF4444", "#F59E0B", "#F8FAFC"),
+            Theme::DeepViolet => ("#0D0B14", "#181424", "#8B5CF6", "#EC4899", "#F5F3FF"),
+            Theme::AbyssalTeal => ("#071314", "#0E2224", "#14B8A6", "#EAB308", "#F0FDFA"),
+        }
+    }
+}
+
 #[component]
 fn App() -> Element {
+    let mut theme = use_signal(|| Theme::ObsidianEmerald);
+    let (bg, surface, primary, accent, text) = theme().colors();
+
     rsx! {
         document::Link {
             rel: "stylesheet",
             href: "https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
         }
         style {
-            r#"
-            body {{
-                background-color: #0A0D14;
-                color: #E2E8F0;
-                font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Inter", sans-serif;
-                margin: 0;
-            }}
-            .custom-scrollbar::-webkit-scrollbar {{
-                width: 5px;
-            }}
-            .custom-scrollbar::-webkit-scrollbar-thumb {{
-                background-color: #1E293B;
-                border-radius: 9999px;
-            }}
-            "#
+            {format!(
+                "body {{ background-color: {bg}; color: {text}; font-family: -apple-system, BlinkMacSystemFont, \"Segoe UI\", Roboto, \"Inter\", sans-serif; margin: 0; }} .theme-surface {{ background-color: {surface}; }} .theme-primary {{ color: {primary}; }} .theme-accent {{ color: {accent}; }} .custom-scrollbar::-webkit-scrollbar {{ width: 5px; }} .custom-scrollbar::-webkit-scrollbar-thumb {{ background-color: #1E293B; border-radius: 9999px; }}"
+            )}
         }
 
         div { class: "h-screen w-screen overflow-hidden flex flex-col antialiased text-xs select-none",
+            style: "background-color: {bg}; color: {text};",
             // ─── MINIMALIST TOP HEADER (Linear Style) ─────────────────────────
-            header { class: "h-12 px-5 py-2.5 bg-[#0E131F] border-b border-[#1E293B] flex items-center justify-between",
+            header { class: "h-12 px-5 py-2.5 border-b border-[#1E293B] flex items-center justify-between",
+                style: "background-color: {surface};",
                 div { class: "flex items-center space-x-2.5",
-                    div { class: "w-6 h-6 rounded bg-indigo-600/20 border border-indigo-500/40 flex items-center justify-center font-bold text-indigo-400 text-xs",
+                    div { class: "w-6 h-6 rounded flex items-center justify-center font-bold text-xs",
+                        style: "background-color: {primary}22; border: 1px solid {primary}66; color: {primary};",
                         "⌘"
                     }
-                    span { class: "font-semibold text-white tracking-tight", "Personal Command" }
+                    span { class: "font-semibold tracking-tight", "Personal Command" }
                     span { class: "text-gray-500 font-mono", "/" }
                     span { class: "text-gray-400 font-mono", "dashboard.os" }
                 }
 
                 div { class: "flex items-center space-x-3",
+                    select {
+                        class: "px-2 py-1 rounded bg-[#121826] border border-[#1E293B] text-gray-200 text-[11px] font-mono outline-none",
+                        onchange: move |evt| {
+                            let val = evt.value();
+                            theme.set(match val.as_str() {
+                                "midnight" => Theme::MidnightBlue,
+                                "slate" => Theme::MinimalistSlate,
+                                "crimson" => Theme::CarbonCrimson,
+                                "violet" => Theme::DeepViolet,
+                                "teal" => Theme::AbyssalTeal,
+                                _ => Theme::ObsidianEmerald,
+                            });
+                        },
+                        option { value: "obsidian", "Obsidian & Emerald" }
+                        option { value: "midnight", "Midnight & Electric Blue" }
+                        option { value: "slate", "Minimalist Slate" }
+                        option { value: "crimson", "Carbon & Crimson" }
+                        option { value: "violet", "Deep Violet & Rose" }
+                        option { value: "teal", "Abyssal Teal & Gold" }
+                    }
                     div { class: "flex items-center space-x-1.5 px-2 py-0.5 rounded bg-[#121826] border border-[#1E293B]",
                         span { class: "w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" }
                         span { class: "text-gray-300 font-medium text-[11px]", "Deep Work" }
