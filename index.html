@@ -455,7 +455,41 @@
         <button class="tab" role="tab" id="tab-chess" data-tab="chess" aria-controls="panel-chess">Chess.com</button>
         <button class="tab" role="tab" id="tab-spotify" data-tab="spotify" aria-controls="panel-spotify">Spotify</button>
       </div>
-      <button id="theme" class="iconbtn" type="button" aria-label="Switch color theme" title="Switch color theme">Theme</button>
+      <div id="theme-pills" style="display:flex;gap:4px;align-items:center;">
+        <button type="button" class="iconbtn" data-palette="obsidian" style="padding:4px 8px;font-size:11px;">Obsidian</button>
+        <button type="button" class="iconbtn" data-palette="midnight" style="padding:4px 8px;font-size:11px;">Midnight</button>
+        <button type="button" class="iconbtn" data-palette="slate" style="padding:4px 8px;font-size:11px;">Slate</button>
+        <button type="button" class="iconbtn" data-palette="crimson" style="padding:4px 8px;font-size:11px;">Crimson</button>
+        <button type="button" class="iconbtn" data-palette="violet" style="padding:4px 8px;font-size:11px;">Violet</button>
+        <button type="button" class="iconbtn" data-palette="teal" style="padding:4px 8px;font-size:11px;">Teal</button>
+      </div>
+      <script>
+        (function(){
+          const palettes = {
+            obsidian: { bg:'#09090B', surface:'#18181B', primary:'#10B981', text:'#F4F4F5' },
+            midnight: { bg:'#0B0F17', surface:'#111827', primary:'#3B82F6', text:'#F8FAFC' },
+            slate:    { bg:'#FFFFFF', surface:'#F1F5F9', primary:'#4F46E5', text:'#0F172A' },
+            crimson:  { bg:'#0A0A0C', surface:'#17171B', primary:'#EF4444', text:'#F8FAFC' },
+            violet:   { bg:'#0D0B14', surface:'#181424', primary:'#8B5CF6', text:'#F5F3FF' },
+            teal:     { bg:'#071314', surface:'#0E2224', primary:'#14B8A6', text:'#F0FDFA' }
+          };
+          function applyPalette(k){
+            const p = palettes[k] || palettes.obsidian;
+            document.documentElement.style.setProperty('--bg', p.bg);
+            document.documentElement.style.setProperty('--surface', p.surface);
+            document.documentElement.style.setProperty('--accent', p.primary);
+            document.documentElement.style.setProperty('--text', p.text);
+            document.body.style.backgroundColor = p.bg;
+            document.body.style.color = p.text;
+            localStorage.setItem('pd_palette', k);
+          }
+          document.querySelectorAll('#theme-pills [data-palette]').forEach(btn => {
+            btn.addEventListener('click', () => applyPalette(btn.dataset.palette));
+          });
+          const saved = localStorage.getItem('pd_palette');
+          if (saved && palettes[saved]) applyPalette(saved);
+        })();
+      </script>
     </div>
   </header>
 
