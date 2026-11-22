@@ -1,0 +1,252 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trackline</title>
+<meta name="description" content="Linear-style product landing page rebuilt in the portfolio design system.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Tokens copied from portfolio/src/index.css */
+:root,:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#07080a;--surface:#0c0e13;--surface-2:#12151c;--line:#1e222d;--line-strong:#353c4f;
+  --fg:#f1f5f9;--muted:#a8b3c4;--subtle:#7f8a9c;
+  --accent:#60a5fa;--accent-solid:#2563eb;--accent-solid-hover:#1d4ed8;--accent-soft:rgba(59,130,246,.12);
+  --on-accent:#fff;--accent-2:#fb7185;--ok:#4ade80;--warn:#fbbf24;
+  --grid:rgba(255,255,255,.04);--glow:rgba(37,99,235,.2);--glow-2:rgba(225,29,72,.15);
+}
+:root[data-theme="light"]{
+  color-scheme:light;
+  --bg:#f5f7fa;--surface:#fff;--surface-2:#ebeff5;--line:#dbe1ea;--line-strong:#b4bfce;
+  --fg:#0b1220;--muted:#475569;--subtle:#5b6779;
+  --accent:#1d4ed8;--accent-solid:#1d4ed8;--accent-solid-hover:#1e40af;--accent-soft:rgba(29,78,216,.08);
+  --accent-2:#be123c;--ok:#15803d;--warn:#a16207;
+  --grid:rgba(11,18,32,.05);--glow:rgba(37,99,235,.12);--glow-2:rgba(225,29,72,.09);
+}
+@media (prefers-color-scheme:light){
+  :root:not([data-theme="dark"]):not([data-theme="light"]){color-scheme:light}
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth;scroll-padding-top:5.5rem}
+body{background:var(--bg);color:var(--fg);font:400 1rem/1.6 "IBM Plex Sans",system-ui,sans-serif;-webkit-font-smoothing:antialiased;position:relative;overflow-x:hidden}
+h1,h2,h3{font-family:"Bricolage Grotesque","IBM Plex Sans",sans-serif;letter-spacing:-.02em;text-wrap:balance;line-height:1.1}
+p{text-wrap:pretty}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+.wrap{max-width:72rem;margin:0 auto;padding:0 1rem}
+@media(min-width:640px){.wrap{padding:0 1.5rem}}
+
+.backdrop{position:absolute;inset:0 0 auto 0;height:56rem;pointer-events:none;
+  background-image:radial-gradient(ellipse 50% 55% at 12% 0%,var(--glow),transparent 70%),
+  radial-gradient(ellipse 45% 50% at 92% 0%,var(--glow-2),transparent 70%),
+  linear-gradient(to right,var(--grid) 1px,transparent 1px),linear-gradient(to bottom,var(--grid) 1px,transparent 1px);
+  background-size:100% 100%,100% 100%,56px 56px,56px 56px;
+  -webkit-mask-image:linear-gradient(to bottom,#000 35%,transparent);mask-image:linear-gradient(to bottom,#000 35%,transparent)}
+
+.eyebrow{font:500 .75rem "IBM Plex Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--subtle)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px}
+.btn{display:inline-flex;align-items:center;gap:.5rem;min-height:2.75rem;padding:.625rem 1.125rem;border-radius:10px;border:1px solid transparent;font:600 .9375rem/1.2 "IBM Plex Sans",sans-serif;text-decoration:none;white-space:nowrap;cursor:pointer;transition:background-color .15s,border-color .15s,transform .15s}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--accent-solid);color:var(--on-accent)}
+.btn-primary:hover{background:var(--accent-solid-hover)}
+.btn-secondary{background:var(--surface);border-color:var(--line-strong);color:var(--fg)}
+.btn-secondary:hover{border-color:var(--fg)}
+.btn-sm{min-height:2.25rem;padding:.4rem .8rem;font-size:.875rem;border-radius:8px}
+.chip{display:inline-flex;padding:.2rem .6rem;border-radius:6px;border:1px solid var(--line);background:var(--surface-2);color:var(--muted);font:400 .75rem/1.5 "IBM Plex Mono",monospace}
+
+/* nav */
+nav{position:sticky;top:0;z-index:20;backdrop-filter:blur(12px);background:color-mix(in srgb,var(--bg) 80%,transparent);border-bottom:1px solid var(--line)}
+nav .wrap{display:flex;align-items:center;justify-content:space-between;height:4rem;gap:1rem}
+.logo{font:800 1.2rem "Bricolage Grotesque",sans-serif;text-decoration:none;display:flex;align-items:center;gap:.5rem}
+.logo i{width:.8rem;height:.8rem;border-radius:3px;background:linear-gradient(135deg,var(--accent),var(--accent-2))}
+.links{display:none;gap:1.75rem;font-size:.9375rem;color:var(--muted)}
+.links a{text-decoration:none}.links a:hover{color:var(--fg)}
+@media(min-width:760px){.links{display:flex}}
+.nav-r{display:flex;gap:.5rem;align-items:center}
+#theme{width:2.25rem;padding:0;justify-content:center}
+
+/* hero */
+.hero{padding:5rem 0 3rem;text-align:center;position:relative}
+.pill{display:inline-flex;align-items:center;gap:.6rem;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:.35rem 1rem .35rem .75rem;font-size:.875rem;color:var(--muted)}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--ok);animation:pulse 2.2s ease-out infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 color-mix(in srgb,var(--ok) 55%,transparent)}70%,100%{box-shadow:0 0 0 7px transparent}}
+.hero h1{font-size:clamp(2.5rem,7vw,4.75rem);font-weight:800;margin:1.5rem auto 0;max-width:15ch}
+.hero h1 span{color:var(--accent)}
+.hero p.lead{color:var(--muted);font-size:1.125rem;max-width:38rem;margin:1.5rem auto 0}
+.cta{display:flex;flex-wrap:wrap;gap:.75rem;justify-content:center;margin-top:2rem}
+
+/* product mock */
+.mock{margin:4rem auto 0;max-width:62rem;text-align:left;overflow:hidden;box-shadow:0 40px 120px -40px var(--glow)}
+.mock-bar{display:flex;align-items:center;gap:.5rem;padding:.75rem 1rem;border-bottom:1px solid var(--line);background:var(--surface-2)}
+.mock-bar b{width:10px;height:10px;border-radius:50%;background:var(--line-strong)}
+.mock-bar .eyebrow{margin-left:.75rem}
+.mock-body{display:grid;grid-template-columns:1fr}
+@media(min-width:760px){.mock-body{grid-template-columns:13rem 1fr}}
+.side{display:none;padding:1rem;border-right:1px solid var(--line);font-size:.875rem;color:var(--muted)}
+@media(min-width:760px){.side{display:block}}
+.side p{padding:.4rem .6rem;border-radius:8px}
+.side p.on{background:var(--accent-soft);color:var(--accent)}
+.side .eyebrow{margin:1rem 0 .4rem;padding-left:.6rem}
+.rows{padding:.5rem 0}
+.row{display:grid;grid-template-columns:1fr auto 2.5rem;gap:.9rem;align-items:center;padding:.7rem 1rem;border-bottom:1px solid var(--line);font-size:.9375rem}
+.row:last-child{border:0}
+.row code{font:400 .75rem "IBM Plex Mono",monospace;color:var(--subtle)}
+.st{width:14px;height:14px;border-radius:50%;border:2px solid var(--line-strong)}
+.st.prog{border-color:var(--warn);background:conic-gradient(var(--warn) 50%,transparent 0)}
+.st.done{border-color:var(--accent);background:var(--accent)}
+.st.todo{border-color:var(--accent-2)}
+.row span.t{display:flex;gap:.75rem;align-items:center;min-width:0}
+.row span.t em{font-style:normal;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(max-width:560px){.row .chip{display:none}}
+
+/* sections */
+section{padding:5rem 0}
+.sh{max-width:40rem;margin-bottom:3rem}
+.sh h2{font-size:clamp(1.9rem,4vw,2.9rem);font-weight:800;margin-top:.75rem}
+.sh p{color:var(--muted);margin-top:1rem;font-size:1.0625rem}
+.grid{display:grid;gap:1rem}
+@media(min-width:760px){.grid{grid-template-columns:repeat(6,1fr)}.c2{grid-column:span 2}.c3{grid-column:span 3}.c4{grid-column:span 4}}
+.f{padding:1.5rem;display:flex;flex-direction:column;gap:.6rem;transition:border-color .15s}
+.f:hover{border-color:var(--line-strong)}
+.f h3{font-size:1.25rem;font-weight:700}
+.f p{color:var(--muted);font-size:.9375rem}
+.f .viz{margin-top:auto;padding-top:1rem}
+.bars{display:flex;align-items:flex-end;gap:6px;height:5rem}
+.bars i{flex:1;border-radius:4px 4px 0 0;background:var(--accent-soft);border:1px solid var(--line-strong);border-bottom:0}
+.bars i:last-child{background:var(--accent-solid);border-color:var(--accent-solid)}
+
+/* pipeline: blue -> red */
+.pipe{list-style:none;padding:1.125rem 0 0;position:relative;display:grid;gap:1.5rem}
+.pipe::before{content:"";position:absolute;left:0;right:0;top:3px;height:1px;background:linear-gradient(to right,var(--accent),var(--accent-2))}
+.pipe li{position:relative}
+.pipe li::before{content:"";position:absolute;left:0;top:-1.125rem;width:7px;height:7px;border-radius:50%;background:var(--bg);border:1px solid var(--fg)}
+.pipe li:first-child::before{background:var(--accent);border-color:var(--accent)}
+.pipe li:last-child::before{background:var(--accent-2);border-color:var(--accent-2)}
+.pipe h3{font-size:1.15rem;margin:.4rem 0}
+.pipe p{color:var(--muted);font-size:.9375rem}
+@media(min-width:760px){.pipe{grid-template-columns:repeat(3,1fr);gap:1.5rem}}
+@media(max-width:759px){
+ .pipe{padding:0 0 0 1.25rem}
+ .pipe::before{left:3px;right:auto;top:.5rem;bottom:.5rem;width:1px;height:auto;background:linear-gradient(to bottom,var(--accent),var(--accent-2))}
+ .pipe li::before{left:-1.25rem;top:.45rem}
+}
+
+.stats{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+@media(min-width:640px){.stats{grid-template-columns:repeat(4,1fr)}}
+.stats div{background:var(--surface);padding:1.5rem}
+.stats b{display:block;font:800 2.25rem "Bricolage Grotesque",sans-serif;letter-spacing:-.02em}
+.stats span{color:var(--subtle);font:400 .8125rem "IBM Plex Mono",monospace}
+
+.final{padding:3rem 1.5rem;text-align:center;background:var(--surface);position:relative;overflow:hidden}
+.final::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 80% at 50% 120%,var(--glow),transparent 70%)}
+.final>*{position:relative}
+.final h2{font-size:clamp(1.9rem,4vw,2.9rem);font-weight:800;max-width:20ch;margin:0 auto}
+.final p{color:var(--muted);margin:1rem auto 0;max-width:30rem}
+
+footer{border-top:1px solid var(--line);padding:2.5rem 0;color:var(--subtle);font-size:.875rem}
+footer .wrap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:1rem}
+footer a{text-decoration:none}footer a:hover{color:var(--fg)}
+
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+.reveal.in{opacity:1;transform:none}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.dot{animation:none}}
+</style>
+</head>
+<body>
+<div class="backdrop" aria-hidden="true"></div>
+
+<nav>
+  <div class="wrap">
+    <a class="logo" href="#"><i></i>Trackline</a>
+    <div class="links"><a href="#features">Features</a><a href="#flow">Workflow</a><a href="#numbers">Numbers</a></div>
+    <div class="nav-r">
+      <button id="theme" class="btn btn-secondary btn-sm" aria-label="Toggle theme">◐</button>
+      <a href="#start" class="btn btn-primary btn-sm">Get started</a>
+    </div>
+  </div>
+</nav>
+
+<main class="wrap">
+  <header class="hero">
+    <p class="pill"><span class="dot"></span>Now with agent-assisted triage</p>
+    <h1>Plan, build and ship <span>without the noise.</span></h1>
+    <p class="lead">Trackline is a fast issue tracker for small engineering teams. Keyboard first, opinionated by default, and quiet until something needs you.</p>
+    <div class="cta">
+      <a href="#start" class="btn btn-primary">Start building →</a>
+      <a href="#features" class="btn btn-secondary">See how it works</a>
+    </div>
+
+    <div class="card mock reveal" aria-label="Product preview">
+      <div class="mock-bar"><b></b><b></b><b></b><span class="eyebrow">Sprint 24 · Platform</span></div>
+      <div class="mock-body">
+        <aside class="side">
+          <p class="on">My issues</p><p>Inbox</p><p>Roadmap</p>
+          <p class="eyebrow">Teams</p><p>Platform</p><p>Web</p><p>Mobile</p>
+        </aside>
+        <div class="rows">
+          <div class="row"><span class="t"><span class="st done"></span><code>TRK-142</code><em>Cache invalidation on bulk edit</em></span><span class="chip">backend</span><code>2d</code></div>
+          <div class="row"><span class="t"><span class="st prog"></span><code>TRK-151</code><em>Keyboard shortcut for cycle jump</em></span><span class="chip">ux</span><code>5h</code></div>
+          <div class="row"><span class="t"><span class="st prog"></span><code>TRK-156</code><em>Webhook retries with backoff</em></span><span class="chip">api</span><code>1d</code></div>
+          <div class="row"><span class="t"><span class="st todo"></span><code>TRK-160</code><em>Fix flaky sync test on CI</em></span><span class="chip">urgent</span><code>now</code></div>
+          <div class="row"><span class="t"><span class="st"></span><code>TRK-163</code><em>Draft changelog from merged PRs</em></span><span class="chip">docs</span><code>3d</code></div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="features">
+    <div class="sh reveal"><p class="eyebrow">Features</p><h2>Built for speed, designed to disappear.</h2><p>Every screen answers one question. Everything else stays out of the way.</p></div>
+    <div class="grid">
+      <article class="card f c4 reveal"><p class="eyebrow">Cycles</p><h3>Sprints that plan themselves</h3><p>Carry over unfinished work, balance load across the team, and see scope creep the moment it starts.</p>
+        <div class="viz bars" aria-hidden="true"><i style="height:35%"></i><i style="height:50%"></i><i style="height:42%"></i><i style="height:68%"></i><i style="height:60%"></i><i style="height:82%"></i><i style="height:100%"></i></div></article>
+      <article class="card f c2 reveal"><p class="eyebrow">Command</p><h3>⌘K for everything</h3><p>Create, assign, jump, filter. Never reach for the mouse.</p></article>
+      <article class="card f c2 reveal"><p class="eyebrow">Git</p><h3>PRs close issues</h3><p>Branch names and merges update status for you.</p></article>
+      <article class="card f c2 reveal"><p class="eyebrow">Triage</p><h3>Inbox zero, for bugs</h3><p>Agents label, dedupe and route new reports.</p></article>
+      <article class="card f c2 reveal"><p class="eyebrow">Roadmap</p><h3>One line to the goal</h3><p>Projects roll up into quarterly bets, no spreadsheets.</p></article>
+    </div>
+  </section>
+
+  <section id="flow">
+    <div class="sh reveal"><p class="eyebrow">Workflow</p><h2>From idea to released in three stops.</h2></div>
+    <ol class="pipe reveal">
+      <li><span class="eyebrow">01 · Capture</span><h3>Write it down</h3><p>Slack, email or ⌘K. Every request lands in one inbox.</p></li>
+      <li><span class="eyebrow">02 · Build</span><h3>Branch and go</h3><p>Copy the branch name, open a PR, status follows the code.</p></li>
+      <li><span class="eyebrow">03 · Ship</span><h3>Release with notes</h3><p>Merged work becomes a changelog. Nothing to chase.</p></li>
+    </ol>
+  </section>
+
+  <section id="numbers">
+    <div class="stats reveal">
+      <div><b>38ms</b><span>median interaction</span></div>
+      <div><b>12k</b><span>teams onboard</span></div>
+      <div><b>4.9</b><span>average rating</span></div>
+      <div><b>0</b><span>setup meetings</span></div>
+    </div>
+  </section>
+
+  <section id="start" style="padding-top:2rem">
+    <div class="card final reveal">
+      <h2>Ship the next thing, <span style="color:var(--accent-2)">faster.</span></h2>
+      <p>Free for teams up to ten. No credit card, no sales call.</p>
+      <div class="cta"><a href="#" class="btn btn-primary">Create workspace →</a><a href="#" class="btn btn-secondary">Talk to us</a></div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap"><span>© 2026 Trackline. A design study.</span><span><a href="#features">Features</a> · <a href="#flow">Workflow</a> · <a href="#start">Start</a></span></div></footer>
+
+<script>
+const root=document.documentElement;
+try{const t=localStorage.getItem("theme");if(t)root.dataset.theme=t}catch{}
+document.getElementById("theme").onclick=()=>{
+  const n=root.dataset.theme==="dark"?"light":"dark";root.dataset.theme=n;
+  try{localStorage.setItem("theme",n)}catch{}
+};
+const io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12});
+document.querySelectorAll(".reveal").forEach(el=>io.observe(el));
+</script>
+</body>
+</html>
