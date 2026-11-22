@@ -440,6 +440,17 @@
     :root.has-bg body { background: linear-gradient(rgba(8,14,18,.5), rgba(8,14,18,.62)), var(--page-bg) center / cover fixed no-repeat; }
     :root.has-bg .appbar { background: rgba(8,14,18,.55); backdrop-filter: blur(10px); }
     :root.has-bg .card, :root.has-bg .runway, :root.has-bg details.course, :root.has-bg .stat { backdrop-filter: blur(8px); }
+    .st-modal { position: fixed; inset: 0; z-index: 60; background: rgba(0,0,0,.55); backdrop-filter: blur(4px); display: grid; place-items: center; padding: 16px; overflow-y: auto; }
+    .st-modal[hidden] { display: none; }
+    .st-card { width: min(560px, 100%); max-height: calc(100vh - 32px); overflow-y: auto; background: var(--raised); color: var(--ink); border: 1px solid var(--line); border-radius: 14px; padding: 20px 22px; box-shadow: 0 20px 60px rgba(0,0,0,.35); }
+    .st-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; }
+    .st-head h2 { margin: 0; }
+    .st-sec { border-top: 1px solid var(--line); margin-top: 16px; padding-top: 14px; display: grid; gap: 10px; }
+    .st-sec h3 { margin: 0; font-size: 14px; color: var(--ink2); text-transform: uppercase; letter-spacing: .06em; }
+    .st-sec .form { flex-wrap: wrap; align-items: center; }
+    .st-sec .form input { flex: 1 1 200px; width: auto; }
+    .st-pills { display: flex; flex-wrap: wrap; gap: 6px; }
+    .st-pills .iconbtn[aria-pressed="true"] { border-color: var(--focus); color: var(--ink); font-weight: 600; box-shadow: inset 0 0 0 1px var(--focus); }
     @media (prefers-reduced-motion: reduce) {
       * { transition: none !important; animation: none !important; }
     }
@@ -455,41 +466,7 @@
         <button class="tab" role="tab" id="tab-chess" data-tab="chess" aria-controls="panel-chess">Chess.com</button>
         <button class="tab" role="tab" id="tab-spotify" data-tab="spotify" aria-controls="panel-spotify">Spotify</button>
       </div>
-      <div id="theme-pills" style="display:flex;gap:4px;align-items:center;">
-        <button type="button" class="iconbtn" data-palette="obsidian" style="padding:4px 8px;font-size:11px;">Obsidian</button>
-        <button type="button" class="iconbtn" data-palette="midnight" style="padding:4px 8px;font-size:11px;">Midnight</button>
-        <button type="button" class="iconbtn" data-palette="slate" style="padding:4px 8px;font-size:11px;">Slate</button>
-        <button type="button" class="iconbtn" data-palette="crimson" style="padding:4px 8px;font-size:11px;">Crimson</button>
-        <button type="button" class="iconbtn" data-palette="violet" style="padding:4px 8px;font-size:11px;">Violet</button>
-        <button type="button" class="iconbtn" data-palette="teal" style="padding:4px 8px;font-size:11px;">Teal</button>
-      </div>
-      <script>
-        (function(){
-          const palettes = {
-            obsidian: { bg:'#09090B', surface:'#18181B', primary:'#10B981', text:'#F4F4F5' },
-            midnight: { bg:'#0B0F17', surface:'#111827', primary:'#3B82F6', text:'#F8FAFC' },
-            slate:    { bg:'#FFFFFF', surface:'#F1F5F9', primary:'#4F46E5', text:'#0F172A' },
-            crimson:  { bg:'#0A0A0C', surface:'#17171B', primary:'#EF4444', text:'#F8FAFC' },
-            violet:   { bg:'#0D0B14', surface:'#181424', primary:'#8B5CF6', text:'#F5F3FF' },
-            teal:     { bg:'#071314', surface:'#0E2224', primary:'#14B8A6', text:'#F0FDFA' }
-          };
-          function applyPalette(k){
-            const p = palettes[k] || palettes.obsidian;
-            document.documentElement.style.setProperty('--bg', p.bg);
-            document.documentElement.style.setProperty('--surface', p.surface);
-            document.documentElement.style.setProperty('--accent', p.primary);
-            document.documentElement.style.setProperty('--text', p.text);
-            document.body.style.backgroundColor = p.bg;
-            document.body.style.color = p.text;
-            localStorage.setItem('pd_palette', k);
-          }
-          document.querySelectorAll('#theme-pills [data-palette]').forEach(btn => {
-            btn.addEventListener('click', () => applyPalette(btn.dataset.palette));
-          });
-          const saved = localStorage.getItem('pd_palette');
-          if (saved && palettes[saved]) applyPalette(saved);
-        })();
-      </script>
+      <button type="button" class="iconbtn" id="settings-btn" aria-haspopup="dialog" aria-controls="settings-modal">Settings</button>
     </div>
   </header>
 
@@ -503,7 +480,6 @@
       <div class="tools">
         <label class="sr" for="search">Search deliverables</label>
         <input id="search" class="search" type="search" placeholder="Search deliverables" autocomplete="off">
-        <button type="button" class="btn" id="sync-school-btn">Sync Schoolwork</button>
       </div>
     </header>
 
@@ -541,7 +517,6 @@
    <section role="tabpanel" id="panel-github" aria-labelledby="tab-github" hidden>
     <div class="page-h">
       <div><h1 id="gh-title">GitHub</h1><p id="gh-bio">Open pull requests, recently pushed repositories and your latest commits. Private repositories are not shown.</p></div>
-      <form class="form" id="gh-form"><label class="sr" for="gh-user">GitHub username</label><input id="gh-user" autocomplete="off" spellcheck="false"><button class="btn" type="submit">Load</button></form>
     </div>
     <div id="gh-body" aria-live="polite"></div>
    </section>
@@ -555,7 +530,6 @@
           <button type="button" data-wmode="wordle" aria-pressed="true">Wordle</button>
           <button type="button" data-wmode="quordle" aria-pressed="false">Quordle</button>
         </div>
-        <button type="button" class="btn" id="w-practice-btn">Practice</button>
       </div>
     </div>
     <div class="game">
@@ -572,7 +546,6 @@
    <section role="tabpanel" id="panel-chess" aria-labelledby="tab-chess" hidden>
     <div class="page-h">
       <div><h1>Chess.com</h1><p>Solve today's puzzle on the board, track ratings, and review daily & recent games.</p></div>
-      <form class="form" id="chess-form"><label class="sr" for="chess-user">Chess.com username</label><input id="chess-user" placeholder="Chess.com username" autocomplete="off" spellcheck="false"><button class="btn" type="submit">Save</button><button class="btn" type="button" id="chess-refresh">Refresh</button></form>
     </div>
     <div class="two">
       <div class="card" id="chess-puzzle"></div>
@@ -613,6 +586,55 @@
   <div class="tip" id="tip" hidden></div>
   <footer class="sp-bar" id="sp-bar" aria-label="Now playing" hidden></footer>
   <div class="sp-toast" id="sp-toast" role="status" aria-live="polite" hidden></div>
+  <div class="st-modal" id="settings-modal" role="dialog" aria-modal="true" aria-labelledby="st-title" hidden>
+    <div class="st-card">
+      <div class="st-head"><h2 id="st-title">Settings</h2><button type="button" class="btn" id="st-close">Close</button></div>
+      <p class="hint" id="st-status" role="status" aria-live="polite">Accounts are saved on this device. You only enter them once.</p>
+
+      <section class="st-sec" aria-labelledby="st-h-look">
+        <h3 id="st-h-look">Appearance</h3>
+        <div class="seg" role="group" aria-label="Color mode">
+          <button type="button" data-mode="system" aria-pressed="true">System</button>
+          <button type="button" data-mode="light" aria-pressed="false">Light</button>
+          <button type="button" data-mode="dark" aria-pressed="false">Dark</button>
+        </div>
+        <div class="st-pills" id="theme-pills" role="group" aria-label="Color palette">
+          <button type="button" class="iconbtn" data-palette="obsidian" aria-pressed="false">Obsidian</button>
+          <button type="button" class="iconbtn" data-palette="midnight" aria-pressed="false">Midnight</button>
+          <button type="button" class="iconbtn" data-palette="slate" aria-pressed="false">Slate</button>
+          <button type="button" class="iconbtn" data-palette="crimson" aria-pressed="false">Crimson</button>
+          <button type="button" class="iconbtn" data-palette="violet" aria-pressed="false">Violet</button>
+          <button type="button" class="iconbtn" data-palette="teal" aria-pressed="false">Teal</button>
+        </div>
+      </section>
+
+      <section class="st-sec" aria-labelledby="st-h-school">
+        <h3 id="st-h-school">Schoolwork</h3>
+        <div class="form"><button type="button" class="btn" id="sync-school-btn">Sync Schoolwork</button></div>
+      </section>
+
+      <section class="st-sec" aria-labelledby="st-h-gh">
+        <h3 id="st-h-gh">GitHub</h3>
+        <form class="form" id="gh-form"><label class="sr" for="gh-user">GitHub username</label><input id="gh-user" placeholder="GitHub username" autocomplete="off" spellcheck="false"><button class="btn" type="submit">Save and load</button></form>
+      </section>
+
+      <section class="st-sec" aria-labelledby="st-h-w">
+        <h3 id="st-h-w">Wordle</h3>
+        <div class="form"><button type="button" class="btn" id="w-practice-btn">Practice</button></div>
+      </section>
+
+      <section class="st-sec" aria-labelledby="st-h-chess">
+        <h3 id="st-h-chess">Chess.com</h3>
+        <form class="form" id="chess-form"><label class="sr" for="chess-user">Chess.com username</label><input id="chess-user" placeholder="Chess.com username" autocomplete="off" spellcheck="false"><button class="btn" type="submit">Save</button><button class="btn" type="button" id="chess-refresh">Refresh</button></form>
+      </section>
+
+      <section class="st-sec" aria-labelledby="st-h-sp">
+        <h3 id="st-h-sp">Spotify</h3>
+        <div class="form"><label class="sr" for="sp-client-id">Spotify client ID</label><input id="sp-client-id" placeholder="Spotify client ID" autocomplete="off" spellcheck="false"><button class="btn" type="button" id="st-sp-save">Save</button></div>
+        <div class="form"><button class="btn" type="button" id="st-sp-reconnect">Reconnect</button><button class="btn" type="button" id="st-sp-disconnect">Disconnect</button></div>
+      </section>
+    </div>
+  </div>
   <div class="sp-modal" id="sp-modal" role="dialog" aria-modal="true" aria-labelledby="sp-modal-title" hidden></div>
 
   <script>
@@ -1201,15 +1223,71 @@
       }
     });
 
-    // Theme: follows the system until you pick one.
+    // Theme: mode (system/light/dark) plus optional palette, all persisted via store.
     const root = document.documentElement;
+    const PAL_KEY = 'pd_palette';
+    const PALETTES = {
+      obsidian: { dark: 1, '--bg': '#09090B', '--surface': '#18181B', '--raised': '#202024', '--ink': '#F4F4F5', '--ink2': '#A1A1AA', '--line': '#27272A', '--track': '#2E2E33', '--focus': '#10B981', '--on': '#04130D' },
+      midnight: { dark: 1, '--bg': '#0B0F17', '--surface': '#111827', '--raised': '#172033', '--ink': '#F8FAFC', '--ink2': '#94A3B8', '--line': '#1F2A3D', '--track': '#263248', '--focus': '#60A5FA', '--on': '#06101F' },
+      slate:    { dark: 0, '--bg': '#F8FAFC', '--surface': '#F1F5F9', '--raised': '#FFFFFF', '--ink': '#0F172A', '--ink2': '#475569', '--line': '#E2E8F0', '--track': '#E2E8F0', '--focus': '#4F46E5', '--on': '#FFFFFF' },
+      crimson:  { dark: 1, '--bg': '#0A0A0C', '--surface': '#17171B', '--raised': '#1F1F25', '--ink': '#F8FAFC', '--ink2': '#A1A1AA', '--line': '#2A2A31', '--track': '#33333B', '--focus': '#F87171', '--on': '#1A0505' },
+      violet:   { dark: 1, '--bg': '#0D0B14', '--surface': '#181424', '--raised': '#201A30', '--ink': '#F5F3FF', '--ink2': '#A89FC4', '--line': '#2B2440', '--track': '#352D4D', '--focus': '#A78BFA', '--on': '#120A2A' },
+      teal:     { dark: 1, '--bg': '#071314', '--surface': '#0E2224', '--raised': '#123032', '--ink': '#F0FDFA', '--ink2': '#8FB8B5', '--line': '#17393B', '--track': '#1D4548', '--focus': '#2DD4BF', '--on': '#031615' }
+    };
+    const PAL_VARS = ['--bg', '--surface', '--raised', '--ink', '--ink2', '--line', '--track', '--focus', '--on'];
+    function syncThemeControls() {
+      const mode = root.dataset.theme || 'system', pal = store.get(PAL_KEY) || '';
+      document.querySelectorAll('[data-mode]').forEach(b => b.setAttribute('aria-pressed', !pal && b.dataset.mode === mode));
+      document.querySelectorAll('[data-palette]').forEach(b => b.setAttribute('aria-pressed', b.dataset.palette === pal));
+    }
+    function clearPalette() { PAL_VARS.forEach(v => root.style.removeProperty(v)); root.style.removeProperty('color-scheme'); }
+    function applyPalette(k) {
+      clearPalette();
+      const p = PALETTES[k];
+      if (!p) return;
+      PAL_VARS.forEach(v => root.style.setProperty(v, p[v]));
+      root.style.colorScheme = p.dark ? 'dark' : 'light';
+    }
+    function setMode(m) {
+      if (m === 'system') root.removeAttribute('data-theme'); else root.dataset.theme = m;
+      store.set(THEME, m === 'system' ? '' : m);
+      store.set(PAL_KEY, '');
+      clearPalette(); syncThemeControls();
+    }
+    function setPalette(k) { store.set(PAL_KEY, k); applyPalette(k); syncThemeControls(); }
     const savedTheme = store.get(THEME);
     if (savedTheme) root.dataset.theme = savedTheme;
-    document.getElementById('theme').addEventListener('click', () => {
-      const dark = root.dataset.theme ? root.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
-      root.dataset.theme = dark ? 'light' : 'dark';
-      store.set(THEME, root.dataset.theme);
+    if (store.get(PAL_KEY) && PALETTES[store.get(PAL_KEY)]) applyPalette(store.get(PAL_KEY));
+    document.querySelectorAll('[data-mode]').forEach(b => b.addEventListener('click', () => setMode(b.dataset.mode)));
+    document.querySelectorAll('[data-palette]').forEach(b => b.addEventListener('click', () => setPalette(b.dataset.palette)));
+    syncThemeControls();
+
+    /* Settings modal */
+    const stModal = document.getElementById('settings-modal'), stStatus = document.getElementById('st-status');
+    let stOpener = null;
+    const stSay = msg => { if (stStatus) stStatus.textContent = msg; };
+    function openSettings() {
+      stOpener = document.activeElement; stModal.hidden = false;
+      document.getElementById('st-close').focus();
+    }
+    function closeSettings() {
+      if (stModal.hidden) return;
+      stModal.hidden = true;
+      if (stOpener && stOpener.focus) stOpener.focus();
+    }
+    document.getElementById('settings-btn').addEventListener('click', openSettings);
+    document.getElementById('st-close').addEventListener('click', closeSettings);
+    stModal.addEventListener('mousedown', e => { if (e.target === stModal) closeSettings(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && !stModal.hidden) closeSettings(); });
+    stModal.addEventListener('keydown', e => {
+      if (e.key !== 'Tab') return;
+      const f = [...stModal.querySelectorAll('button, input')].filter(x => !x.disabled && x.offsetParent !== null);
+      if (!f.length) return;
+      const first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
     });
+    const saveCfg = obj => { if (window.ipc && typeof window.ipc.postMessage === 'function') window.ipc.postMessage(JSON.stringify(Object.assign({ type: 'save_sync_config' }, obj))); };
 
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden) {
@@ -1244,7 +1322,7 @@
       const n = e.key === 'Home' ? 0 : e.key === 'End' ? TABS.length - 1 : (i + (e.key === 'ArrowRight' ? 1 : -1) + TABS.length) % TABS.length;
       showTab(TABS[n], true);
     });
-    const typing = () => /input|textarea|select/i.test(document.activeElement.tagName);
+    const typing = () => !stModal.hidden || /input|textarea|select/i.test(document.activeElement.tagName);
     const currentTab = () => TABS.find(t => !document.getElementById('panel-' + t).hidden);
     document.addEventListener('keydown', e => {
       if (typing() || e.ctrlKey || e.metaKey || e.altKey) return;
@@ -1273,10 +1351,12 @@
     }
 
     /* ══ GitHub ═════════════════════════════════════════ */
-    let ghUser = store.get('gh_user') || 'DeathSurvivor02';
+    const cfgGh = window.__SCHOOL_SYNC_CONFIG__ && window.__SCHOOL_SYNC_CONFIG__.github_username;
+    let ghUser = store.get('gh_user') || cfgGh || 'DeathSurvivor02';
     const ghInput = document.getElementById('gh-user'); ghInput.value = ghUser;
     document.getElementById('gh-form').addEventListener('submit', e => {
-      e.preventDefault(); ghUser = ghInput.value.trim() || ghUser; store.set('gh_user', ghUser); loadGithub();
+      e.preventDefault(); ghUser = ghInput.value.trim() || ghUser; ghInput.value = ghUser; store.set('gh_user', ghUser);
+      saveCfg({ github_username: ghUser }); stSay('Saved GitHub account ' + ghUser + '.'); loadGithub();
     });
     async function loadGithub() {
       const body = document.getElementById('gh-body');
@@ -1610,6 +1690,7 @@
       chessUser = normalizeChessUser(chessInput.value);
       chessInput.value = chessUser;
       store.set('chess_user', chessUser);
+      saveCfg({ chess_username: chessUser }); stSay('Saved Chess.com account ' + chessUser + '.');
       loadChessPlayer(true);
     });
     document.getElementById('chess-refresh').addEventListener('click', () => loadChess(true));
@@ -2265,6 +2346,13 @@
     }
     const spCidInput = document.getElementById('sp-client-id');
     if (spCidInput) spCidInput.value = spClientId;
+    const spViaTab = id => { closeSettings(); showTab('spotify'); const b = document.getElementById(id); if (b) b.click(); };
+    document.getElementById('st-sp-save').addEventListener('click', () => {
+      const cid = spCidInput.value.trim() || SP_DEFAULT_CID; spClientId = cid; spCidInput.value = cid;
+      store.set('spotify_client_id', cid); saveCfg({ spotify_client_id: cid }); stSay('Saved Spotify client ID.');
+    });
+    document.getElementById('st-sp-reconnect').addEventListener('click', () => spViaTab('sp-reconnect'));
+    document.getElementById('st-sp-disconnect').addEventListener('click', () => spViaTab('sp-disconnect'));
 
     const spTokensGet = () => { try { return JSON.parse(store.get('spotify_tokens_v1') || 'null'); } catch (e) { return null; } };
     const spTokensSet = t => store.set('spotify_tokens_v1', t ? JSON.stringify(t) : '');
